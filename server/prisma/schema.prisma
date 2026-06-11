@@ -4,10 +4,294 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider     = "prisma-client"
+  output       = "./generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Admin {
+  id        String   @id @default(nanoid())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@map("admins")
+}
+
+model Teacher {
+  id        String     @id @default(nanoid())
+  name      String
+  email     String     @unique
+  password  String
+  phone     String?    @unique
+  address   String?
+  gender    UserGender
+  birthday  DateTime?
+  image     String?
+  role      UserRole   @default(TEACHER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  subjects Subject[]
+  classes  Class[]
+
+  @@index([email])
+  @@index([phone])
+  @@index([gender])
+  @@map("teachers")
+}
+
+model Student {
+  id        String     @id @default(nanoid())
+  name      String
+  email     String     @unique
+  password  String
+  phone     String?    @unique
+  address   String?
+  gender    UserGender
+  birthday  DateTime?
+  image     String?
+  role      UserRole   @default(STUDENT)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  parentId String?
+  parent   Parent? @relation(fields: [parentId], references: [id])
+  classId  String?
+  class    Class?  @relation(fields: [classId], references: [id])
+  gradeId  String?
+  grade    Grade?  @relation(fields: [gradeId], references: [id])
+
+  attendances Attendance[]
+  results     Result[]
+
+  @@index([email])
+  @@index([phone])
+  @@index([gender])
+  @@map("students")
+}
+
+model Parent {
+  id        String   @id @default(nanoid())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?  @unique
+  address   String?
+  role      UserRole @default(PARENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  students Student[]
+
+  @@index([email])
+  @@index([phone])
+  @@map("parents")
+}
+
+model Class {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teacherId String?
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+
+  students      Student[]
+  subjects      Subject[]
+  events        Event[]
+  announcements Announcement[]
+
+  @@index([teacherId])
+  @@map("classes")
+}
+
+model Subject {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  classId String?
+  class   Class?  @relation(fields: [classId], references: [id])
+
+  teachers    Teacher[]
+  lessons     Lesson[]
+  assignments Assignment[]
+  exams       Exam[]
+
+  @@index([classId])
+  @@map("subjects")
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subjectId String?
+  subject   Subject? @relation(fields: [subjectId], references: [id])
+
+  @@index([subjectId])
+  @@map("lessons")
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  present   Boolean
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentId String
+  student   Student? @relation(fields: [studentId], references: [id])
+
+  @@index([present])
+  @@index([studentId])
+  @@map("attendances")
+}
+
+model Assignment {
+  id        String    @id @default(uuid())
+  name      String
+  dueDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  subjectId String?
+  subject   Subject? @relation(fields: [subjectId], references: [id])
+
+  results Result[]
+
+  @@index([subjectId])
+  @@map("assignments")
+}
+
+model Exam {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  results Result[]
+
+  @@index([subjectId])
+  @@map("exams")
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  score     Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  examId       String?
+  exam         Exam?       @relation(fields: [examId], references: [id])
+  assignmentId String?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
+  studentId    String
+  student      Student     @relation(fields: [studentId], references: [id])
+
+  @@index([examId])
+  @@index([assignmentId])
+  @@index([studentId])
+  @@map("results")
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  classId String?
+  class   Class?  @relation(fields: [classId], references: [id])
+
+  @@index([classId])
+  @@map("events")
+}
+
+model Announcement {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  classId String?
+  class   Class?  @relation(fields: [classId], references: [id])
+
+  @@index([classId])
+  @@map("announcements")
+}
+
+model Grade {
+  id        String   @id @default(uuid())
+  level     Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  students Student[]
+
+  @@index([level])
+  @@map("grades")
+}
+
+model Message {
+  id        String   @id @default(nanoid())
+  name      String?
+  content   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  senderId   String
+  receiverId String
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@map("messages")
+}
+
+enum UserGender {
+  MALE
+  FEMALE
+}
+
+enum UserRole {
+  ADMIN
+  TEACHER
+  STUDENT
+  PARENT
+}
+
+enum Day {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
 }
