@@ -32,6 +32,16 @@ dev-server:
 dev-web:
 	cd web && $(PM) run dev
 
+# --- Development / Build ---
+build-mobile:
+	@echo "No build defined for mobile." 
+
+build-server:
+	cd server && $(PM) run build
+
+build-web:
+	cd web && $(PM) run build
+
 # --- Production / Start ---
 start:
 	@echo "Starting all services..."
@@ -45,7 +55,7 @@ start-server:
 
 start-web:
 	cd web && $(PM) run start
-
+	
 # --- Docker ---
 docker:
 	@echo "Docker configuration not found. Please add Dockerfiles to the subdirectories."
