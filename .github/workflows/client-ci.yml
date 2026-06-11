@@ -1,0 +1,112 @@
+name: Client CI
+
+on:
+  push:
+    branches: ["development", "main"]
+    paths:
+      - "mobile/**"
+      - "web/**"
+      - ".github/workflows/client-ci.yml"
+
+  pull_request:
+    branches: ["development", "main"]
+    paths:
+      - "mobile/**"
+      - "web/**"
+      - ".github/workflows/client-ci.yml"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Install mobile dependencies
+        working-directory: ./mobile
+        run: pnpm install
+
+      - name: Install web dependencies
+        working-directory: ./web
+        run: pnpm install
+
+      - name: Mobile linting
+        working-directory: ./mobile
+        run: pnpm run lint
+
+      - name: Web linting
+        working-directory: ./web
+        run: pnpm run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Install mobile dependencies
+        working-directory: ./mobile
+        run: pnpm install
+
+      - name: Install web dependencies
+        working-directory: ./web
+        run: pnpm install
+
+      - name: Mobile typecheck
+        working-directory: ./mobile
+        run: pnpm run check-types
+
+      - name: Web typecheck
+        working-directory: ./web
+        run: pnpm run check-types
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Install web dependencies
+        working-directory: ./web
+        run: pnpm install
+
+      - name: Web build
+        working-directory: ./web
+        run: pnpm run build
