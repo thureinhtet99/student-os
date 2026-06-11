@@ -2,11 +2,11 @@ import * as Device from 'expo-device';
 import { Platform, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
+import { AnimatedIcon } from '@/components/shared/animated-icon';
+import { HintRow } from '@/components/shared/hint-row';
+import { ThemedText } from '@/components/ui/themed-text';
+import { ThemedView } from '@/components/ui/themed-view';
+import { WebBadge } from '@/components/shared/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
 function getDevMenuHint() {
@@ -46,7 +46,7 @@ export default function HomeScreen() {
         <ThemedView type="backgroundElement" style={styles.stepContainer}>
           <HintRow
             title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+            hint={<ThemedText type="code">src/app/(tabs)/index.tsx</ThemedText>}
           />
           <HintRow title="Dev tools" hint={getDevMenuHint()} />
           <HintRow

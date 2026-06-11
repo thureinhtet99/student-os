@@ -1,0 +1,143 @@
+my-app/
+├── app/                          # Expo Router (file-based routing only)
+│   ├── (auth)/
+│   │   ├── _layout.tsx
+│   │   ├── login.tsx
+│   │   └── register.tsx
+│   ├── (tabs)/
+│   │   ├── _layout.tsx
+│   │   ├── index.tsx
+│   │   ├── explore.tsx
+│   │   └── profile.tsx
+│   ├── (onboarding)/
+│   │   ├── _layout.tsx
+│   │   ├── welcome.tsx
+│   │   ├── select-interest.tsx
+│   │   └── setup-profile.tsx
+│   ├── product/
+│   │   ├── [id].tsx              # /product/123
+│   │   └── index.tsx             # /product
+│   ├── notification/
+│   │   └── index.tsx
+│   ├── settings/
+│   │   ├── index.tsx
+│   │   ├── account.tsx
+│   │   ├── appearance.tsx
+│   │   ├── privacy.tsx
+│   │   └── notification.tsx
+│   ├── search/
+│   │   └── index.tsx
+│   ├── chat/
+│   │   ├── index.tsx             # chat list
+│   │   └── [id].tsx              # chat room
+│   ├── modal.tsx                 # global modal screen
+│   ├── _layout.tsx
+│   └── +not-found.tsx
+│
+├── components/
+│   ├── ui/
+│   │   ├── button.tsx
+│   │   ├── input.tsx
+│   │   ├── text.tsx
+│   │   ├── badge.tsx
+│   │   ├── avatar.tsx
+│   │   ├── skeleton.tsx
+│   │   └── divider.tsx
+│   └── shared/
+│       ├── header.tsx
+│       ├── bottom-sheet.tsx
+│       ├── empty-state.tsx
+│       ├── error-boundary.tsx
+│       └── screen-wrapper.tsx
+│
+├── features/
+│   ├── auth/
+│   │   ├── components/
+│   │   │   ├── login-form.tsx
+│   │   │   └── register-form.tsx
+│   │   └── hooks/
+│   │       └── use-auth-form.ts
+│   ├── home/
+│   │   ├── components/
+│   │   │   ├── banner.tsx
+│   │   │   ├── category-list.tsx
+│   │   │   └── product-card.tsx
+│   │   └── hooks/
+│   │       └── use-home-feed.ts
+│   ├── product/
+│   │   ├── components/
+│   │   │   ├── product-detail.tsx
+│   │   │   ├── product-images.tsx
+│   │   │   └── product-review.tsx
+│   │   └── hooks/
+│   │       └── use-product-detail.ts
+│   ├── chat/
+│   │   ├── components/
+│   │   │   ├── message-bubble.tsx
+│   │   │   ├── message-input.tsx
+│   │   │   └── chat-list-item.tsx
+│   │   └── hooks/
+│   │       └── use-chat.ts
+│   ├── profile/
+│   │   ├── components/
+│   │   │   ├── profile-header.tsx
+│   │   │   └── profile-stats.tsx
+│   │   └── hooks/
+│   │       └── use-profile.ts
+│   └── settings/
+│       ├── components/
+│       │   ├── settings-item.tsx
+│       │   └── settings-section.tsx
+│       └── hooks/
+│           └── use-settings.ts
+│
+├── hooks/
+│   ├── use-auth.ts
+│   ├── use-theme.ts
+│   ├── use-debounce.ts
+│   └── use-keyboard.ts
+│
+├── store/
+│   ├── auth-store.ts
+│   ├── cart-store.ts
+│   └── index.ts
+│
+├── services/
+│   ├── api.ts
+│   ├── auth-service.ts
+│   ├── user-service.ts
+│   ├── product-service.ts
+│   └── chat-service.ts
+│
+├── lib/
+│   ├── query-client.ts
+│   └── supabase.ts
+│
+├── utils/
+│   ├── format.ts
+│   ├── validation.ts
+│   └── storage.ts
+│
+├── constants/
+│   ├── theme.ts
+│   ├── routes.ts
+│   └── config.ts
+│
+├── types/
+│   ├── api.types.ts
+│   ├── auth.types.ts
+│   ├── product.types.ts
+│   └── navigation.types.ts
+│
+├── assets/
+│   ├── fonts/
+│   ├── images/
+│   └── icons/
+│
+├── .env
+├── .env.example
+├── app.json
+├── babel.config.js
+├── tsconfig.json
+├── package.json
+└── README.md

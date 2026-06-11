@@ -3,11 +3,11 @@ import { SymbolView } from 'expo-symbols';
 import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ExternalLink } from '@/components/external-link';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { ExternalLink } from '@/components/shared/external-link';
+import { ThemedText } from '@/components/ui/themed-text';
+import { ThemedView } from '@/components/ui/themed-view';
 import { Collapsible } from '@/components/ui/collapsible';
-import { WebBadge } from '@/components/web-badge';
+import { WebBadge } from '@/components/shared/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -61,8 +61,8 @@ export default function TabTwoScreen() {
         <ThemedView style={styles.sectionsWrapper}>
           <Collapsible title="File-based routing">
             <ThemedText type="small">
-              This app has two screens: <ThemedText type="code">src/app/index.tsx</ThemedText> and{' '}
-              <ThemedText type="code">src/app/explore.tsx</ThemedText>
+              This app has two screens: <ThemedText type="code">src/app/(tabs)/index.tsx</ThemedText> and{' '}
+              <ThemedText type="code">src/app/(tabs)/explore.tsx</ThemedText>
             </ThemedText>
             <ThemedText type="small">
               The layout file in <ThemedText type="code">src/app/_layout.tsx</ThemedText> sets up
