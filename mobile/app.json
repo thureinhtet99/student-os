@@ -35,7 +35,8 @@
             "imageWidth": 76
           }
         }
-      ]
+      ],
+      "@react-native-vector-icons/ant-design"
     ],
     "experiments": {
       "typedRoutes": true,
