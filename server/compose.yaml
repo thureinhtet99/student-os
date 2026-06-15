@@ -8,10 +8,6 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 
-networks:
-  default:
-    name: student-os
-
 services:
   student-os-server:
     build:
@@ -23,6 +19,8 @@ services:
       NODE_ENV: development
       API_PORT: 3001
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-postgres}
+    networks:
+      - student-os-network
     ports:
       - 3001:3001
     depends_on:
@@ -40,63 +38,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-  # web:
-  #   build:
-  #     context: .
-  #     dockerfile: apps/web/Dockerfile
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     NODE_ENV: development
-  #     PORT: 3000
-  #     API_BASE_URL: http://localhost:3001
-  #     NEXT_PUBLIC_API_URL: http://localhost:3001
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     api:
-  #       condition: service_healthy
-  #   healthcheck:
-  #     test: [
-  #         "CMD",
-  #         "node",
-  #         "-e",
-  #         "fetch('http://localhost:3000').then(r=>process.exit(r.ok?0:1)).cat\
-  #         ch(()=>process.exit(1))",
-  #       ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #     start_period: 20s
-  # mobile:
-  #   build:
-  #     context: .
-  #     dockerfile: apps/mobile/Dockerfile
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     NODE_ENV: development
-  #     MOBILE_PORT: 8081
-  #     API_BASE_URL: http://localhost:3001
-  #   ports:
-  #     - "8081:8081"
-  #     - "19000:19000"
-  #     - "19001:19001"
-  #   depends_on:
-  #     api:
-  #       condition: service_healthy
-  #   healthcheck:
-  #     test: [
-  #         "CMD",
-  #         "node",
-  #         "-e",
-  #         "fetch('http://localhost:8081/status').then(r=>process.exit(r.ok?0:1)).cat\
-  #         ch(()=>process.exit(1))",
-  #       ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #     start_period: 20s
 
   db:
     container_name: student-os-db
@@ -121,8 +62,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - student-os-network
 
 volumes:
   db-data:
     external: true
     name: student-os_db-data
+
+networks:
+  student-os-network:
+    name: student-os-network
