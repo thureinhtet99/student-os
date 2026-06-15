@@ -8,9 +8,10 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 
-# networks:
-#   default:
-#     name: student-os-network
+networks:
+  default:
+    name: student-os
+
 services:
   student-os-server:
     build:
