@@ -32,7 +32,7 @@ const DASHBOARD_ITEMS: DashboardItem[] = [
 
 export default function Dashboard() {
   return (
-    <ScreenWrapper bg={COLORS.background}>
+    <ScreenWrapper>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View
@@ -47,9 +47,7 @@ export default function Dashboard() {
         >
           <View className="flex-row justify-between items-center mb-6">
             <Avatar size={48} />
-            <Text variant="h3" color={COLORS.text.light}>
-              Campus name
-            </Text>
+            <Text>Campus name</Text>
             <TouchableOpacity>
               <AntDesign
                 name="notification"
@@ -60,14 +58,8 @@ export default function Dashboard() {
           </View>
 
           <View className="mb-4">
-            <Text variant="h1" color={COLORS.text.light} className="uppercase">
-              Firstname Lastname Surname
-            </Text>
-            <Text
-              variant="caption"
-              color={COLORS.text.light}
-              className="opacity-70"
-            >
+            <Text className="uppercase">Firstname Lastname</Text>
+            <Text className="opacity-70">
               1234567890 | 190303106080@university.ac.in
             </Text>
           </View>
@@ -89,7 +81,6 @@ export default function Dashboard() {
               style={{
                 width: CARD_SIZE,
                 height: CARD_SIZE + 10,
-                backgroundColor: COLORS.card,
                 borderRadius: 12,
                 padding: 12,
                 marginBottom: 16,
@@ -110,9 +101,7 @@ export default function Dashboard() {
                 />
               </View>
               <Text
-                variant="caption"
                 style={{ textAlign: "center", fontSize: 10, fontWeight: "500" }}
-                color={COLORS.primary}
               >
                 {item.label}
               </Text>
@@ -142,24 +131,9 @@ function InfoItem({
 }) {
   return (
     <View className="items-center">
-      <Text
-        variant="caption"
-        color={COLORS.text.light}
-        className="opacity-60 mb-1"
-      >
-        {label}
-      </Text>
-      <Text
-        style={{ fontSize: 13, fontWeight: "bold" }}
-        color={COLORS.text.light}
-      >
-        {value}
-      </Text>
-      {subValue && (
-        <Text style={{ fontSize: 10 }} color={COLORS.text.light}>
-          {subValue}
-        </Text>
-      )}
+      <Text className="opacity-60 mb-1">{label}</Text>
+      <Text style={{ fontSize: 13, fontWeight: "bold" }}>{value}</Text>
+      {subValue && <Text style={{ fontSize: 10 }}>{subValue}</Text>}
     </View>
   );
 }

@@ -26,6 +26,9 @@ dev:
 dev-mobile:
 	cd mobile && $(PM) start
 
+dev-mobile-web:
+	cd mobile && $(PM) web
+
 dev-server:
 	cd server && $(PM) run start:dev
 

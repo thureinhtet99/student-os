@@ -1,10 +1,13 @@
 export const COLORS = {
   primary: "#002D56",
-  background: "#000000",
-  card: "#FFFFFF",
+  secondary: "#ffffff",
+  background: {
+    light: "ffffff",
+    dark: "#242c40",
+  },
   text: {
-    light: "#FFFFFF",
-    dark: "#000000",
+    light: "#ffffff",
+    dark: "#d0d0c0",
     muted: "#8E8E93",
   },
 };
