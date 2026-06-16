@@ -21,16 +21,6 @@ export class ParentResponseDto {
   updated_at!: Date;
 }
 
-export class ClassResponseDto {
-  id!: string;
-
-  name!: string;
-
-  created_at!: Date;
-
-  updated_at!: Date;
-}
-
 export class GradeResponseDto {
   id!: string;
 
@@ -62,9 +52,9 @@ export class StudentResponseDto {
 
   parent!: ParentResponseDto | null;
 
-  class!: ClassResponseDto | null;
+  class!: { id: string; name: string } | null;
 
-  grade!: GradeResponseDto | null;
+  grade!: { id: string; level: number } | null;
 
   created_at!: Date;
 

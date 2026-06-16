@@ -4,11 +4,11 @@ import { UserGender } from '../../../../prisma/generated/prisma/client';
 
 export class QueryStudentDto {
   @IsOptional()
-  @IsNumber()
+  @IsString()
   class?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   grade?: string;
 
   @IsOptional()

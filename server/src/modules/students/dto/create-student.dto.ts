@@ -2,12 +2,10 @@ import {
   IsDateString,
   IsEmail,
   IsEnum,
-  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
-  Min,
 } from 'class-validator';
 import {
   UserGender,
@@ -55,15 +53,13 @@ export class CreateStudentDto {
 
   @IsString()
   @IsOptional()
-  parent_id?: string | null;
+  parent_id!: string | null;
 
-  @IsInt()
-  @Min(1)
+  @IsString()
   @IsOptional()
   class_id!: string | null;
 
-  @IsInt()
-  @Min(1)
+  @IsString()
   @IsOptional()
   grade_id!: string | null;
 }

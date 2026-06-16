@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
@@ -17,6 +18,8 @@ import { UpdateStudentDto } from './dto/update-student.dto.js';
 
 @Injectable()
 export class StudentsService {
+  private readonly logger = new Logger(StudentsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinary: CloudinaryService,
@@ -121,12 +124,45 @@ export class StudentsService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { name: 'asc' },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        address: true,
+        gender: true,
+        birthday: true,
+        image: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        parentId: true,
+        classId: true,
+        gradeId: true,
         parent: {
-          omit: { password: true },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            address: true,
+            role: true,
+            createdAt: true,
+            updatedAt: true,
+          },
         },
-        class: true,
-        grade: true,
+        class: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        grade: {
+          select: {
+            id: true,
+            level: true,
+          },
+        },
       },
     });
 
@@ -296,8 +332,15 @@ export class StudentsService {
     });
     if (!existingStudent) throw new NotFoundException('Student is not found');
 
-    if (existingStudent.image)
-      await this.cloudinary.deleteFromCloudinary(existingStudent.image);
+    if (existingStudent.image) {
+      try {
+        await this.cloudinary.deleteFromCloudinary(existingStudent.image);
+      } catch (error) {
+        this.logger.warn(
+          `Failed to delete image from Cloudinary for student ${id}: ${(error as Error).message}`,
+        );
+      }
+    }
 
     await this.prisma.student.delete({ where: { id } });
 

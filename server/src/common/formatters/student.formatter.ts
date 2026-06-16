@@ -1,19 +1,6 @@
-import {
-  Class,
-  Grade,
-  Parent,
-  Student,
-} from '../../../prisma/generated/prisma/client.js';
 import { StudentResponseDto } from '../../modules/students/dto/student-response.dto.js';
-import { formatClass } from './class.formatter.js';
-import { formatGrade } from './grade.formatter.js';
+import { StudentWithRelations } from '../types/student.type.js';
 import { formatParent } from './parent.formatter.js';
-
-export type StudentWithRelations = Student & {
-  class: Class | null;
-  grade: Grade | null;
-  parent: Omit<Parent, 'password'> | null;
-};
 
 export function formatStudent(
   student: StudentWithRelations,
@@ -29,9 +16,13 @@ export function formatStudent(
     image: student.image,
     role: student.role,
     parent: student.parent ? formatParent(student.parent) : null,
-    class: student.class ? formatClass(student.class) : null,
-    grade: student.grade ? formatGrade(student.grade) : null,
-    created_at: student.createdAt,
-    updated_at: student.updatedAt,
+    class: student.class
+      ? { id: student.class.id, name: student.class.name }
+      : null,
+    grade: student.grade
+      ? { id: student.grade.id, level: student.grade.level }
+      : null,
+    created_at: student.createdAt ?? null,
+    updated_at: student.updatedAt ?? null,
   };
 }

@@ -2,6 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
 import { APP_CONSTANT } from './common/constants/app.constant.js';
+import { PrismaClientExceptionFilter } from './common/filters/prisma-client-exception.filter.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,9 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+
+  // Global exception filters
+  app.useGlobalFilters(new PrismaClientExceptionFilter());
 
   await app.listen(process.env.PORT ?? 3001);
 }
