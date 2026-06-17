@@ -8,5 +8,6 @@ import { StudentsService } from './students.service';
   imports: [PrismaModule],
   controllers: [StudentsController],
   providers: [StudentsService, CloudinaryService],
+  exports: [StudentsService],
 })
 export class StudentsModule {}
