@@ -82,17 +82,13 @@ model Student {
 model Parent {
   id        String   @id @default(nanoid())
   name      String
-  email     String   @unique
-  password  String
   phone     String?  @unique
   address   String?
-  role      UserRole @default(PARENT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   students Student[]
 
-  @@index([email])
   @@index([phone])
   @@map("parents")
 }
@@ -284,7 +280,6 @@ enum UserRole {
   ADMIN
   TEACHER
   STUDENT
-  PARENT
 }
 
 enum Day {

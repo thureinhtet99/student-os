@@ -47,7 +47,7 @@ export class ClassesController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<{ message?: string }> {
+  async remove(@Param('id') id: string): Promise<{ message: string }> {
     return this.classesService.remove(id);
   }
 }

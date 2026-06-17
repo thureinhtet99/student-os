@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "check-types": "tsc --noEmit",
     "db:generate": "pnpm dlx prisma generate",
-    "db:migrate": "pnpm dlx prisma migrate dev --name init"
+    "db:migrate": "pnpm dlx prisma migrate dev --name init",
+    "db:reset": "pnpm dlx prisma migrate reset"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

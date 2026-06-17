@@ -1,13 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatStudent } from '../../common/formatters/student.formatter.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
+import { checkDuplicate } from '../../common/utils/db.util.js';
 import { resolveImageUrl } from '../../common/utils/image.util.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CloudinaryService } from '../../integrations/cloudinary/cloudinary.service.js';
@@ -28,25 +24,31 @@ export class StudentsService {
   async create(
     createStudentDto: CreateStudentDto,
   ): Promise<StudentResponseDto> {
-    const existingStudent = await this.prisma.student.findFirst({
-      where: {
-        OR: [
-          {
-            name: {
-              equals: createStudentDto.name.trim(),
-              mode: 'insensitive',
-            },
-          },
-          { email: createStudentDto.email.trim() },
-          { phone: createStudentDto.phone?.trim() },
-        ],
-      },
-    });
+    await checkDuplicate(
+      this.prisma.student,
+      'name',
+      createStudentDto.name,
+      null,
+      'Student with this name already exists',
+    );
 
-    if (existingStudent)
-      throw new BadRequestException(
-        'Student with this name, email or phone number already exists',
+    await checkDuplicate(
+      this.prisma.student,
+      'email',
+      createStudentDto.email,
+      null,
+      'Student with this email already exists',
+    );
+
+    if (createStudentDto.phone) {
+      await checkDuplicate(
+        this.prisma.student,
+        'phone',
+        createStudentDto.phone,
+        null,
+        'Student with this phone number already exists',
       );
+    }
 
     const imageUrl = resolveImageUrl(createStudentDto.image, this.cloudinary);
 
@@ -74,7 +76,7 @@ export class StudentsService {
           : undefined,
       },
       include: {
-        parent: { omit: { password: true } },
+        parent: true,
         class: true,
         grade: true,
       },
@@ -143,10 +145,8 @@ export class StudentsService {
           select: {
             id: true,
             name: true,
-            email: true,
             phone: true,
             address: true,
-            role: true,
             createdAt: true,
             updatedAt: true,
           },
@@ -181,9 +181,7 @@ export class StudentsService {
     const student = await this.prisma.student.findUnique({
       where: { id },
       include: {
-        parent: {
-          omit: { password: true },
-        },
+        parent: true,
         class: true,
         grade: true,
       },
@@ -226,52 +224,39 @@ export class StudentsService {
       existingStudent.name.toLowerCase() !==
         updateStudentDto.name.trim().toLowerCase()
     ) {
-      const duplicateStudent = await this.prisma.student.findFirst({
-        where: {
-          name: {
-            equals: updateStudentDto.name.trim(),
-            mode: 'insensitive',
-          },
-          NOT: { id },
-        },
-      });
-
-      if (duplicateStudent)
-        throw new BadRequestException('Student with this name already exists');
+      await checkDuplicate(
+        this.prisma.student,
+        'name',
+        updateStudentDto.name,
+        id,
+        'Student with this name already exists',
+      );
     }
 
     if (
       updateStudentDto.email &&
       existingStudent.email !== updateStudentDto.email.trim()
     ) {
-      const duplicateEmailStudent = await this.prisma.student.findFirst({
-        where: {
-          email: updateStudentDto.email.trim(),
-          NOT: { id },
-        },
-        omit: { password: true },
-      });
-
-      if (duplicateEmailStudent)
-        throw new BadRequestException('Student with this email already exists');
+      await checkDuplicate(
+        this.prisma.student,
+        'email',
+        updateStudentDto.email,
+        id,
+        'Student with this email already exists',
+      );
     }
 
     if (
       updateStudentDto.phone &&
       existingStudent.phone !== updateStudentDto.phone.trim()
     ) {
-      const duplicatePhoneStudent = await this.prisma.student.findFirst({
-        where: {
-          phone: updateStudentDto.phone.trim(),
-          NOT: { id },
-        },
-        omit: { password: true },
-      });
-
-      if (duplicatePhoneStudent)
-        throw new BadRequestException(
-          'Student with this phone number already exists',
-        );
+      await checkDuplicate(
+        this.prisma.student,
+        'phone',
+        updateStudentDto.phone,
+        id,
+        'Student with this phone number already exists',
+      );
     }
 
     const student = await this.prisma.student.update({
@@ -315,9 +300,7 @@ export class StudentsService {
           : undefined,
       },
       include: {
-        parent: {
-          omit: { password: true },
-        },
+        parent: true,
         class: true,
         grade: true,
       },
@@ -326,7 +309,7 @@ export class StudentsService {
     return formatStudent(student);
   }
 
-  async remove(id: string): Promise<{ message?: string }> {
+  async remove(id: string): Promise<{ message: string }> {
     const existingStudent = await this.prisma.student.findUnique({
       where: { id },
     });

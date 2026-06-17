@@ -27,11 +27,8 @@ export type AggregateParent = {
 export type ParentMinAggregateOutputType = {
   id: string | null
   name: string | null
-  email: string | null
-  password: string | null
   phone: string | null
   address: string | null
-  role: $Enums.UserRole | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -39,11 +36,8 @@ export type ParentMinAggregateOutputType = {
 export type ParentMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  email: string | null
-  password: string | null
   phone: string | null
   address: string | null
-  role: $Enums.UserRole | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -51,11 +45,8 @@ export type ParentMaxAggregateOutputType = {
 export type ParentCountAggregateOutputType = {
   id: number
   name: number
-  email: number
-  password: number
   phone: number
   address: number
-  role: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -65,11 +56,8 @@ export type ParentCountAggregateOutputType = {
 export type ParentMinAggregateInputType = {
   id?: true
   name?: true
-  email?: true
-  password?: true
   phone?: true
   address?: true
-  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,11 +65,8 @@ export type ParentMinAggregateInputType = {
 export type ParentMaxAggregateInputType = {
   id?: true
   name?: true
-  email?: true
-  password?: true
   phone?: true
   address?: true
-  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -89,11 +74,8 @@ export type ParentMaxAggregateInputType = {
 export type ParentCountAggregateInputType = {
   id?: true
   name?: true
-  email?: true
-  password?: true
   phone?: true
   address?: true
-  role?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -174,11 +156,8 @@ export type ParentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ParentGroupByOutputType = {
   id: string
   name: string
-  email: string
-  password: string
   phone: string | null
   address: string | null
-  role: $Enums.UserRole
   createdAt: Date
   updatedAt: Date
   _count: ParentCountAggregateOutputType | null
@@ -207,11 +186,8 @@ export type ParentWhereInput = {
   NOT?: Prisma.ParentWhereInput | Prisma.ParentWhereInput[]
   id?: Prisma.StringFilter<"Parent"> | string
   name?: Prisma.StringFilter<"Parent"> | string
-  email?: Prisma.StringFilter<"Parent"> | string
-  password?: Prisma.StringFilter<"Parent"> | string
   phone?: Prisma.StringNullableFilter<"Parent"> | string | null
   address?: Prisma.StringNullableFilter<"Parent"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"Parent"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeFilter<"Parent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Parent"> | Date | string
   students?: Prisma.StudentListRelationFilter
@@ -220,11 +196,8 @@ export type ParentWhereInput = {
 export type ParentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   students?: Prisma.StudentOrderByRelationAggregateInput
@@ -232,28 +205,22 @@ export type ParentOrderByWithRelationInput = {
 
 export type ParentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
   phone?: string
   AND?: Prisma.ParentWhereInput | Prisma.ParentWhereInput[]
   OR?: Prisma.ParentWhereInput[]
   NOT?: Prisma.ParentWhereInput | Prisma.ParentWhereInput[]
   name?: Prisma.StringFilter<"Parent"> | string
-  password?: Prisma.StringFilter<"Parent"> | string
   address?: Prisma.StringNullableFilter<"Parent"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"Parent"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeFilter<"Parent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Parent"> | Date | string
   students?: Prisma.StudentListRelationFilter
-}, "id" | "email" | "phone">
+}, "id" | "phone">
 
 export type ParentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ParentCountOrderByAggregateInput
@@ -267,11 +234,8 @@ export type ParentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ParentScalarWhereWithAggregatesInput | Prisma.ParentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Parent"> | string
   name?: Prisma.StringWithAggregatesFilter<"Parent"> | string
-  email?: Prisma.StringWithAggregatesFilter<"Parent"> | string
-  password?: Prisma.StringWithAggregatesFilter<"Parent"> | string
   phone?: Prisma.StringNullableWithAggregatesFilter<"Parent"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"Parent"> | string | null
-  role?: Prisma.EnumUserRoleWithAggregatesFilter<"Parent"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Parent"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Parent"> | Date | string
 }
@@ -279,11 +243,8 @@ export type ParentScalarWhereWithAggregatesInput = {
 export type ParentCreateInput = {
   id?: string
   name: string
-  email: string
-  password: string
   phone?: string | null
   address?: string | null
-  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
   students?: Prisma.StudentCreateNestedManyWithoutParentInput
@@ -292,11 +253,8 @@ export type ParentCreateInput = {
 export type ParentUncheckedCreateInput = {
   id?: string
   name: string
-  email: string
-  password: string
   phone?: string | null
   address?: string | null
-  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutParentInput
@@ -305,11 +263,8 @@ export type ParentUncheckedCreateInput = {
 export type ParentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUpdateManyWithoutParentNestedInput
@@ -318,11 +273,8 @@ export type ParentUpdateInput = {
 export type ParentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUncheckedUpdateManyWithoutParentNestedInput
@@ -331,11 +283,8 @@ export type ParentUncheckedUpdateInput = {
 export type ParentCreateManyInput = {
   id?: string
   name: string
-  email: string
-  password: string
   phone?: string | null
   address?: string | null
-  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -343,11 +292,8 @@ export type ParentCreateManyInput = {
 export type ParentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -355,11 +301,8 @@ export type ParentUpdateManyMutationInput = {
 export type ParentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -372,11 +315,8 @@ export type ParentNullableScalarRelationFilter = {
 export type ParentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -384,11 +324,8 @@ export type ParentCountOrderByAggregateInput = {
 export type ParentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -396,11 +333,8 @@ export type ParentMaxOrderByAggregateInput = {
 export type ParentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -424,11 +358,8 @@ export type ParentUpdateOneWithoutStudentsNestedInput = {
 export type ParentCreateWithoutStudentsInput = {
   id?: string
   name: string
-  email: string
-  password: string
   phone?: string | null
   address?: string | null
-  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -436,11 +367,8 @@ export type ParentCreateWithoutStudentsInput = {
 export type ParentUncheckedCreateWithoutStudentsInput = {
   id?: string
   name: string
-  email: string
-  password: string
   phone?: string | null
   address?: string | null
-  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -464,11 +392,8 @@ export type ParentUpdateToOneWithWhereWithoutStudentsInput = {
 export type ParentUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -476,11 +401,8 @@ export type ParentUpdateWithoutStudentsInput = {
 export type ParentUncheckedUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -519,11 +441,8 @@ export type ParentCountOutputTypeCountStudentsArgs<ExtArgs extends runtime.Types
 export type ParentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  email?: boolean
-  password?: boolean
   phone?: boolean
   address?: boolean
-  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   students?: boolean | Prisma.Parent$studentsArgs<ExtArgs>
@@ -533,11 +452,8 @@ export type ParentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ParentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  email?: boolean
-  password?: boolean
   phone?: boolean
   address?: boolean
-  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["parent"]>
@@ -545,11 +461,8 @@ export type ParentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ParentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  email?: boolean
-  password?: boolean
   phone?: boolean
   address?: boolean
-  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["parent"]>
@@ -557,16 +470,13 @@ export type ParentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ParentSelectScalar = {
   id?: boolean
   name?: boolean
-  email?: boolean
-  password?: boolean
   phone?: boolean
   address?: boolean
-  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ParentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "phone" | "address" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["parent"]>
+export type ParentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "address" | "createdAt" | "updatedAt", ExtArgs["result"]["parent"]>
 export type ParentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   students?: boolean | Prisma.Parent$studentsArgs<ExtArgs>
   _count?: boolean | Prisma.ParentCountOutputTypeDefaultArgs<ExtArgs>
@@ -582,11 +492,8 @@ export type $ParentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    email: string
-    password: string
     phone: string | null
     address: string | null
-    role: $Enums.UserRole
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["parent"]>
@@ -1015,11 +922,8 @@ export interface Prisma__ParentClient<T, Null = never, ExtArgs extends runtime.T
 export interface ParentFieldRefs {
   readonly id: Prisma.FieldRef<"Parent", 'String'>
   readonly name: Prisma.FieldRef<"Parent", 'String'>
-  readonly email: Prisma.FieldRef<"Parent", 'String'>
-  readonly password: Prisma.FieldRef<"Parent", 'String'>
   readonly phone: Prisma.FieldRef<"Parent", 'String'>
   readonly address: Prisma.FieldRef<"Parent", 'String'>
-  readonly role: Prisma.FieldRef<"Parent", 'UserRole'>
   readonly createdAt: Prisma.FieldRef<"Parent", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Parent", 'DateTime'>
 }

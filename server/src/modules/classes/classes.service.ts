@@ -1,11 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto';
 import { formatClass } from '../../common/formatters/class.formatter';
+import { checkDuplicate } from '../../common/utils/db.util';
 import { PrismaService } from '../../database/prisma/prisma.service';
 import { ClassResponseDto } from './dto/class-response-dto';
 import { CreateClassDto } from './dto/create-class.dto';
@@ -17,16 +14,13 @@ export class ClassesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createClassDto: CreateClassDto): Promise<ClassResponseDto> {
-    const existingClass = await this.prisma.class.findFirst({
-      where: {
-        name: {
-          equals: createClassDto.name.trim(),
-          mode: 'insensitive',
-        },
-      },
-    });
-    if (existingClass)
-      throw new BadRequestException('Class with this name already exists');
+    await checkDuplicate(
+      this.prisma.class,
+      'name',
+      createClassDto.name,
+      null,
+      'Class with this name already exists',
+    );
 
     const classItem = await this.prisma.class.create({
       data: {
@@ -120,17 +114,13 @@ export class ClassesService {
       existingClass.name.toLowerCase() !==
         updateClassDto.name.trim().toLowerCase()
     ) {
-      const duplicateClass = await this.prisma.class.findFirst({
-        where: {
-          name: {
-            equals: updateClassDto.name.trim(),
-            mode: 'insensitive',
-          },
-          NOT: { id },
-        },
-      });
-      if (duplicateClass)
-        throw new BadRequestException('Class with this name already exists');
+      await checkDuplicate(
+        this.prisma.class,
+        'name',
+        updateClassDto.name,
+        id,
+        'Class with this name already exists',
+      );
     }
 
     const classItem = await this.prisma.class.update({
@@ -151,7 +141,7 @@ export class ClassesService {
     return formatClass(classItem);
   }
 
-  async remove(id: string): Promise<{ message?: string }> {
+  async remove(id: string): Promise<{ message: string }> {
     const existingClass = await this.prisma.class.findUnique({
       where: { id },
     });
