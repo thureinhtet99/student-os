@@ -189,9 +189,7 @@ export class StudentsService {
       },
     });
 
-    if (!student) {
-      throw new NotFoundException('Student is not found');
-    }
+    if (!student) throw new NotFoundException('Student is not found');
 
     return formatStudent(student);
   }
@@ -251,6 +249,7 @@ export class StudentsService {
           email: updateStudentDto.email.trim(),
           NOT: { id },
         },
+        omit: { password: true },
       });
 
       if (duplicateEmailStudent)
@@ -266,6 +265,7 @@ export class StudentsService {
           phone: updateStudentDto.phone.trim(),
           NOT: { id },
         },
+        omit: { password: true },
       });
 
       if (duplicatePhoneStudent)

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto';
 import { formatClass } from '../../common/formatters/class.formatter';
@@ -85,15 +89,78 @@ export class ClassesService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} class`;
+  async findOne(id: string) {
+    const classById = await this.prisma.class.findUnique({
+      where: { id },
+      include: {
+        teacher: { omit: { password: true } },
+        students: { omit: { password: true } },
+        subjects: true,
+        events: true,
+        announcements: true,
+      },
+    });
+
+    if (!classById) throw new NotFoundException('Class is not found');
+
+    return formatClass(classById);
   }
 
-  update(id: number, updateClassDto: UpdateClassDto) {
-    return `This action updates a #${id} class`;
+  async update(
+    id: string,
+    updateClassDto: UpdateClassDto,
+  ): Promise<ClassResponseDto> {
+    const existingClass = await this.prisma.class.findUnique({
+      where: { id },
+    });
+    if (!existingClass) throw new NotFoundException('Class is not found');
+
+    if (
+      updateClassDto.name &&
+      existingClass.name.toLowerCase() !==
+        updateClassDto.name.trim().toLowerCase()
+    ) {
+      const duplicateClass = await this.prisma.class.findFirst({
+        where: {
+          name: {
+            equals: updateClassDto.name.trim(),
+            mode: 'insensitive',
+          },
+          NOT: { id },
+        },
+      });
+      if (duplicateClass)
+        throw new BadRequestException('Class with this name already exists');
+    }
+
+    const classItem = await this.prisma.class.update({
+      where: { id },
+      data: {
+        name: updateClassDto.name,
+        teacher: updateClassDto.teacher_id
+          ? {
+              connect: { id: updateClassDto.teacher_id },
+            }
+          : undefined,
+      },
+      include: {
+        teacher: { omit: { password: true } },
+      },
+    });
+
+    return formatClass(classItem);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} class`;
+  async remove(id: string): Promise<{ message?: string }> {
+    const existingClass = await this.prisma.class.findUnique({
+      where: { id },
+    });
+    if (!existingClass) throw new NotFoundException('Class is not found');
+
+    await this.prisma.class.delete({
+      where: { id },
+    });
+
+    return { message: 'Class deleted successfully' };
   }
 }
