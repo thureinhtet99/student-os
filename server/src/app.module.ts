@@ -8,6 +8,7 @@ import { StudentsModule } from './modules/students/students.module';
 import { ParentsModule } from './modules/parents/parents.module';
 import { TeachersModule } from './modules/teachers/teachers.module';
 import { AdminsModule } from './modules/admins/admins.module';
+import { SubjectsModule } from './modules/subjects/subjects.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AdminsModule } from './modules/admins/admins.module';
     ParentsModule,
     TeachersModule,
     AdminsModule,
+    SubjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
