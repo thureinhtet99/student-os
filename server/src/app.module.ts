@@ -12,6 +12,7 @@ import { SubjectsModule } from './modules/subjects/subjects.module';
 import { LessonsModule } from './modules/lessons/lessons.module';
 import { AttendancesModule } from './modules/attendances/attendances.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
+import { ExamsModule } from './modules/exams/exams.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AssignmentsModule } from './modules/assignments/assignments.module';
     LessonsModule,
     AttendancesModule,
     AssignmentsModule,
+    ExamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
