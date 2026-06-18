@@ -20,12 +20,16 @@ export class AssignmentsController {
   constructor(private readonly assignmentsService: AssignmentsService) {}
 
   @Post()
-  async create(@Body() createAssignmentDto: CreateAssignmentDto): Promise<AssignmentResponseDto> {
+  async create(
+    @Body() createAssignmentDto: CreateAssignmentDto,
+  ): Promise<AssignmentResponseDto> {
     return this.assignmentsService.create(createAssignmentDto);
   }
 
   @Get()
-  async findAll(@Query() queryAssignmentDto: QueryAssignmentDto): Promise<PaginatedResponseDto<AssignmentResponseDto>> {
+  async findAll(
+    @Query() queryAssignmentDto: QueryAssignmentDto,
+  ): Promise<PaginatedResponseDto<AssignmentResponseDto>> {
     return this.assignmentsService.findAll(queryAssignmentDto);
   }
 
@@ -35,7 +39,10 @@ export class AssignmentsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateAssignmentDto: UpdateAssignmentDto): Promise<AssignmentResponseDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateAssignmentDto: UpdateAssignmentDto,
+  ): Promise<AssignmentResponseDto> {
     return this.assignmentsService.update(id, updateAssignmentDto);
   }
 

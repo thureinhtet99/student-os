@@ -20,12 +20,16 @@ export class LessonsController {
   constructor(private readonly lessonsService: LessonsService) {}
 
   @Post()
-  async create(@Body() createLessonDto: CreateLessonDto): Promise<LessonResponseDto> {
+  async create(
+    @Body() createLessonDto: CreateLessonDto,
+  ): Promise<LessonResponseDto> {
     return this.lessonsService.create(createLessonDto);
   }
 
   @Get()
-  async findAll(@Query() queryLessonDto: QueryLessonDto): Promise<PaginatedResponseDto<LessonResponseDto>> {
+  async findAll(
+    @Query() queryLessonDto: QueryLessonDto,
+  ): Promise<PaginatedResponseDto<LessonResponseDto>> {
     return this.lessonsService.findAll(queryLessonDto);
   }
 
@@ -35,7 +39,10 @@ export class LessonsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto): Promise<LessonResponseDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateLessonDto: UpdateLessonDto,
+  ): Promise<LessonResponseDto> {
     return this.lessonsService.update(id, updateLessonDto);
   }
 

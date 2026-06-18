@@ -12,7 +12,9 @@ import { UpdateAttendanceDto } from './dto/update-attendance.dto.js';
 export class AttendancesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createAttendanceDto: CreateAttendanceDto): Promise<AttendanceResponseDto> {
+  async create(
+    createAttendanceDto: CreateAttendanceDto,
+  ): Promise<AttendanceResponseDto> {
     const attendance = await this.prisma.attendance.create({
       data: {
         present: createAttendanceDto.present,
@@ -27,7 +29,9 @@ export class AttendancesService {
     return formatAttendance(attendance);
   }
 
-  async findAll(queryAttendanceDto: QueryAttendanceDto): Promise<PaginatedResponseDto<AttendanceResponseDto>> {
+  async findAll(
+    queryAttendanceDto: QueryAttendanceDto,
+  ): Promise<PaginatedResponseDto<AttendanceResponseDto>> {
     const { student_id, present, page = 1, limit = 10 } = queryAttendanceDto;
 
     const where: Prisma.AttendanceWhereInput = {};
@@ -71,16 +75,26 @@ export class AttendancesService {
     return formatAttendance(attendance);
   }
 
-  async update(id: string, updateAttendanceDto: UpdateAttendanceDto): Promise<AttendanceResponseDto> {
-    const existingAttendance = await this.prisma.attendance.findUnique({ where: { id } });
-    if (!existingAttendance) throw new NotFoundException('Attendance is not found');
+  async update(
+    id: string,
+    updateAttendanceDto: UpdateAttendanceDto,
+  ): Promise<AttendanceResponseDto> {
+    const existingAttendance = await this.prisma.attendance.findUnique({
+      where: { id },
+    });
+    if (!existingAttendance)
+      throw new NotFoundException('Attendance is not found');
 
     const attendance = await this.prisma.attendance.update({
       where: { id },
       data: {
         present: updateAttendanceDto.present,
-        date: updateAttendanceDto.date ? new Date(updateAttendanceDto.date) : undefined,
-        student: updateAttendanceDto.student_id ? { connect: { id: updateAttendanceDto.student_id } } : undefined,
+        date: updateAttendanceDto.date
+          ? new Date(updateAttendanceDto.date)
+          : undefined,
+        student: updateAttendanceDto.student_id
+          ? { connect: { id: updateAttendanceDto.student_id } }
+          : undefined,
       },
       include: {
         student: { select: { id: true, name: true } },
@@ -91,8 +105,11 @@ export class AttendancesService {
   }
 
   async remove(id: string): Promise<{ message: string }> {
-    const existingAttendance = await this.prisma.attendance.findUnique({ where: { id } });
-    if (!existingAttendance) throw new NotFoundException('Attendance is not found');
+    const existingAttendance = await this.prisma.attendance.findUnique({
+      where: { id },
+    });
+    if (!existingAttendance)
+      throw new NotFoundException('Attendance is not found');
 
     await this.prisma.attendance.delete({ where: { id } });
 

@@ -29,7 +29,9 @@ export class ExamsService {
     return formatExam(exam);
   }
 
-  async findAll(queryExamDto: QueryExamDto): Promise<PaginatedResponseDto<ExamResponseDto>> {
+  async findAll(
+    queryExamDto: QueryExamDto,
+  ): Promise<PaginatedResponseDto<ExamResponseDto>> {
     const { search, page = 1, limit = 10 } = queryExamDto;
 
     const where: Prisma.ExamWhereInput = {};
@@ -74,7 +76,10 @@ export class ExamsService {
     return formatExam(exam);
   }
 
-  async update(id: string, updateExamDto: UpdateExamDto): Promise<ExamResponseDto> {
+  async update(
+    id: string,
+    updateExamDto: UpdateExamDto,
+  ): Promise<ExamResponseDto> {
     const existingExam = await this.prisma.exam.findUnique({ where: { id } });
     if (!existingExam) throw new NotFoundException('Exam is not found');
 
@@ -82,10 +87,19 @@ export class ExamsService {
       where: { id },
       data: {
         name: updateExamDto.name?.trim(),
-        description: updateExamDto.description === undefined ? undefined : updateExamDto.description?.trim() || null,
-        startTime: updateExamDto.startTime ? new Date(updateExamDto.startTime) : undefined,
-        endTime: updateExamDto.endTime ? new Date(updateExamDto.endTime) : undefined,
-        subject: updateExamDto.subject_id ? { connect: { id: updateExamDto.subject_id } } : undefined,
+        description:
+          updateExamDto.description === undefined
+            ? undefined
+            : updateExamDto.description?.trim() || null,
+        startTime: updateExamDto.startTime
+          ? new Date(updateExamDto.startTime)
+          : undefined,
+        endTime: updateExamDto.endTime
+          ? new Date(updateExamDto.endTime)
+          : undefined,
+        subject: updateExamDto.subject_id
+          ? { connect: { id: updateExamDto.subject_id } }
+          : undefined,
       },
       include: {
         subject: { select: { id: true, name: true } },

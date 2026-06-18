@@ -1,34 +1,34 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatGrade } from '../../common/formatters/grade.formatter.js';
-import { checkDuplicate } from '../../common/utils/db.util.js';
+// import { checkDuplicate } from '../../common/utils/db.util.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
-import { CreateGradeDto } from './dto/create-grade.dto.js';
+// import { CreateGradeDto } from './dto/create-grade.dto.js';
 import { GradeResponseDto } from './dto/grade-response.dto.js';
 import { QueryGradeDto } from './dto/query-grade-dto.js';
-import { UpdateGradeDto } from './dto/update-grade.dto.js';
+// import { UpdateGradeDto } from './dto/update-grade.dto.js';
 
 @Injectable()
 export class GradesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createGradeDto: CreateGradeDto): Promise<GradeResponseDto> {
-    await checkDuplicate(
-      this.prisma.grade,
-      'level',
-      createGradeDto.level,
-      null,
-      'Grade with this level already exists',
-    );
+  // async create(createGradeDto: CreateGradeDto): Promise<GradeResponseDto> {
+  //   await checkDuplicate(
+  //     this.prisma.grade,
+  //     'level',
+  //     createGradeDto.level,
+  //     null,
+  //     'Grade with this level already exists',
+  //   );
 
-    const grade = await this.prisma.grade.create({
-      data: {
-        level: createGradeDto.level,
-      },
-    });
+  //   const grade = await this.prisma.grade.create({
+  //     data: {
+  //       level: createGradeDto.level,
+  //     },
+  //   });
 
-    return formatGrade(grade);
-  }
+  //   return formatGrade(grade);
+  // }
 
   async findAll(
     queryGradeDto: QueryGradeDto,
@@ -62,35 +62,35 @@ export class GradesService {
     return formatGrade(grade);
   }
 
-  async update(
-    id: string,
-    updateGradeDto: UpdateGradeDto,
-  ): Promise<GradeResponseDto> {
-    const existingGrade = await this.prisma.grade.findUnique({ where: { id } });
-    if (!existingGrade) throw new NotFoundException('Grade is not found');
+  // async update(
+  //   id: string,
+  //   updateGradeDto: UpdateGradeDto,
+  // ): Promise<GradeResponseDto> {
+  //   const existingGrade = await this.prisma.grade.findUnique({ where: { id } });
+  //   if (!existingGrade) throw new NotFoundException('Grade is not found');
 
-    if (
-      updateGradeDto.level !== undefined &&
-      existingGrade.level !== updateGradeDto.level
-    ) {
-      await checkDuplicate(
-        this.prisma.grade,
-        'level',
-        updateGradeDto.level,
-        id,
-        'Grade with this level already exists',
-      );
-    }
+  //   if (
+  //     updateGradeDto.level !== undefined &&
+  //     existingGrade.level !== updateGradeDto.level
+  //   ) {
+  //     await checkDuplicate(
+  //       this.prisma.grade,
+  //       'level',
+  //       updateGradeDto.level,
+  //       id,
+  //       'Grade with this level already exists',
+  //     );
+  //   }
 
-    const grade = await this.prisma.grade.update({
-      where: { id },
-      data: {
-        level: updateGradeDto.level,
-      },
-    });
+  //   const grade = await this.prisma.grade.update({
+  //     where: { id },
+  //     data: {
+  //       level: updateGradeDto.level,
+  //     },
+  //   });
 
-    return formatGrade(grade);
-  }
+  //   return formatGrade(grade);
+  // }
 
   async remove(id: string): Promise<{ message: string }> {
     const existingGrade = await this.prisma.grade.findUnique({ where: { id } });

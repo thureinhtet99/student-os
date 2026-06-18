@@ -88,7 +88,9 @@ export class ResultsService {
     id: string,
     updateResultDto: UpdateResultDto,
   ): Promise<ResultResponseDto> {
-    const existingResult = await this.prisma.result.findUnique({ where: { id } });
+    const existingResult = await this.prisma.result.findUnique({
+      where: { id },
+    });
     if (!existingResult) throw new NotFoundException('Result is not found');
 
     const result = await this.prisma.result.update({
@@ -126,7 +128,9 @@ export class ResultsService {
   }
 
   async remove(id: string): Promise<{ message: string }> {
-    const existingResult = await this.prisma.result.findUnique({ where: { id } });
+    const existingResult = await this.prisma.result.findUnique({
+      where: { id },
+    });
     if (!existingResult) throw new NotFoundException('Result is not found');
 
     await this.prisma.result.delete({ where: { id } });
