@@ -14,6 +14,7 @@ import { AttendancesModule } from './modules/attendances/attendances.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { ExamsModule } from './modules/exams/exams.module';
 import { ResultsModule } from './modules/results/results.module';
+import { GradesModule } from './modules/grades/grades.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ResultsModule } from './modules/results/results.module';
     AssignmentsModule,
     ExamsModule,
     ResultsModule,
+    GradesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
