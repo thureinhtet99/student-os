@@ -16,6 +16,7 @@ import { ExamsModule } from './modules/exams/exams.module';
 import { ResultsModule } from './modules/results/results.module';
 import { GradesModule } from './modules/grades/grades.module';
 import { EventsModule } from './modules/events/events.module';
+import { AnnouncementsModule } from './modules/announcements/announcements.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { EventsModule } from './modules/events/events.module';
     ResultsModule,
     GradesModule,
     EventsModule,
+    AnnouncementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

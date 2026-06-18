@@ -1,0 +1,133 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '../../../prisma/generated/prisma/client.js';
+import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { formatAnnouncement } from '../../common/formatters/announcement.formatter.js';
+import { PrismaService } from '../../database/prisma/prisma.service.js';
+import { AnnouncementResponseDto } from './dto/announcement-response.dto.js';
+import { CreateAnnouncementDto } from './dto/create-announcement.dto.js';
+import { QueryAnnouncementDto } from './dto/query-announcement-dto.js';
+import { UpdateAnnouncementDto } from './dto/update-announcement.dto.js';
+
+@Injectable()
+export class AnnouncementsService {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(
+    createAnnouncementDto: CreateAnnouncementDto,
+  ): Promise<AnnouncementResponseDto> {
+    const announcement = await this.prisma.announcement.create({
+      data: {
+        name: createAnnouncementDto.name.trim(),
+        description: createAnnouncementDto.description?.trim() || null,
+        date: new Date(createAnnouncementDto.date),
+        class: createAnnouncementDto.class_id
+          ? { connect: { id: createAnnouncementDto.class_id } }
+          : undefined,
+      },
+      include: {
+        class: { select: { id: true, name: true } },
+      },
+    });
+
+    return formatAnnouncement(announcement);
+  }
+
+  async findAll(
+    queryAnnouncementDto: QueryAnnouncementDto,
+  ): Promise<PaginatedResponseDto<AnnouncementResponseDto>> {
+    const { search, class_id, page = 1, limit = 10 } = queryAnnouncementDto;
+
+    const where: Prisma.AnnouncementWhereInput = {};
+
+    if (class_id) where.classId = class_id;
+
+    if (search) {
+      where.name = { contains: search, mode: 'insensitive' };
+    }
+
+    const total = await this.prisma.announcement.count({ where });
+
+    const announcements = await this.prisma.announcement.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { date: 'desc' },
+      include: {
+        class: { select: { id: true, name: true } },
+      },
+    });
+
+    return {
+      data: announcements.map((announcement) =>
+        formatAnnouncement(announcement),
+      ),
+      meta: {
+        total,
+        page,
+        limit,
+        total_pages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  async findOne(id: string): Promise<AnnouncementResponseDto> {
+    const announcement = await this.prisma.announcement.findUnique({
+      where: { id },
+      include: {
+        class: { select: { id: true, name: true } },
+      },
+    });
+
+    if (!announcement) throw new NotFoundException('Announcement is not found');
+
+    return formatAnnouncement(announcement);
+  }
+
+  async update(
+    id: string,
+    updateAnnouncementDto: UpdateAnnouncementDto,
+  ): Promise<AnnouncementResponseDto> {
+    const existingAnnouncement = await this.prisma.announcement.findUnique({
+      where: { id },
+    });
+    if (!existingAnnouncement)
+      throw new NotFoundException('Announcement is not found');
+
+    const announcement = await this.prisma.announcement.update({
+      where: { id },
+      data: {
+        name: updateAnnouncementDto.name?.trim(),
+        description:
+          updateAnnouncementDto.description === undefined
+            ? undefined
+            : updateAnnouncementDto.description?.trim() || null,
+        date: updateAnnouncementDto.date
+          ? new Date(updateAnnouncementDto.date)
+          : undefined,
+        class:
+          updateAnnouncementDto.class_id === undefined
+            ? undefined
+            : updateAnnouncementDto.class_id
+              ? { connect: { id: updateAnnouncementDto.class_id } }
+              : { disconnect: true },
+      },
+      include: {
+        class: { select: { id: true, name: true } },
+      },
+    });
+
+    return formatAnnouncement(announcement);
+  }
+
+  async remove(id: string): Promise<{ message: string }> {
+    const existingAnnouncement = await this.prisma.announcement.findUnique({
+      where: { id },
+    });
+    if (!existingAnnouncement)
+      throw new NotFoundException('Announcement is not found');
+
+    await this.prisma.announcement.delete({ where: { id } });
+
+    return { message: 'Announcement deleted successfully' };
+  }
+}
