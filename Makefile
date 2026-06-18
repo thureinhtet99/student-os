@@ -33,18 +33,22 @@ dev:
 
 .PHONY: dev-mobile
 dev-mobile:
+	@echo "Starting mobile in development mode..."
 	cd mobile && $(PM) run start
 
 .PHONY: dev-mobile-web
 dev-mobile-web:
+	@echo "Starting mobile for web in development mode..."
 	cd mobile && $(PM) run web
 
 .PHONY: dev-server
 dev-server:
+	@echo "Starting server in development mode..."
 	cd server && $(PM) run start:dev
 
 .PHONY: dev-web
 dev-web:
+	@echo "Starting web in development mode..."
 	cd web && $(PM) run dev
 
 # --- Expo Run / Commands ---
@@ -80,10 +84,12 @@ build-mobile:
 
 .PHONY: build-server
 build-server:
+	@echo "Starting to build sever..."
 	cd server && $(PM) run build
 
 .PHONY: build-web
 build-web:
+	@echo "Starting to build web..."
 	cd web && $(PM) run build
 
 # --- Testing ---
@@ -95,6 +101,7 @@ test-mobile:
 	@echo "No tests defined for mobile."
 
 test-server:
+	@echo "Testing with jest for server..."
 	cd server && $(PM) run test
 
 test-web:
@@ -103,29 +110,36 @@ test-web:
 # --- Quality Assurance ---
 .PHONY: lint
 lint:
+	@echo "Linting for all services..."
 	cd mobile && $(PM) run lint
 	cd server && $(PM) run lint
 	cd web && $(PM) run lint
 
 .PHONY: typecheck
 typecheck:
+	@echo "Type checking for all services..."
 	cd mobile && $(PM) run check-types
 	cd server && $(PM) run check-types
 	cd web && $(PM) run check-types
 
 # --- Clean ---
-.PHONY: clean clean-ios clean-android clean-all reset
-clean: clean-all
+.PHONY: clean-ios clean-android clean-all reset
 
 clean-ios:
+	@echo "Cleaning ios from ./mobile..."
 	rm -rf mobile/ios
 
 clean-android:
+	@echo "Cleaning android from ./mobile..."
 	rm -rf mobile/android
 
 clean-all: clean-ios clean-android
+	@echo "Cleaning dist from ./server and .next from web..."
 	rm -rf server/dist web/.next
 
-reset: clean-all
+reset: reset
+	@echo "Removing node_modules from ./mobile, ./server and ./web..."
 	rm -rf mobile/node_modules server/node_modules web/node_modules
+
+	@echo "Removing .expo from ./mobile..."
 	rm -rf mobile/.expo
