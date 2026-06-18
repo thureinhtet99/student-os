@@ -13,6 +13,7 @@ import { LessonsModule } from './modules/lessons/lessons.module';
 import { AttendancesModule } from './modules/attendances/attendances.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { ExamsModule } from './modules/exams/exams.module';
+import { ResultsModule } from './modules/results/results.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ExamsModule } from './modules/exams/exams.module';
     AttendancesModule,
     AssignmentsModule,
     ExamsModule,
+    ResultsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
