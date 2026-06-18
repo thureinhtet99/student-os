@@ -13,7 +13,9 @@ import { UpdateSubjectDto } from './dto/update-subject.dto.js';
 export class SubjectsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createSubjectDto: CreateSubjectDto): Promise<SubjectResponseDto> {
+  async create(
+    createSubjectDto: CreateSubjectDto,
+  ): Promise<SubjectResponseDto> {
     await checkDuplicate(
       this.prisma.subject,
       'name',
@@ -39,7 +41,9 @@ export class SubjectsService {
     return formatSubject(subject);
   }
 
-  async findAll(querySubjectDto: QuerySubjectDto): Promise<PaginatedResponseDto<SubjectResponseDto>> {
+  async findAll(
+    querySubjectDto: QuerySubjectDto,
+  ): Promise<PaginatedResponseDto<SubjectResponseDto>> {
     const { search, page = 1, limit = 10 } = querySubjectDto;
 
     const where: Prisma.SubjectWhereInput = {};
@@ -89,20 +93,43 @@ export class SubjectsService {
     return formatSubject(subject);
   }
 
-  async update(id: string, updateSubjectDto: UpdateSubjectDto): Promise<SubjectResponseDto> {
-    const existingSubject = await this.prisma.subject.findUnique({ where: { id } });
+  async update(
+    id: string,
+    updateSubjectDto: UpdateSubjectDto,
+  ): Promise<SubjectResponseDto> {
+    const existingSubject = await this.prisma.subject.findUnique({
+      where: { id },
+    });
     if (!existingSubject) throw new NotFoundException('Subject is not found');
 
-    if (updateSubjectDto.name && existingSubject.name.toLowerCase() !== updateSubjectDto.name.trim().toLowerCase()) {
-      await checkDuplicate(this.prisma.subject, 'name', updateSubjectDto.name, id, 'Subject with this name already exists');
+    if (
+      updateSubjectDto.name &&
+      existingSubject.name.toLowerCase() !==
+        updateSubjectDto.name.trim().toLowerCase()
+    ) {
+      await checkDuplicate(
+        this.prisma.subject,
+        'name',
+        updateSubjectDto.name,
+        id,
+        'Subject with this name already exists',
+      );
     }
 
     const subject = await this.prisma.subject.update({
       where: { id },
       data: {
         name: updateSubjectDto.name?.trim(),
-        description: updateSubjectDto.description === undefined ? undefined : updateSubjectDto.description?.trim() || null,
-        class: updateSubjectDto.class_id === undefined ? undefined : updateSubjectDto.class_id ? { connect: { id: updateSubjectDto.class_id } } : { disconnect: true },
+        description:
+          updateSubjectDto.description === undefined
+            ? undefined
+            : updateSubjectDto.description?.trim() || null,
+        class:
+          updateSubjectDto.class_id === undefined
+            ? undefined
+            : updateSubjectDto.class_id
+              ? { connect: { id: updateSubjectDto.class_id } }
+              : { disconnect: true },
       },
       include: {
         class: { select: { id: true, name: true } },
@@ -114,7 +141,9 @@ export class SubjectsService {
   }
 
   async remove(id: string): Promise<{ message: string }> {
-    const existingSubject = await this.prisma.subject.findUnique({ where: { id } });
+    const existingSubject = await this.prisma.subject.findUnique({
+      where: { id },
+    });
     if (!existingSubject) throw new NotFoundException('Subject is not found');
 
     await this.prisma.subject.delete({ where: { id } });

@@ -8,7 +8,9 @@ export function formatExam(exam: ExamWithRelations): ExamResponseDto {
     description: exam.description,
     startTime: exam.startTime,
     endTime: exam.endTime,
-    subject: exam.subject ? { id: exam.subject.id, name: exam.subject.name } : null,
+    subject: exam.subject
+      ? { id: exam.subject.id, name: exam.subject.name }
+      : null,
     created_at: exam.createdAt,
     updated_at: exam.updatedAt,
   };

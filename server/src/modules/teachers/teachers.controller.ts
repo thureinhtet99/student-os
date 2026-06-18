@@ -20,12 +20,16 @@ export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
   @Post()
-  async create(@Body() createTeacherDto: CreateTeacherDto): Promise<TeacherResponseDto> {
+  async create(
+    @Body() createTeacherDto: CreateTeacherDto,
+  ): Promise<TeacherResponseDto> {
     return this.teachersService.create(createTeacherDto);
   }
 
   @Get()
-  async findAll(@Query() queryTeacherDto: QueryTeacherDto): Promise<PaginatedResponseDto<TeacherResponseDto>> {
+  async findAll(
+    @Query() queryTeacherDto: QueryTeacherDto,
+  ): Promise<PaginatedResponseDto<TeacherResponseDto>> {
     return this.teachersService.findAll(queryTeacherDto);
   }
 
@@ -35,7 +39,10 @@ export class TeachersController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto): Promise<TeacherResponseDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateTeacherDto: UpdateTeacherDto,
+  ): Promise<TeacherResponseDto> {
     return this.teachersService.update(id, updateTeacherDto);
   }
 

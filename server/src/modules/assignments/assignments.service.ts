@@ -12,11 +12,15 @@ import { UpdateAssignmentDto } from './dto/update-assignment.dto.js';
 export class AssignmentsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createAssignmentDto: CreateAssignmentDto): Promise<AssignmentResponseDto> {
+  async create(
+    createAssignmentDto: CreateAssignmentDto,
+  ): Promise<AssignmentResponseDto> {
     const assignment = await this.prisma.assignment.create({
       data: {
         name: createAssignmentDto.name.trim(),
-        dueDate: createAssignmentDto.due_date ? new Date(createAssignmentDto.due_date) : null,
+        dueDate: createAssignmentDto.due_date
+          ? new Date(createAssignmentDto.due_date)
+          : null,
         subject: createAssignmentDto.subject_id
           ? { connect: { id: createAssignmentDto.subject_id } }
           : undefined,
@@ -29,7 +33,9 @@ export class AssignmentsService {
     return formatAssignment(assignment);
   }
 
-  async findAll(queryAssignmentDto: QueryAssignmentDto): Promise<PaginatedResponseDto<AssignmentResponseDto>> {
+  async findAll(
+    queryAssignmentDto: QueryAssignmentDto,
+  ): Promise<PaginatedResponseDto<AssignmentResponseDto>> {
     const { search, page = 1, limit = 10 } = queryAssignmentDto;
 
     const where: Prisma.AssignmentWhereInput = {};
@@ -74,16 +80,32 @@ export class AssignmentsService {
     return formatAssignment(assignment);
   }
 
-  async update(id: string, updateAssignmentDto: UpdateAssignmentDto): Promise<AssignmentResponseDto> {
-    const existingAssignment = await this.prisma.assignment.findUnique({ where: { id } });
-    if (!existingAssignment) throw new NotFoundException('Assignment is not found');
+  async update(
+    id: string,
+    updateAssignmentDto: UpdateAssignmentDto,
+  ): Promise<AssignmentResponseDto> {
+    const existingAssignment = await this.prisma.assignment.findUnique({
+      where: { id },
+    });
+    if (!existingAssignment)
+      throw new NotFoundException('Assignment is not found');
 
     const assignment = await this.prisma.assignment.update({
       where: { id },
       data: {
         name: updateAssignmentDto.name?.trim(),
-        dueDate: updateAssignmentDto.due_date === undefined ? undefined : updateAssignmentDto.due_date ? new Date(updateAssignmentDto.due_date) : null,
-        subject: updateAssignmentDto.subject_id === undefined ? undefined : updateAssignmentDto.subject_id ? { connect: { id: updateAssignmentDto.subject_id } } : { disconnect: true },
+        dueDate:
+          updateAssignmentDto.due_date === undefined
+            ? undefined
+            : updateAssignmentDto.due_date
+              ? new Date(updateAssignmentDto.due_date)
+              : null,
+        subject:
+          updateAssignmentDto.subject_id === undefined
+            ? undefined
+            : updateAssignmentDto.subject_id
+              ? { connect: { id: updateAssignmentDto.subject_id } }
+              : { disconnect: true },
       },
       include: {
         subject: { select: { id: true, name: true } },
@@ -94,8 +116,11 @@ export class AssignmentsService {
   }
 
   async remove(id: string): Promise<{ message: string }> {
-    const existingAssignment = await this.prisma.assignment.findUnique({ where: { id } });
-    if (!existingAssignment) throw new NotFoundException('Assignment is not found');
+    const existingAssignment = await this.prisma.assignment.findUnique({
+      where: { id },
+    });
+    if (!existingAssignment)
+      throw new NotFoundException('Assignment is not found');
 
     await this.prisma.assignment.delete({ where: { id } });
 

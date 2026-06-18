@@ -1,4 +1,7 @@
-import { UserGender, UserRole } from '../../../../prisma/generated/prisma/client.js';
+import {
+  UserGender,
+  UserRole,
+} from '../../../../prisma/generated/prisma/client.js';
 
 export class TeacherResponseDto {
   id!: string;

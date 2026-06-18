@@ -20,12 +20,16 @@ export class AttendancesController {
   constructor(private readonly attendancesService: AttendancesService) {}
 
   @Post()
-  async create(@Body() createAttendanceDto: CreateAttendanceDto): Promise<AttendanceResponseDto> {
+  async create(
+    @Body() createAttendanceDto: CreateAttendanceDto,
+  ): Promise<AttendanceResponseDto> {
     return this.attendancesService.create(createAttendanceDto);
   }
 
   @Get()
-  async findAll(@Query() queryAttendanceDto: QueryAttendanceDto): Promise<PaginatedResponseDto<AttendanceResponseDto>> {
+  async findAll(
+    @Query() queryAttendanceDto: QueryAttendanceDto,
+  ): Promise<PaginatedResponseDto<AttendanceResponseDto>> {
     return this.attendancesService.findAll(queryAttendanceDto);
   }
 
@@ -35,7 +39,10 @@ export class AttendancesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateAttendanceDto: UpdateAttendanceDto): Promise<AttendanceResponseDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateAttendanceDto: UpdateAttendanceDto,
+  ): Promise<AttendanceResponseDto> {
     return this.attendancesService.update(id, updateAttendanceDto);
   }
 

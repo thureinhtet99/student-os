@@ -13,6 +13,10 @@ import { LessonsModule } from './modules/lessons/lessons.module';
 import { AttendancesModule } from './modules/attendances/attendances.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { ExamsModule } from './modules/exams/exams.module';
+import { ResultsModule } from './modules/results/results.module';
+import { GradesModule } from './modules/grades/grades.module';
+import { EventsModule } from './modules/events/events.module';
+import { AnnouncementsModule } from './modules/announcements/announcements.module';
 
 @Module({
   imports: [
@@ -30,6 +34,10 @@ import { ExamsModule } from './modules/exams/exams.module';
     AttendancesModule,
     AssignmentsModule,
     ExamsModule,
+    ResultsModule,
+    GradesModule,
+    EventsModule,
+    AnnouncementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

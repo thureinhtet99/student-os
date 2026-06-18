@@ -20,12 +20,16 @@ export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
   @Post()
-  async create(@Body() createSubjectDto: CreateSubjectDto): Promise<SubjectResponseDto> {
+  async create(
+    @Body() createSubjectDto: CreateSubjectDto,
+  ): Promise<SubjectResponseDto> {
     return this.subjectsService.create(createSubjectDto);
   }
 
   @Get()
-  async findAll(@Query() querySubjectDto: QuerySubjectDto): Promise<PaginatedResponseDto<SubjectResponseDto>> {
+  async findAll(
+    @Query() querySubjectDto: QuerySubjectDto,
+  ): Promise<PaginatedResponseDto<SubjectResponseDto>> {
     return this.subjectsService.findAll(querySubjectDto);
   }
 
@@ -35,7 +39,10 @@ export class SubjectsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto): Promise<SubjectResponseDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateSubjectDto: UpdateSubjectDto,
+  ): Promise<SubjectResponseDto> {
     return this.subjectsService.update(id, updateSubjectDto);
   }
 

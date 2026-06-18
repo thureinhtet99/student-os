@@ -13,7 +13,7 @@ export async function checkDuplicate<T>(
   modelDelegate: {
     findFirst: (args: { where: Record<string, unknown> }) => Promise<T | null>;
   },
-  field: 'name' | 'email' | 'phone',
+  field: 'name' | 'email' | 'phone' | 'level',
   value: string,
   excludeId: string | null,
   errorMessage: string,

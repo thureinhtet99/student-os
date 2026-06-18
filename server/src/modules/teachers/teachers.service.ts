@@ -21,7 +21,9 @@ export class TeachersService {
     private readonly cloudinary: CloudinaryService,
   ) {}
 
-  async create(createTeacherDto: CreateTeacherDto): Promise<TeacherResponseDto> {
+  async create(
+    createTeacherDto: CreateTeacherDto,
+  ): Promise<TeacherResponseDto> {
     await checkDuplicate(
       this.prisma.teacher,
       'name',
@@ -73,7 +75,9 @@ export class TeachersService {
     return formatTeacher(teacher);
   }
 
-  async findAll(queryTeacherDto: QueryTeacherDto): Promise<PaginatedResponseDto<TeacherResponseDto>> {
+  async findAll(
+    queryTeacherDto: QueryTeacherDto,
+  ): Promise<PaginatedResponseDto<TeacherResponseDto>> {
     const { filter, search, page = 1, limit = 10 } = queryTeacherDto;
 
     const where: Prisma.TeacherWhereInput = {};
@@ -126,20 +130,53 @@ export class TeachersService {
     return formatTeacher(teacher);
   }
 
-  async update(id: string, updateTeacherDto: UpdateTeacherDto): Promise<TeacherResponseDto> {
-    const existingTeacher = await this.prisma.teacher.findUnique({ where: { id } });
+  async update(
+    id: string,
+    updateTeacherDto: UpdateTeacherDto,
+  ): Promise<TeacherResponseDto> {
+    const existingTeacher = await this.prisma.teacher.findUnique({
+      where: { id },
+    });
     if (!existingTeacher) throw new NotFoundException('Teacher is not found');
 
-    if (updateTeacherDto.name && existingTeacher.name.toLowerCase() !== updateTeacherDto.name.trim().toLowerCase()) {
-      await checkDuplicate(this.prisma.teacher, 'name', updateTeacherDto.name, id, 'Teacher with this name already exists');
+    if (
+      updateTeacherDto.name &&
+      existingTeacher.name.toLowerCase() !==
+        updateTeacherDto.name.trim().toLowerCase()
+    ) {
+      await checkDuplicate(
+        this.prisma.teacher,
+        'name',
+        updateTeacherDto.name,
+        id,
+        'Teacher with this name already exists',
+      );
     }
 
-    if (updateTeacherDto.email && existingTeacher.email !== updateTeacherDto.email.trim()) {
-      await checkDuplicate(this.prisma.teacher, 'email', updateTeacherDto.email, id, 'Teacher with this email already exists');
+    if (
+      updateTeacherDto.email &&
+      existingTeacher.email !== updateTeacherDto.email.trim()
+    ) {
+      await checkDuplicate(
+        this.prisma.teacher,
+        'email',
+        updateTeacherDto.email,
+        id,
+        'Teacher with this email already exists',
+      );
     }
 
-    if (updateTeacherDto.phone && existingTeacher.phone !== updateTeacherDto.phone?.trim()) {
-      await checkDuplicate(this.prisma.teacher, 'phone', updateTeacherDto.phone, id, 'Teacher with this phone number already exists');
+    if (
+      updateTeacherDto.phone &&
+      existingTeacher.phone !== updateTeacherDto.phone?.trim()
+    ) {
+      await checkDuplicate(
+        this.prisma.teacher,
+        'phone',
+        updateTeacherDto.phone,
+        id,
+        'Teacher with this phone number already exists',
+      );
     }
 
     const teacher = await this.prisma.teacher.update({
@@ -148,10 +185,23 @@ export class TeachersService {
         email: updateTeacherDto.email?.trim(),
         name: updateTeacherDto.name?.trim(),
         phone: updateTeacherDto.phone?.trim(),
-        address: updateTeacherDto.address === undefined ? undefined : updateTeacherDto.address?.trim() || null,
-        birthday: updateTeacherDto.birthday === undefined ? undefined : updateTeacherDto.birthday ? new Date(updateTeacherDto.birthday) : null,
-        gender: updateTeacherDto.gender ? formatGender(updateTeacherDto.gender) : undefined,
-        image: updateTeacherDto.image === undefined ? undefined : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
+        address:
+          updateTeacherDto.address === undefined
+            ? undefined
+            : updateTeacherDto.address?.trim() || null,
+        birthday:
+          updateTeacherDto.birthday === undefined
+            ? undefined
+            : updateTeacherDto.birthday
+              ? new Date(updateTeacherDto.birthday)
+              : null,
+        gender: updateTeacherDto.gender
+          ? formatGender(updateTeacherDto.gender)
+          : undefined,
+        image:
+          updateTeacherDto.image === undefined
+            ? undefined
+            : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
         role: updateTeacherDto.role,
       },
       include: {
@@ -164,14 +214,18 @@ export class TeachersService {
   }
 
   async remove(id: string): Promise<{ message: string }> {
-    const existingTeacher = await this.prisma.teacher.findUnique({ where: { id } });
+    const existingTeacher = await this.prisma.teacher.findUnique({
+      where: { id },
+    });
     if (!existingTeacher) throw new NotFoundException('Teacher is not found');
 
     if (existingTeacher.image) {
       try {
         await this.cloudinary.deleteFromCloudinary(existingTeacher.image);
       } catch (error) {
-        this.logger.warn(`Failed to delete image from Cloudinary for teacher ${id}: ${(error as Error).message}`);
+        this.logger.warn(
+          `Failed to delete image from Cloudinary for teacher ${id}: ${(error as Error).message}`,
+        );
       }
     }
 

@@ -25,7 +25,9 @@ export class ExamsController {
   }
 
   @Get()
-  async findAll(@Query() queryExamDto: QueryExamDto): Promise<PaginatedResponseDto<ExamResponseDto>> {
+  async findAll(
+    @Query() queryExamDto: QueryExamDto,
+  ): Promise<PaginatedResponseDto<ExamResponseDto>> {
     return this.examsService.findAll(queryExamDto);
   }
 
@@ -35,7 +37,10 @@ export class ExamsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateExamDto: UpdateExamDto): Promise<ExamResponseDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateExamDto: UpdateExamDto,
+  ): Promise<ExamResponseDto> {
     return this.examsService.update(id, updateExamDto);
   }
 
