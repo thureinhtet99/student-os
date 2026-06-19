@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import bcrypt from 'bcrypt';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatAdmin } from '../../common/formatters/admin.formatter.js';
@@ -11,35 +16,49 @@ import { UpdateAdminDto } from './dto/update-admin.dto.js';
 
 @Injectable()
 export class AdminsService {
+  private readonly SALT_ROUNDS = 12;
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createAdminDto: CreateAdminDto): Promise<AdminResponseDto> {
-    await checkDuplicate(
-      this.prisma.admin,
-      'name',
-      createAdminDto.name,
-      null,
-      'Admin with this name already exists',
-    );
+    try {
+      const { email, password, name, role } = createAdminDto;
 
-    await checkDuplicate(
-      this.prisma.admin,
-      'email',
-      createAdminDto.email,
-      null,
-      'Admin with this email already exists',
-    );
+      await checkDuplicate(
+        this.prisma.admin,
+        'name',
+        name,
+        null,
+        'Admin with this name already exists',
+      );
 
-    const admin = await this.prisma.admin.create({
-      data: {
-        email: createAdminDto.email.trim(),
-        password: createAdminDto.password,
-        name: createAdminDto.name.trim(),
-        role: createAdminDto.role ?? UserRole.ADMIN,
-      },
-    });
+      await checkDuplicate(
+        this.prisma.admin,
+        'email',
+        email,
+        null,
+        'Admin with this email already exists',
+      );
 
-    return formatAdmin(admin);
+      const hashedPwd = await bcrypt.hash(password, this.SALT_ROUNDS);
+      const admin = await this.prisma.admin.create({
+        data: {
+          email: email.trim(),
+          password: hashedPwd,
+          name: name.trim(),
+          role: role ?? UserRole.ADMIN,
+        },
+        omit: { password: false },
+      });
+
+      return formatAdmin(admin);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+
+      console.error('Error during account register:', message);
+      throw new InternalServerErrorException(
+        'An error occurred during creating admin',
+      );
+    }
   }
 
   async findAll(
