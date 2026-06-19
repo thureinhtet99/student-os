@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  User: 'User',
   Admin: 'Admin',
   Teacher: 'Teacher',
   Student: 'Student',
@@ -64,8 +65,7 @@ export const ModelName = {
   Result: 'Result',
   Event: 'Event',
   Announcement: 'Announcement',
-  Grade: 'Grade',
-  Message: 'Message'
+  Grade: 'Grade'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -84,14 +84,33 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const AdminScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   email: 'email',
   password: 'password',
   role: 'role',
+  isVerified: 'isVerified',
+  isActive: 'isActive',
+  setPasswordToken: 'setPasswordToken',
+  setPasswordTokenExpires: 'setPasswordTokenExpires',
+  resetPasswordToken: 'resetPasswordToken',
+  resetPasswordTokenExpires: 'resetPasswordTokenExpires',
+  createdBy: 'createdBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  lastLoginAt: 'lastLoginAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AdminScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  adminId: 'adminId',
+  name: 'name',
+  phone: 'phone',
+  role: 'role'
 } as const
 
 export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
@@ -99,13 +118,13 @@ export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof Ad
 
 export const TeacherScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
+  teacherId: 'teacherId',
   name: 'name',
-  email: 'email',
-  password: 'password',
   phone: 'phone',
   address: 'address',
   gender: 'gender',
-  birthday: 'birthday',
+  dateOfBirth: 'dateOfBirth',
   image: 'image',
   role: 'role',
   createdAt: 'createdAt',
@@ -117,17 +136,15 @@ export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeo
 
 export const StudentScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
+  studentId: 'studentId',
   name: 'name',
-  email: 'email',
-  password: 'password',
   phone: 'phone',
   address: 'address',
   gender: 'gender',
-  birthday: 'birthday',
+  dateOfBirth: 'dateOfBirth',
   image: 'image',
   role: 'role',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   parentId: 'parentId',
   classId: 'classId',
   gradeId: 'gradeId'
@@ -269,20 +286,6 @@ export const GradeScalarFieldEnum = {
 } as const
 
 export type GradeScalarFieldEnum = (typeof GradeScalarFieldEnum)[keyof typeof GradeScalarFieldEnum]
-
-
-export const MessageScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  content: 'content',
-  read: 'read',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  senderId: 'senderId',
-  receiverId: 'receiverId'
-} as const
-
-export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
 export const SortOrder = {

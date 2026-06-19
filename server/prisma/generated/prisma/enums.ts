@@ -18,12 +18,22 @@ export type UserGender = (typeof UserGender)[keyof typeof UserGender]
 
 
 export const UserRole = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   TEACHER: 'TEACHER',
   STUDENT: 'STUDENT'
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const SubmissionStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type SubmissionStatus = (typeof SubmissionStatus)[keyof typeof SubmissionStatus]
 
 
 export const Day = {

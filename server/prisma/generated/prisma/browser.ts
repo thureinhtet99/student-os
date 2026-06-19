@@ -18,6 +18,11 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
  * Model Admin
  * 
  */
@@ -87,8 +92,3 @@ export type Announcement = Prisma.AnnouncementModel
  * 
  */
 export type Grade = Prisma.GradeModel
-/**
- * Model Message
- * 
- */
-export type Message = Prisma.MessageModel

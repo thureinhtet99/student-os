@@ -367,14 +367,14 @@ export type SubjectMinOrderByAggregateInput = {
   classId?: Prisma.SortOrder
 }
 
-export type SubjectNullableScalarRelationFilter = {
-  is?: Prisma.SubjectWhereInput | null
-  isNot?: Prisma.SubjectWhereInput | null
-}
-
 export type SubjectScalarRelationFilter = {
   is?: Prisma.SubjectWhereInput
   isNot?: Prisma.SubjectWhereInput
+}
+
+export type SubjectNullableScalarRelationFilter = {
+  is?: Prisma.SubjectWhereInput | null
+  isNot?: Prisma.SubjectWhereInput | null
 }
 
 export type SubjectCreateNestedManyWithoutTeachersInput = {
@@ -463,12 +463,10 @@ export type SubjectCreateNestedOneWithoutLessonsInput = {
   connect?: Prisma.SubjectWhereUniqueInput
 }
 
-export type SubjectUpdateOneWithoutLessonsNestedInput = {
+export type SubjectUpdateOneRequiredWithoutLessonsNestedInput = {
   create?: Prisma.XOR<Prisma.SubjectCreateWithoutLessonsInput, Prisma.SubjectUncheckedCreateWithoutLessonsInput>
   connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutLessonsInput
   upsert?: Prisma.SubjectUpsertWithoutLessonsInput
-  disconnect?: Prisma.SubjectWhereInput | boolean
-  delete?: Prisma.SubjectWhereInput | boolean
   connect?: Prisma.SubjectWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutLessonsInput, Prisma.SubjectUpdateWithoutLessonsInput>, Prisma.SubjectUncheckedUpdateWithoutLessonsInput>
 }

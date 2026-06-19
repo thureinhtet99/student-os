@@ -390,9 +390,9 @@ export type ExamMinOrderByAggregateInput = {
   subjectId?: Prisma.SortOrder
 }
 
-export type ExamNullableScalarRelationFilter = {
-  is?: Prisma.ExamWhereInput | null
-  isNot?: Prisma.ExamWhereInput | null
+export type ExamScalarRelationFilter = {
+  is?: Prisma.ExamWhereInput
+  isNot?: Prisma.ExamWhereInput
 }
 
 export type ExamCreateNestedManyWithoutSubjectInput = {
@@ -443,12 +443,10 @@ export type ExamCreateNestedOneWithoutResultsInput = {
   connect?: Prisma.ExamWhereUniqueInput
 }
 
-export type ExamUpdateOneWithoutResultsNestedInput = {
+export type ExamUpdateOneRequiredWithoutResultsNestedInput = {
   create?: Prisma.XOR<Prisma.ExamCreateWithoutResultsInput, Prisma.ExamUncheckedCreateWithoutResultsInput>
   connectOrCreate?: Prisma.ExamCreateOrConnectWithoutResultsInput
   upsert?: Prisma.ExamUpsertWithoutResultsInput
-  disconnect?: Prisma.ExamWhereInput | boolean
-  delete?: Prisma.ExamWhereInput | boolean
   connect?: Prisma.ExamWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ExamUpdateToOneWithWhereWithoutResultsInput, Prisma.ExamUpdateWithoutResultsInput>, Prisma.ExamUncheckedUpdateWithoutResultsInput>
 }

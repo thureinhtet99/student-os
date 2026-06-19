@@ -8,6 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/User.js'
 export type * from './models/Admin.js'
 export type * from './models/Teacher.js'
 export type * from './models/Student.js'
@@ -22,5 +23,4 @@ export type * from './models/Result.js'
 export type * from './models/Event.js'
 export type * from './models/Announcement.js'
 export type * from './models/Grade.js'
-export type * from './models/Message.js'
 export type * from './commonInputTypes.js'

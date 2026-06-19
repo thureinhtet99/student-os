@@ -152,7 +152,7 @@ export type LessonGroupByOutputType = {
   name: string
   createdAt: Date
   updatedAt: Date
-  subjectId: string | null
+  subjectId: string
   _count: LessonCountAggregateOutputType | null
   _min: LessonMinAggregateOutputType | null
   _max: LessonMaxAggregateOutputType | null
@@ -181,8 +181,8 @@ export type LessonWhereInput = {
   name?: Prisma.StringFilter<"Lesson"> | string
   createdAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
-  subjectId?: Prisma.StringNullableFilter<"Lesson"> | string | null
-  subject?: Prisma.XOR<Prisma.SubjectNullableScalarRelationFilter, Prisma.SubjectWhereInput> | null
+  subjectId?: Prisma.StringFilter<"Lesson"> | string
+  subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
 }
 
 export type LessonOrderByWithRelationInput = {
@@ -190,7 +190,7 @@ export type LessonOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrderInput | Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
   subject?: Prisma.SubjectOrderByWithRelationInput
 }
 
@@ -202,8 +202,8 @@ export type LessonWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Lesson"> | string
   createdAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
-  subjectId?: Prisma.StringNullableFilter<"Lesson"> | string | null
-  subject?: Prisma.XOR<Prisma.SubjectNullableScalarRelationFilter, Prisma.SubjectWhereInput> | null
+  subjectId?: Prisma.StringFilter<"Lesson"> | string
+  subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
 }, "id">
 
 export type LessonOrderByWithAggregationInput = {
@@ -211,7 +211,7 @@ export type LessonOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrderInput | Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
   _count?: Prisma.LessonCountOrderByAggregateInput
   _max?: Prisma.LessonMaxOrderByAggregateInput
   _min?: Prisma.LessonMinOrderByAggregateInput
@@ -225,7 +225,7 @@ export type LessonScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Lesson"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Lesson"> | Date | string
-  subjectId?: Prisma.StringNullableWithAggregatesFilter<"Lesson"> | string | null
+  subjectId?: Prisma.StringWithAggregatesFilter<"Lesson"> | string
 }
 
 export type LessonCreateInput = {
@@ -233,7 +233,7 @@ export type LessonCreateInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  subject?: Prisma.SubjectCreateNestedOneWithoutLessonsInput
+  subject: Prisma.SubjectCreateNestedOneWithoutLessonsInput
 }
 
 export type LessonUncheckedCreateInput = {
@@ -241,7 +241,7 @@ export type LessonUncheckedCreateInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  subjectId?: string | null
+  subjectId: string
 }
 
 export type LessonUpdateInput = {
@@ -249,7 +249,7 @@ export type LessonUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subject?: Prisma.SubjectUpdateOneWithoutLessonsNestedInput
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutLessonsNestedInput
 }
 
 export type LessonUncheckedUpdateInput = {
@@ -257,7 +257,7 @@ export type LessonUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LessonCreateManyInput = {
@@ -265,7 +265,7 @@ export type LessonCreateManyInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  subjectId?: string | null
+  subjectId: string
 }
 
 export type LessonUpdateManyMutationInput = {
@@ -280,7 +280,7 @@ export type LessonUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LessonListRelationFilter = {
@@ -407,7 +407,7 @@ export type LessonScalarWhereInput = {
   name?: Prisma.StringFilter<"Lesson"> | string
   createdAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
-  subjectId?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  subjectId?: Prisma.StringFilter<"Lesson"> | string
 }
 
 export type LessonCreateManySubjectInput = {
@@ -446,7 +446,7 @@ export type LessonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   subjectId?: boolean
-  subject?: boolean | Prisma.Lesson$subjectArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lesson"]>
 
 export type LessonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -455,7 +455,7 @@ export type LessonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   subjectId?: boolean
-  subject?: boolean | Prisma.Lesson$subjectArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lesson"]>
 
 export type LessonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -464,7 +464,7 @@ export type LessonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   subjectId?: boolean
-  subject?: boolean | Prisma.Lesson$subjectArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lesson"]>
 
 export type LessonSelectScalar = {
@@ -477,26 +477,26 @@ export type LessonSelectScalar = {
 
 export type LessonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "subjectId", ExtArgs["result"]["lesson"]>
 export type LessonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subject?: boolean | Prisma.Lesson$subjectArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }
 export type LessonIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subject?: boolean | Prisma.Lesson$subjectArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }
 export type LessonIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subject?: boolean | Prisma.Lesson$subjectArgs<ExtArgs>
+  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
 }
 
 export type $LessonPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Lesson"
   objects: {
-    subject: Prisma.$SubjectPayload<ExtArgs> | null
+    subject: Prisma.$SubjectPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     createdAt: Date
     updatedAt: Date
-    subjectId: string | null
+    subjectId: string
   }, ExtArgs["result"]["lesson"]>
   composites: {}
 }
@@ -891,7 +891,7 @@ readonly fields: LessonFieldRefs;
  */
 export interface Prisma__LessonClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  subject<T extends Prisma.Lesson$subjectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lesson$subjectArgs<ExtArgs>>): Prisma.Prisma__SubjectClient<runtime.Types.Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  subject<T extends Prisma.SubjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubjectDefaultArgs<ExtArgs>>): Prisma.Prisma__SubjectClient<runtime.Types.Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1324,25 +1324,6 @@ export type LessonDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Lessons to delete.
    */
   limit?: number
-}
-
-/**
- * Lesson.subject
- */
-export type Lesson$subjectArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Subject
-   */
-  select?: Prisma.SubjectSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Subject
-   */
-  omit?: Prisma.SubjectOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SubjectInclude<ExtArgs> | null
-  where?: Prisma.SubjectWhereInput
 }
 
 /**
