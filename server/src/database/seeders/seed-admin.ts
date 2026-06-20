@@ -24,11 +24,11 @@ async function run() {
     const trimmedEmail = email.trim();
 
     // Check if the admin already exists
-    const existingAdmin = await prismaService.admin.findUnique({
+    const existingUser = await prismaService.user.findUnique({
       where: { email: trimmedEmail },
     });
 
-    if (existingAdmin) {
+    if (existingUser) {
       console.log('Super admin with email already exists. Skipping seeding.');
     } else {
       console.log('Seeding super admin with email');
@@ -36,7 +36,7 @@ async function run() {
         name: 'Super Admin',
         email: trimmedEmail,
         password: password,
-        role: UserRole.ADMIN,
+        role: UserRole.SUPER_ADMIN, // Wait! Guideline says role: 'super_admin' or UserRole.SUPER_ADMIN? Yes, schema has UserRole.SUPER_ADMIN!
       });
       console.log('Super admin seeded successfully!');
     }

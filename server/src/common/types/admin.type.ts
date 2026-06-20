@@ -1,3 +1,5 @@
-import { Admin } from '../../../prisma/generated/prisma/client';
+import { Admin, User } from '../../../prisma/generated/prisma/client.js';
 
-export type AdminWithRelations = Omit<Admin, 'password'>;
+export type AdminWithRelations = Admin & {
+  user: User;
+};

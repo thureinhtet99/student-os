@@ -32,7 +32,7 @@ export class AdminsService {
       );
 
       await checkDuplicate(
-        this.prisma.admin,
+        this.prisma.user,
         'email',
         email,
         null,
@@ -40,14 +40,24 @@ export class AdminsService {
       );
 
       const hashedPwd = await bcrypt.hash(password, this.SALT_ROUNDS);
+      const adminId = `ADM-${Math.floor(100000 + Math.random() * 900000)}`;
+
       const admin = await this.prisma.admin.create({
         data: {
-          email: email.trim(),
-          password: hashedPwd,
+          adminId,
+          user: {
+            create: {
+              email: email.trim(),
+              password: hashedPwd,
+              role: role ?? UserRole.ADMIN,
+              isVerified: true,
+              isActive: true,
+            },
+          },
           name: name.trim(),
           role: role ?? UserRole.ADMIN,
         },
-        omit: { password: false },
+        include: { user: true },
       });
 
       return formatAdmin(admin);
@@ -74,7 +84,9 @@ export class AdminsService {
           name: { contains: search, mode: 'insensitive' },
         },
         {
-          email: { contains: search, mode: 'insensitive' },
+          user: {
+            email: { contains: search, mode: 'insensitive' },
+          },
         },
       ];
     }
@@ -86,6 +98,7 @@ export class AdminsService {
       skip: (page - 1) * (limit || 10),
       take: limit || 10,
       orderBy: { name: 'asc' },
+      include: { user: true },
     });
 
     return {
@@ -102,6 +115,7 @@ export class AdminsService {
   async findOne(id: string): Promise<AdminResponseDto> {
     const admin = await this.prisma.admin.findUnique({
       where: { id },
+      include: { user: true },
     });
 
     if (!admin) throw new NotFoundException('Admin is not found');
@@ -115,6 +129,7 @@ export class AdminsService {
   ): Promise<AdminResponseDto> {
     const existingAdmin = await this.prisma.admin.findUnique({
       where: { id },
+      include: { user: true },
     });
     if (!existingAdmin) throw new NotFoundException('Admin is not found');
 
@@ -134,13 +149,13 @@ export class AdminsService {
 
     if (
       updateAdminDto.email &&
-      existingAdmin.email !== updateAdminDto.email.trim()
+      existingAdmin.user.email !== updateAdminDto.email.trim()
     ) {
       await checkDuplicate(
-        this.prisma.admin,
+        this.prisma.user,
         'email',
         updateAdminDto.email,
-        id,
+        existingAdmin.userId,
         'Admin with this email already exists',
       );
     }
@@ -148,10 +163,18 @@ export class AdminsService {
     const admin = await this.prisma.admin.update({
       where: { id },
       data: {
-        email: updateAdminDto.email?.trim(),
+        user: (updateAdminDto.email || updateAdminDto.role)
+          ? {
+              update: {
+                email: updateAdminDto.email?.trim(),
+                role: updateAdminDto.role,
+              },
+            }
+          : undefined,
         name: updateAdminDto.name?.trim(),
         role: updateAdminDto.role,
       },
+      include: { user: true },
     });
 
     return formatAdmin(admin);
@@ -163,7 +186,8 @@ export class AdminsService {
     });
     if (!existingAdmin) throw new NotFoundException('Admin is not found');
 
-    await this.prisma.admin.delete({ where: { id } });
+    // Delete user which will cascade delete the admin
+    await this.prisma.user.delete({ where: { id: existingAdmin.userId } });
 
     return { message: 'Admin deleted successfully' };
   }
