@@ -21,7 +21,7 @@ export class AdminsService {
 
   async create(createAdminDto: CreateAdminDto): Promise<AdminResponseDto> {
     try {
-      const { email, password, name, role } = createAdminDto;
+      const { email, password, name } = createAdminDto;
 
       await checkDuplicate(
         this.prisma.admin,
@@ -45,7 +45,7 @@ export class AdminsService {
         data: {
           email: email.trim(),
           password: hashedPwd,
-          role: role ?? UserRole.ADMIN,
+          role: UserRole.ADMIN,
           isVerified: true,
           isActive: true,
         },
@@ -58,7 +58,7 @@ export class AdminsService {
           adminId,
           userId: createdUser.id,
           name: name.trim(),
-          role: role ?? UserRole.ADMIN,
+          role: UserRole.ADMIN,
         },
         include: { user: true },
       });
@@ -165,17 +165,14 @@ export class AdminsService {
     const admin = await this.prisma.admin.update({
       where: { id },
       data: {
-        user:
-          updateAdminDto.email || updateAdminDto.role
-            ? {
-                update: {
-                  email: updateAdminDto.email?.trim(),
-                  role: updateAdminDto.role,
-                },
-              }
-            : undefined,
+        user: updateAdminDto.email
+          ? {
+              update: {
+                email: updateAdminDto.email?.trim(),
+              },
+            }
+          : undefined,
         name: updateAdminDto.name?.trim(),
-        role: updateAdminDto.role,
       },
       include: { user: true },
     });

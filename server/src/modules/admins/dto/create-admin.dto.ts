@@ -1,12 +1,4 @@
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
-import { UserRole } from '../../../../prisma/generated/prisma/client.js';
+import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateAdminDto {
   @IsString()
@@ -21,8 +13,4 @@ export class CreateAdminDto {
   @IsString()
   @IsNotEmpty()
   password!: string;
-
-  @IsEnum(UserRole)
-  @IsOptional()
-  role!: UserRole;
 }
