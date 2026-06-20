@@ -15,7 +15,7 @@ export class CreateAnnouncementDto {
   @IsString()
   @IsOptional()
   @MaxLength(1000)
-  description?: string | null;
+  description!: string | null;
 
   @IsDateString()
   @IsNotEmpty()
@@ -23,5 +23,5 @@ export class CreateAnnouncementDto {
 
   @IsString()
   @IsOptional()
-  class_id?: string | null;
+  class_id!: string | null;
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatResult } from '../../common/formatters/result.formatter.js';
@@ -13,16 +17,22 @@ export class ResultsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createResultDto: CreateResultDto): Promise<ResultResponseDto> {
+    const examId = createResultDto.exam_id?.trim();
+    const assignmentId = createResultDto.assignment_id?.trim();
+
+    if (!examId) {
+      throw new BadRequestException('Exam id is required');
+    }
+    if (!assignmentId) {
+      throw new BadRequestException('Assignment id is required');
+    }
+
     const result = await this.prisma.result.create({
       data: {
         score: createResultDto.score,
         comment: createResultDto.comment?.trim() || null,
-        exam: createResultDto.exam_id
-          ? { connect: { id: createResultDto.exam_id } }
-          : undefined,
-        assignment: createResultDto.assignment_id
-          ? { connect: { id: createResultDto.assignment_id } }
-          : undefined,
+        exam: { connect: { id: examId } },
+        assignment: { connect: { id: assignmentId } },
         student: { connect: { id: createResultDto.student_id } },
       },
       include: {
@@ -106,13 +116,13 @@ export class ResultsService {
             ? undefined
             : updateResultDto.exam_id
               ? { connect: { id: updateResultDto.exam_id } }
-              : { disconnect: true },
+              : undefined,
         assignment:
           updateResultDto.assignment_id === undefined
             ? undefined
             : updateResultDto.assignment_id
               ? { connect: { id: updateResultDto.assignment_id } }
-              : { disconnect: true },
+              : undefined,
         student: updateResultDto.student_id
           ? { connect: { id: updateResultDto.student_id } }
           : undefined,
