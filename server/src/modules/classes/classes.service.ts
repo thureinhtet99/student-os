@@ -64,8 +64,8 @@ export class ClassesService {
       take: limit,
       orderBy: { name: 'asc' },
       include: {
-        teacher: { omit: { password: true } },
-        students: { omit: { password: true } },
+        teacher: true,
+        students: true,
         subjects: true,
         events: true,
         announcements: true,
@@ -87,8 +87,8 @@ export class ClassesService {
     const classById = await this.prisma.class.findUnique({
       where: { id },
       include: {
-        teacher: { omit: { password: true } },
-        students: { omit: { password: true } },
+        teacher: true,
+        students: true,
         subjects: true,
         events: true,
         announcements: true,
@@ -134,7 +134,7 @@ export class ClassesService {
           : undefined,
       },
       include: {
-        teacher: { omit: { password: true } },
+        teacher: true,
       },
     });
 
