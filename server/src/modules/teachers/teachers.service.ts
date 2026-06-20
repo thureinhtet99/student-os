@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import bcrypt from 'bcrypt';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatTeacher } from '../../common/formatters/teacher.formatter.js';
@@ -33,7 +34,7 @@ export class TeachersService {
     );
 
     await checkDuplicate(
-      this.prisma.teacher,
+      this.prisma.user,
       'email',
       createTeacherDto.email,
       null,
@@ -51,15 +52,25 @@ export class TeachersService {
     }
 
     const imageUrl = resolveImageUrl(createTeacherDto.image, this.cloudinary);
+    const hashedPwd = await bcrypt.hash(createTeacherDto.password, 12);
+    const teacherId = `TCH-${Math.floor(100000 + Math.random() * 900000)}`;
 
     const teacher = await this.prisma.teacher.create({
       data: {
-        email: createTeacherDto.email.trim(),
-        password: createTeacherDto.password,
+        teacherId,
+        user: {
+          create: {
+            email: createTeacherDto.email.trim(),
+            password: hashedPwd,
+            role: createTeacherDto.role ?? UserRole.TEACHER,
+            isVerified: true,
+            isActive: true,
+          },
+        },
         name: createTeacherDto.name.trim(),
         phone: createTeacherDto.phone?.trim(),
         address: createTeacherDto.address?.trim() || null,
-        birthday: createTeacherDto.birthday
+        dateOfBirth: createTeacherDto.birthday
           ? new Date(createTeacherDto.birthday)
           : null,
         gender: formatGender(createTeacherDto.gender),
@@ -67,6 +78,7 @@ export class TeachersService {
         role: createTeacherDto.role ?? UserRole.TEACHER,
       },
       include: {
+        user: true,
         classes: { select: { id: true, name: true } },
         subjects: { select: { id: true, name: true } },
       },
@@ -87,7 +99,7 @@ export class TeachersService {
     if (search) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
-        { email: { contains: search, mode: 'insensitive' } },
+        { user: { email: { contains: search, mode: 'insensitive' } } },
         { address: { contains: search, mode: 'insensitive' } },
       ];
     }
@@ -100,6 +112,7 @@ export class TeachersService {
       take: limit,
       orderBy: { name: 'asc' },
       include: {
+        user: true,
         classes: { select: { id: true, name: true } },
         subjects: { select: { id: true, name: true } },
       },
@@ -120,6 +133,7 @@ export class TeachersService {
     const teacher = await this.prisma.teacher.findUnique({
       where: { id },
       include: {
+        user: true,
         classes: { select: { id: true, name: true } },
         subjects: { select: { id: true, name: true } },
       },
@@ -136,6 +150,7 @@ export class TeachersService {
   ): Promise<TeacherResponseDto> {
     const existingTeacher = await this.prisma.teacher.findUnique({
       where: { id },
+      include: { user: true },
     });
     if (!existingTeacher) throw new NotFoundException('Teacher is not found');
 
@@ -155,13 +170,13 @@ export class TeachersService {
 
     if (
       updateTeacherDto.email &&
-      existingTeacher.email !== updateTeacherDto.email.trim()
+      existingTeacher.user.email !== updateTeacherDto.email.trim()
     ) {
       await checkDuplicate(
-        this.prisma.teacher,
+        this.prisma.user,
         'email',
         updateTeacherDto.email,
-        id,
+        existingTeacher.userId,
         'Teacher with this email already exists',
       );
     }
@@ -182,14 +197,22 @@ export class TeachersService {
     const teacher = await this.prisma.teacher.update({
       where: { id },
       data: {
-        email: updateTeacherDto.email?.trim(),
+        user:
+          updateTeacherDto.email || updateTeacherDto.role
+            ? {
+                update: {
+                  email: updateTeacherDto.email?.trim(),
+                  role: updateTeacherDto.role,
+                },
+              }
+            : undefined,
         name: updateTeacherDto.name?.trim(),
         phone: updateTeacherDto.phone?.trim(),
         address:
           updateTeacherDto.address === undefined
             ? undefined
             : updateTeacherDto.address?.trim() || null,
-        birthday:
+        dateOfBirth:
           updateTeacherDto.birthday === undefined
             ? undefined
             : updateTeacherDto.birthday
@@ -205,6 +228,7 @@ export class TeachersService {
         role: updateTeacherDto.role,
       },
       include: {
+        user: true,
         classes: { select: { id: true, name: true } },
         subjects: { select: { id: true, name: true } },
       },
@@ -229,7 +253,8 @@ export class TeachersService {
       }
     }
 
-    await this.prisma.teacher.delete({ where: { id } });
+    // Delete user which will cascade delete the teacher
+    await this.prisma.user.delete({ where: { id: existingTeacher.userId } });
 
     return { message: 'Teacher deleted successfully' };
   }

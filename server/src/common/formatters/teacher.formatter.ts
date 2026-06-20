@@ -7,11 +7,11 @@ export function formatTeacher(
   return {
     id: teacher.id,
     name: teacher.name,
-    email: teacher.email,
+    email: teacher.user.email,
     phone: teacher.phone,
     address: teacher.address,
     gender: teacher.gender,
-    birthday: teacher.birthday,
+    birthday: teacher.dateOfBirth,
     image: teacher.image,
     role: teacher.role,
     classes: teacher.classes.map((c) => ({ id: c.id, name: c.name })),
