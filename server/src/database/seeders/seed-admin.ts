@@ -36,7 +36,7 @@ async function run() {
         name: 'Super Admin',
         email: trimmedEmail,
         password: password,
-        role: UserRole.SUPER_ADMIN, // Wait! Guideline says role: 'super_admin' or UserRole.SUPER_ADMIN? Yes, schema has UserRole.SUPER_ADMIN!
+        role: UserRole.SUPER_ADMIN,
       });
       console.log('Super admin seeded successfully!');
     }

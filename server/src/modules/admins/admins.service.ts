@@ -40,20 +40,23 @@ export class AdminsService {
       );
 
       const hashedPwd = await bcrypt.hash(password, this.SALT_ROUNDS);
-      const adminId = `ADM-${Math.floor(100000 + Math.random() * 900000)}`;
+
+      const createdUser = await this.prisma.user.create({
+        data: {
+          email: email.trim(),
+          password: hashedPwd,
+          role: role ?? UserRole.ADMIN,
+          isVerified: true,
+          isActive: true,
+        },
+      });
+
+      const adminId = `ADM-${createdUser.id.slice(-12)}`;
 
       const admin = await this.prisma.admin.create({
         data: {
           adminId,
-          user: {
-            create: {
-              email: email.trim(),
-              password: hashedPwd,
-              role: role ?? UserRole.ADMIN,
-              isVerified: true,
-              isActive: true,
-            },
-          },
+          userId: createdUser.id,
           name: name.trim(),
           role: role ?? UserRole.ADMIN,
         },
@@ -63,8 +66,7 @@ export class AdminsService {
       return formatAdmin(admin);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-
-      console.error('Error during account register:', message);
+      console.error('Error during admin create:', message);
       throw new InternalServerErrorException(
         'An error occurred during creating admin',
       );
