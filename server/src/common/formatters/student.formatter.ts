@@ -8,11 +8,11 @@ export function formatStudent(
   return {
     id: student.id,
     name: student.name,
-    email: student.email,
+    email: student.user.email,
     phone: student.phone,
     address: student.address,
     gender: student.gender,
-    birthday: student.birthday,
+    birthday: student.dateOfBirth,
     image: student.image,
     role: student.role,
     parent: student.parent ? formatParent(student.parent) : null,
@@ -22,7 +22,7 @@ export function formatStudent(
     grade: student.grade
       ? { id: student.grade.id, level: student.grade.level }
       : null,
-    created_at: student.createdAt ?? null,
-    updated_at: student.updatedAt ?? null,
+    created_at: student.user.createdAt ?? null,
+    updated_at: student.user.updatedAt ?? null,
   };
 }

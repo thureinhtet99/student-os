@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import bcrypt from 'bcrypt';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatStudent } from '../../common/formatters/student.formatter.js';
@@ -33,7 +34,7 @@ export class StudentsService {
     );
 
     await checkDuplicate(
-      this.prisma.student,
+      this.prisma.user,
       'email',
       createStudentDto.email,
       null,
@@ -51,15 +52,25 @@ export class StudentsService {
     }
 
     const imageUrl = resolveImageUrl(createStudentDto.image, this.cloudinary);
+    const hashedPwd = await bcrypt.hash(createStudentDto.password, 12);
+    const studentId = `STU-${Math.floor(100000 + Math.random() * 900000)}`;
 
     const student = await this.prisma.student.create({
       data: {
-        email: createStudentDto.email.trim(),
-        password: createStudentDto.password,
+        studentId,
+        user: {
+          create: {
+            email: createStudentDto.email.trim(),
+            password: hashedPwd,
+            role: createStudentDto.role ?? UserRole.STUDENT,
+            isVerified: true,
+            isActive: true,
+          },
+        },
         name: createStudentDto.name.trim(),
         phone: createStudentDto.phone?.trim(),
         address: createStudentDto.address?.trim() || null,
-        birthday: createStudentDto.birthday
+        dateOfBirth: createStudentDto.birthday
           ? new Date(createStudentDto.birthday)
           : null,
         gender: formatGender(createStudentDto.gender),
@@ -76,6 +87,7 @@ export class StudentsService {
           : undefined,
       },
       include: {
+        user: true,
         parent: true,
         class: true,
         grade: true,
@@ -111,7 +123,9 @@ export class StudentsService {
           name: { contains: search, mode: 'insensitive' },
         },
         {
-          email: { contains: search, mode: 'insensitive' },
+          user: {
+            email: { contains: search, mode: 'insensitive' },
+          },
         },
         {
           address: { contains: search, mode: 'insensitive' },
@@ -126,43 +140,11 @@ export class StudentsService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { name: 'asc' },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        address: true,
-        gender: true,
-        birthday: true,
-        image: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-        parentId: true,
-        classId: true,
-        gradeId: true,
-        parent: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            address: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        class: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        grade: {
-          select: {
-            id: true,
-            level: true,
-          },
-        },
+      include: {
+        user: true,
+        parent: true,
+        class: true,
+        grade: true,
       },
     });
 
@@ -181,6 +163,7 @@ export class StudentsService {
     const student = await this.prisma.student.findUnique({
       where: { id },
       include: {
+        user: true,
         parent: true,
         class: true,
         grade: true,
@@ -216,6 +199,7 @@ export class StudentsService {
   ): Promise<StudentResponseDto> {
     const existingStudent = await this.prisma.student.findUnique({
       where: { id },
+      include: { user: true },
     });
     if (!existingStudent) throw new NotFoundException('Student is not found');
 
@@ -235,13 +219,13 @@ export class StudentsService {
 
     if (
       updateStudentDto.email &&
-      existingStudent.email !== updateStudentDto.email.trim()
+      existingStudent.user.email !== updateStudentDto.email.trim()
     ) {
       await checkDuplicate(
-        this.prisma.student,
+        this.prisma.user,
         'email',
         updateStudentDto.email,
-        id,
+        existingStudent.userId,
         'Student with this email already exists',
       );
     }
@@ -262,14 +246,21 @@ export class StudentsService {
     const student = await this.prisma.student.update({
       where: { id },
       data: {
-        email: updateStudentDto.email?.trim(),
+        user: (updateStudentDto.email || updateStudentDto.role)
+          ? {
+              update: {
+                email: updateStudentDto.email?.trim(),
+                role: updateStudentDto.role,
+              },
+            }
+          : undefined,
         name: updateStudentDto.name?.trim(),
         phone: updateStudentDto.phone?.trim(),
         address:
           updateStudentDto.address === undefined
             ? undefined
             : updateStudentDto.address?.trim() || null,
-        birthday:
+        dateOfBirth:
           updateStudentDto.birthday === undefined
             ? undefined
             : updateStudentDto.birthday
@@ -300,6 +291,7 @@ export class StudentsService {
           : undefined,
       },
       include: {
+        user: true,
         parent: true,
         class: true,
         grade: true,
@@ -325,7 +317,8 @@ export class StudentsService {
       }
     }
 
-    await this.prisma.student.delete({ where: { id } });
+    // Delete user which will cascade delete the student
+    await this.prisma.user.delete({ where: { id: existingStudent.userId } });
 
     return { message: 'Student deleted successfully' };
   }
