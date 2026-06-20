@@ -1,7 +1,9 @@
 import { TeacherResponseDto } from '../../modules/teachers/dto/teacher-response.dto.js';
 import { TeacherWithRelations } from '../types/teacher.type.js';
 
-export function formatTeacher(teacher: TeacherWithRelations): TeacherResponseDto {
+export function formatTeacher(
+  teacher: TeacherWithRelations,
+): TeacherResponseDto {
   return {
     id: teacher.id,
     name: teacher.name,

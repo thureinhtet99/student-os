@@ -4,8 +4,8 @@ import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js
 import { formatLesson } from '../../common/formatters/lesson.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateLessonDto } from './dto/create-lesson.dto.js';
-import { QueryLessonDto } from './dto/query-lesson-dto.js';
 import { LessonResponseDto } from './dto/lesson-response.dto.js';
+import { QueryLessonDto } from './dto/query-lesson-dto.js';
 import { UpdateLessonDto } from './dto/update-lesson.dto.js';
 
 @Injectable()
@@ -28,7 +28,9 @@ export class LessonsService {
     return formatLesson(lesson);
   }
 
-  async findAll(queryLessonDto: QueryLessonDto): Promise<PaginatedResponseDto<LessonResponseDto>> {
+  async findAll(
+    queryLessonDto: QueryLessonDto,
+  ): Promise<PaginatedResponseDto<LessonResponseDto>> {
     const { search, page = 1, limit = 10 } = queryLessonDto;
 
     const where: Prisma.LessonWhereInput = {};
@@ -73,15 +75,25 @@ export class LessonsService {
     return formatLesson(lesson);
   }
 
-  async update(id: string, updateLessonDto: UpdateLessonDto): Promise<LessonResponseDto> {
-    const existingLesson = await this.prisma.lesson.findUnique({ where: { id } });
+  async update(
+    id: string,
+    updateLessonDto: UpdateLessonDto,
+  ): Promise<LessonResponseDto> {
+    const existingLesson = await this.prisma.lesson.findUnique({
+      where: { id },
+    });
     if (!existingLesson) throw new NotFoundException('Lesson is not found');
 
     const lesson = await this.prisma.lesson.update({
       where: { id },
       data: {
         name: updateLessonDto.name?.trim(),
-        subject: updateLessonDto.subject_id === undefined ? undefined : updateLessonDto.subject_id ? { connect: { id: updateLessonDto.subject_id } } : { disconnect: true },
+        subject:
+          updateLessonDto.subject_id === undefined
+            ? undefined
+            : updateLessonDto.subject_id
+              ? { connect: { id: updateLessonDto.subject_id } }
+              : { disconnect: true },
       },
       include: {
         subject: { select: { id: true, name: true } },
@@ -92,7 +104,9 @@ export class LessonsService {
   }
 
   async remove(id: string): Promise<{ message: string }> {
-    const existingLesson = await this.prisma.lesson.findUnique({ where: { id } });
+    const existingLesson = await this.prisma.lesson.findUnique({
+      where: { id },
+    });
     if (!existingLesson) throw new NotFoundException('Lesson is not found');
 
     await this.prisma.lesson.delete({ where: { id } });
