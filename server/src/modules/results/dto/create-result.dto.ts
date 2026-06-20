@@ -16,15 +16,15 @@ export class CreateResultDto {
   @IsString()
   @IsOptional()
   @MaxLength(1000)
-  comment?: string | null;
+  comment!: string | null;
 
   @IsString()
   @IsOptional()
-  exam_id?: string | null;
+  exam_id!: string | null;
 
   @IsString()
   @IsOptional()
-  assignment_id?: string | null;
+  assignment_id!: string | null;
 
   @IsString()
   @IsNotEmpty()

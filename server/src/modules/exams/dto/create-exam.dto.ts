@@ -15,7 +15,7 @@ export class CreateExamDto {
   @IsString()
   @IsOptional()
   @MaxLength(1000)
-  description?: string | null;
+  description!: string | null;
 
   @IsDateString()
   @IsNotEmpty()

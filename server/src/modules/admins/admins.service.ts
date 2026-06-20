@@ -163,14 +163,15 @@ export class AdminsService {
     const admin = await this.prisma.admin.update({
       where: { id },
       data: {
-        user: (updateAdminDto.email || updateAdminDto.role)
-          ? {
-              update: {
-                email: updateAdminDto.email?.trim(),
-                role: updateAdminDto.role,
-              },
-            }
-          : undefined,
+        user:
+          updateAdminDto.email || updateAdminDto.role
+            ? {
+                update: {
+                  email: updateAdminDto.email?.trim(),
+                  role: updateAdminDto.role,
+                },
+              }
+            : undefined,
         name: updateAdminDto.name?.trim(),
         role: updateAdminDto.role,
       },

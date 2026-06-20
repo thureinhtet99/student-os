@@ -29,25 +29,25 @@ export class CreateTeacherDto {
   @IsString()
   @IsOptional()
   @MaxLength(15)
-  phone?: string | null;
+  phone!: string | null;
 
   @IsString()
   @IsOptional()
   @MaxLength(500)
-  address?: string | null;
+  address!: string | null;
 
   @IsEnum(UserGender)
   gender!: UserGender;
 
   @IsDateString()
   @IsOptional()
-  birthday?: string | null;
+  birthday!: string | null;
 
   @IsString()
   @IsOptional()
-  image?: string | null;
+  image!: string | null;
 
   @IsEnum(UserRole)
   @IsOptional()
-  role?: UserRole;
+  role!: UserRole;
 }

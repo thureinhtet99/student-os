@@ -14,9 +14,9 @@ export class CreateAssignmentDto {
 
   @IsDateString()
   @IsOptional()
-  due_date?: string | null;
+  due_date!: string | null;
 
   @IsString()
   @IsOptional()
-  subject_id?: string | null;
+  subject_id!: string | null;
 }

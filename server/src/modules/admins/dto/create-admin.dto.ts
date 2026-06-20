@@ -24,5 +24,5 @@ export class CreateAdminDto {
 
   @IsEnum(UserRole)
   @IsOptional()
-  role?: UserRole;
+  role!: UserRole;
 }
