@@ -7,13 +7,21 @@ const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
 });
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',')
+  .map((o) => o.trim())
+  .filter(Boolean) ?? ['http://localhost:3001'];
+
 export const auth = betterAuth({
+  basePath: '/api/auth',
+  trustedOrigins: allowedOrigins,
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
   emailAndPassword: {
     enabled: true,
     disableSignUp: true,
+    minPasswordLength: 8,
+    autoSignIn: false,
   },
   user: {
     additionalFields: {

@@ -37,7 +37,7 @@ model User {
   admin   Admin?
 
   @@unique([email])
-  @@map("user")
+  @@map("users")
 }
 
 model Session {
@@ -56,7 +56,7 @@ model Session {
 
   @@unique([token])
   @@index([userId])
-  @@map("session")
+  @@map("sessions")
 }
 
 model Account {
@@ -82,7 +82,7 @@ model Account {
 
   @@index([userId])
   @@index([providerId, accountId])
-  @@map("account")
+  @@map("accounts")
 }
 
 model Verification {
@@ -95,7 +95,7 @@ model Verification {
   updatedAt DateTime @updatedAt
 
   @@index([identifier])
-  @@map("verification")
+  @@map("verifications")
 }
 
 model Admin {

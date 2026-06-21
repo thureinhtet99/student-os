@@ -1,9 +1,11 @@
+import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { Controller, Delete, Get, Param, Query } from '@nestjs/common';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { GradeResponseDto } from './dto/grade-response.dto.js';
 import { QueryGradeDto } from './dto/query-grade-dto.js';
 import { GradesService } from './grades.service.js';
 
+@AllowAnonymous()
 @Controller('grades')
 export class GradesController {
   constructor(private readonly gradesService: GradesService) {}

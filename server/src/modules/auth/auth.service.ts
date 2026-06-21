@@ -1,90 +1,30 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import bcrypt from 'bcrypt';
-import { randomBytes } from 'crypto';
-import { checkDuplicate } from '../../common/utils/db.util';
-import { PrismaService } from '../../database/prisma/prisma.service';
-import { AuthResponseDto } from './dto/auth-response.dto';
-import { SignUpDto } from './dto/sign-up.dto';
+import { Injectable } from '@nestjs/common';
+import { AuthService as BetterAuthService } from '@thallesp/nestjs-better-auth';
+import { fromNodeHeaders } from 'better-auth/node';
+import type { IncomingHttpHeaders } from 'node:http';
+import { auth } from '../../common/utils/auth.js';
 
 @Injectable()
 export class AuthService {
-  private readonly SALT_ROUNDS = 12;
-  constructor(
-    private prisma: PrismaService,
-    private jwtService: JwtService,
-    private configService: ConfigService,
-  ) {}
+  constructor(private readonly betterAuth: BetterAuthService<typeof auth>) {}
 
-  async signUp(signUpDto: SignUpDto): Promise<AuthResponseDto> {
-    try {
-      const { email, password, role } = signUpDto;
-
-      await checkDuplicate(
-        this.prisma.user,
-        'email',
-        email,
-        null,
-        'User with this email already exists',
-      );
-
-      const hashedPwd = await bcrypt.hash(password, this.SALT_ROUNDS);
-      const user = await this.prisma.user.create({
-        data: { email, password: hashedPwd, role },
-        select: {
-          id: true,
-          email: true,
-          role: true,
-        },
-      });
-
-      const { access_token, refresh_token } = await this.generateToken(
-        user.id,
-        user.email,
-      );
-      return { access_token, refresh_token, user };
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Error during account register:', message);
-      throw new InternalServerErrorException(
-        'An error occurred during account register',
-      );
-    }
+  async getSession(headers: IncomingHttpHeaders) {
+    return this.betterAuth.api.getSession({
+      headers: fromNodeHeaders(headers),
+    });
   }
 
-  // Generate token
-  private async generateToken(
-    id: string,
-    email: string,
-  ): Promise<{
-    access_token: string;
-    refresh_token: string;
-  }> {
-    const payload = { id, email };
-    const refreshId = randomBytes(16).toString('hex');
+  // Lists of others accounts linked to the current user
+  async listAccounts(headers: IncomingHttpHeaders) {
+    return this.betterAuth.api.listUserAccounts({
+      headers: fromNodeHeaders(headers),
+    });
+  }
 
-    const jwtSecret = this.configService.get<string>('JWT_SECRET');
-    const jwtRefreshSecret =
-      this.configService.get<string>('JWT_REFRESH_SECRET');
-
-    if (!jwtSecret || !jwtRefreshSecret)
-      throw new InternalServerErrorException('JWT secrets are not configured');
-
-    const [access_token, refresh_token] = await Promise.all([
-      this.jwtService.signAsync(payload, {
-        expiresIn: '300s',
-        secret: jwtSecret,
-      }),
-      this.jwtService.signAsync(
-        { ...payload, refreshId },
-        {
-          expiresIn: '7d',
-          secret: jwtRefreshSecret,
-        },
-      ),
-    ]);
-
-    return { access_token, refresh_token };
+  // Sign out and clears the session cookie.
+  async signOut(headers: IncomingHttpHeaders) {
+    return this.betterAuth.api.signOut({
+      headers: fromNodeHeaders(headers),
+    });
   }
 }

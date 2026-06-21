@@ -1,3 +1,4 @@
+import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -15,6 +16,7 @@ import { QueryEventDto } from './dto/query-event-dto.js';
 import { UpdateEventDto } from './dto/update-event.dto.js';
 import { EventsService } from './events.service.js';
 
+@AllowAnonymous()
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}

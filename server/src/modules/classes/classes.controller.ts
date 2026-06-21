@@ -1,3 +1,4 @@
+import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -15,6 +16,7 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { QueryClassDto } from './dto/query-class-dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 
+@AllowAnonymous()
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
