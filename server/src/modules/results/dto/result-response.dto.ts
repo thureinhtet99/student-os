@@ -5,6 +5,6 @@ export class ResultResponseDto {
   exam!: { id: string; name: string } | null;
   assignment!: { id: string; name: string } | null;
   student!: { id: string; name: string } | null;
-  created_at!: Date;
-  updated_at!: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
 }

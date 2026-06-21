@@ -3,9 +3,9 @@ import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatAttendance } from '../../common/formatters/attendance.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
+import { AttendanceResponseDto } from './dto/attendance-response.dto.js';
 import { CreateAttendanceDto } from './dto/create-attendance.dto.js';
 import { QueryAttendanceDto } from './dto/query-attendance-dto.js';
-import { AttendanceResponseDto } from './dto/attendance-response.dto.js';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto.js';
 
 @Injectable()
@@ -57,7 +57,7 @@ export class AttendancesService {
         total,
         page,
         limit,
-        total_pages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }

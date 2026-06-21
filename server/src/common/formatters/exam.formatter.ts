@@ -11,7 +11,7 @@ export function formatExam(exam: ExamWithRelations): ExamResponseDto {
     subject: exam.subject
       ? { id: exam.subject.id, name: exam.subject.name }
       : null,
-    created_at: exam.createdAt,
-    updated_at: exam.updatedAt,
+    createdAt: exam.createdAt,
+    updatedAt: exam.updatedAt,
   };
 }

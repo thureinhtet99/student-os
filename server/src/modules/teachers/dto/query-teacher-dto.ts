@@ -1,18 +1,9 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 import { UserGender } from '../../../../prisma/generated/prisma/client.js';
+import { QueryDto } from '../../../common/dto/query.dto.js';
 
-export class QueryTeacherDto {
-  @IsString()
-  @IsOptional()
-  search?: string;
-
+export class QueryTeacherDto extends QueryDto {
   @IsEnum(UserGender)
   @IsOptional()
   filter?: UserGender;
-
-  @IsOptional()
-  page?: number;
-
-  @IsOptional()
-  limit?: number;
 }

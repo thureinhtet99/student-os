@@ -11,7 +11,7 @@ export function formatAssignment(
     subject: assignment.subject
       ? { id: assignment.subject.id, name: assignment.subject.name }
       : null,
-    created_at: assignment.createdAt,
-    updated_at: assignment.updatedAt,
+    createdAt: assignment.createdAt,
+    updatedAt: assignment.updatedAt,
   };
 }

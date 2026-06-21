@@ -1,45 +1,21 @@
-import {
-  UserGender,
-  UserRole,
-} from '../../../../prisma/generated/prisma/client.js';
-import { ParentResponseDto } from '../../parents/dto/parent-response.dto.js';
+import { UserResponseDto } from '../../../common/dto/user-response.dto.js';
 
 export class GradeResponseDto {
   id!: string;
 
   level!: number;
 
-  created_at!: Date;
+  createdAt!: Date;
 
-  updated_at!: Date;
+  updatedAt!: Date;
 }
 
-export class StudentResponseDto {
-  id!: string;
+export class StudentResponseDto extends UserResponseDto {
+  studentId!: string;
 
-  name!: string;
-
-  email!: string;
-
-  phone!: string | null;
-
-  address!: string | null;
-
-  gender!: UserGender;
-
-  birthday!: Date | null;
-
-  image!: string | null;
-
-  role!: UserRole;
-
-  parent!: ParentResponseDto | null;
+  parent!: { id: string; name: string } | null;
 
   class!: { id: string; name: string } | null;
 
   grade!: { id: string; level: number } | null;
-
-  created_at!: Date;
-
-  updated_at!: Date;
 }

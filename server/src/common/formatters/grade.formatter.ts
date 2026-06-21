@@ -5,7 +5,7 @@ export function formatGrade(grade: Grade): GradeResponseDto {
   return {
     id: grade.id,
     level: grade.level,
-    created_at: grade.createdAt,
-    updated_at: grade.updatedAt,
+    createdAt: grade.createdAt,
+    updatedAt: grade.updatedAt,
   };
 }

@@ -13,7 +13,7 @@ export function formatParent(parent: ParentWithRelations): ParentResponseDto {
           name: std.name,
         }))
       : null,
-    created_at: parent.createdAt,
-    updated_at: parent.updatedAt,
+    createdAt: parent.createdAt,
+    updatedAt: parent.updatedAt,
   };
 }

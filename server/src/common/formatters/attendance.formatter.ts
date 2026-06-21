@@ -11,7 +11,7 @@ export function formatAttendance(
     student: attendance.student
       ? { id: attendance.student.id, name: attendance.student.name }
       : null,
-    created_at: attendance.createdAt,
-    updated_at: attendance.updatedAt,
+    createdAt: attendance.createdAt,
+    updatedAt: attendance.updatedAt,
   };
 }
