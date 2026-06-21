@@ -246,14 +246,15 @@ export class StudentsService {
     const student = await this.prisma.student.update({
       where: { id },
       data: {
-        user: (updateStudentDto.email || updateStudentDto.role)
-          ? {
-              update: {
-                email: updateStudentDto.email?.trim(),
-                role: updateStudentDto.role,
-              },
-            }
-          : undefined,
+        user:
+          updateStudentDto.email || updateStudentDto.role
+            ? {
+                update: {
+                  email: updateStudentDto.email?.trim(),
+                  role: updateStudentDto.role,
+                },
+              }
+            : undefined,
         name: updateStudentDto.name?.trim(),
         phone: updateStudentDto.phone?.trim(),
         address:

@@ -43,13 +43,11 @@ model Admin {
 
   adminId String   @unique
   name    String
-  phone   String?  @unique
   role    UserRole @default(ADMIN)
 
   createdAccounts User[] @relation("CreatedAccounts")
 
   @@index([adminId])
-  @@index([phone])
   @@index([role])
   @@map("admins")
 }
