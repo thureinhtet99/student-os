@@ -52,13 +52,15 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Session: 'Session',
+  Account: 'Account',
+  Verification: 'Verification',
   Admin: 'Admin',
   Teacher: 'Teacher',
   Student: 'Student',
   Parent: 'Parent',
   Class: 'Class',
   Subject: 'Subject',
-  Lesson: 'Lesson',
   Attendance: 'Attendance',
   Assignment: 'Assignment',
   Exam: 'Exam',
@@ -87,30 +89,72 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  password: 'password',
+  name: 'name',
+  image: 'image',
   role: 'role',
-  isVerified: 'isVerified',
-  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   setPasswordToken: 'setPasswordToken',
   setPasswordTokenExpires: 'setPasswordTokenExpires',
   resetPasswordToken: 'resetPasswordToken',
   resetPasswordTokenExpires: 'resetPasswordTokenExpires',
   createdBy: 'createdBy',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  expiresAt: 'expiresAt',
+  token: 'token',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const AccountScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  providerId: 'providerId',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  idToken: 'idToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  refreshTokenExpiresAt: 'refreshTokenExpiresAt',
+  scope: 'scope',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
 export const AdminScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   adminId: 'adminId',
-  name: 'name',
-  phone: 'phone',
-  role: 'role'
+  name: 'name'
 } as const
 
 export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
@@ -126,7 +170,6 @@ export const TeacherScalarFieldEnum = {
   gender: 'gender',
   dateOfBirth: 'dateOfBirth',
   image: 'image',
-  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -144,7 +187,6 @@ export const StudentScalarFieldEnum = {
   gender: 'gender',
   dateOfBirth: 'dateOfBirth',
   image: 'image',
-  role: 'role',
   parentId: 'parentId',
   classId: 'classId',
   gradeId: 'gradeId'
@@ -186,17 +228,6 @@ export const SubjectScalarFieldEnum = {
 } as const
 
 export type SubjectScalarFieldEnum = (typeof SubjectScalarFieldEnum)[keyof typeof SubjectScalarFieldEnum]
-
-
-export const LessonScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  subjectId: 'subjectId'
-} as const
-
-export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
 
 
 export const AttendanceScalarFieldEnum = {

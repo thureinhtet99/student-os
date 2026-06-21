@@ -5,7 +5,7 @@ import { APP_CONSTANT } from './common/constants/app.constant.js';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-client-exception.filter.js';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bodyParser: false });
 
   // API prefix
   app.setGlobalPrefix(APP_CONSTANT.API_VERSION);

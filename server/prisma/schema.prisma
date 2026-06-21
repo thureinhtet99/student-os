@@ -9,55 +9,98 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  password   String?
-  role       UserRole
-  isVerified Boolean  @default(false)
-  isActive   Boolean  @default(true)
+  id    String  @id
+  email String
+  name  String
+  image String?
+  role  String
 
-  setPasswordToken          String?
-  setPasswordTokenExpires   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  setPasswordToken        String?
+  setPasswordTokenExpires DateTime?
+
   resetPasswordToken        String?
   resetPasswordTokenExpires DateTime?
 
-  createdBy   String?
-  creator     Admin?    @relation("CreatedAccounts", fields: [createdBy], references: [adminId])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdBy String?
+  creator   Admin?  @relation("CreatedAccounts", fields: [createdBy], references: [adminId])
+
   lastLoginAt DateTime?
+
+  sessions Session[]
+  accounts Account[]
 
   student Student?
   teacher Teacher?
   admin   Admin?
 
-  refreshTokens RefreshToken[]
-
-  @@index([email])
-  @@index([role])
-  @@map("users")
+  @@unique([email])
+  @@map("user")
 }
 
-model RefreshToken {
-  id     String @id @default(uuid())
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ipAddress String?
+  userAgent String?
+
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  token     String  @unique
-  userAgent String?
-  ipAddress String?
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
 
-  expiresAt DateTime
-  revokedAt DateTime?
-  createdAt DateTime  @default(now())
+model Account {
+  id         String @id
+  accountId  String
+  providerId String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+
+  scope    String?
+  password String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
-  @@index([token])
-  @@map("refresh_tokens")
+  @@index([providerId, accountId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
 
 model Admin {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
+
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -240,12 +283,12 @@ model Result {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  examId       String
-  exam         Exam       @relation(fields: [examId], references: [id])
-  assignmentId String
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  examId       String?
+  exam         Exam?       @relation(fields: [examId], references: [id])
+  assignmentId String?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   studentId    String
-  student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student      Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([examId])
   @@index([assignmentId])

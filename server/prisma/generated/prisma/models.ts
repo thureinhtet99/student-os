@@ -9,13 +9,15 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.js'
+export type * from './models/Session.js'
+export type * from './models/Account.js'
+export type * from './models/Verification.js'
 export type * from './models/Admin.js'
 export type * from './models/Teacher.js'
 export type * from './models/Student.js'
 export type * from './models/Parent.js'
 export type * from './models/Class.js'
 export type * from './models/Subject.js'
-export type * from './models/Lesson.js'
 export type * from './models/Attendance.js'
 export type * from './models/Assignment.js'
 export type * from './models/Exam.js'

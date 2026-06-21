@@ -381,6 +381,10 @@ export type AttendanceUncheckedUpdateManyWithoutStudentNestedInput = {
   deleteMany?: Prisma.AttendanceScalarWhereInput | Prisma.AttendanceScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type AttendanceCreateWithoutStudentInput = {
   id?: string
   present: boolean

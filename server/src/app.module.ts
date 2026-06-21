@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './database/prisma/prisma.module';
@@ -16,7 +17,6 @@ import { ResultsModule } from './modules/results/results.module';
 import { StudentsModule } from './modules/students/students.module';
 import { SubjectsModule } from './modules/subjects/subjects.module';
 import { TeachersModule } from './modules/teachers/teachers.module';
-import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -37,7 +37,7 @@ import { AuthModule } from './modules/auth/auth.module';
     GradesModule,
     EventsModule,
     AnnouncementsModule,
-    AuthModule,
+    AuthModule.forRoot({ auth }),
   ],
   controllers: [AppController],
   providers: [AppService],
