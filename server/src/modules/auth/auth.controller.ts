@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Controller, Get, Post, Req } from '@nestjs/common';
+import {
+  AllowAnonymous,
+  Session,
+  type UserSession,
+} from '@thallesp/nestjs-better-auth';
+import type { Request } from 'express';
+import { AuthService } from './auth.service.js';
+import {
+  AccountsResponseDto,
+  SessionResponseDto,
+} from './dto/auth-response.dto.js';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  @Get('me')
+  me(@Session() session: UserSession): SessionResponseDto {
+    return session as SessionResponseDto;
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @AllowAnonymous()
+  @Get('session')
+  async session(@Req() req: Request) {
+    return this.authService.getSession(req.headers);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+  @AllowAnonymous()
+  @Post('sign-out')
+  async signOut(@Req() req: Request) {
+    await this.authService.signOut(req.headers);
+    return { message: 'Signed out successfully' };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Get('accounts')
+  async accounts(@Req() req: Request): Promise<AccountsResponseDto> {
+    const accounts = await this.authService.listAccounts(req.headers);
+    return { accounts: accounts };
   }
 }

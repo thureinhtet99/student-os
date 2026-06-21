@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { AuthService as BetterAuthService } from '@thallesp/nestjs-better-auth';
+import { fromNodeHeaders } from 'better-auth/node';
+import type { IncomingHttpHeaders } from 'node:http';
+import { auth } from '../../common/utils/auth.js';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(private readonly betterAuth: BetterAuthService<typeof auth>) {}
+
+  async getSession(headers: IncomingHttpHeaders) {
+    return this.betterAuth.api.getSession({
+      headers: fromNodeHeaders(headers),
+    });
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  // Lists of others accounts linked to the current user
+  async listAccounts(headers: IncomingHttpHeaders) {
+    return this.betterAuth.api.listUserAccounts({
+      headers: fromNodeHeaders(headers),
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  // Sign out and clears the session cookie.
+  async signOut(headers: IncomingHttpHeaders) {
+    return this.betterAuth.api.signOut({
+      headers: fromNodeHeaders(headers),
+    });
   }
 }

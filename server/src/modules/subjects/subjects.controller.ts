@@ -1,3 +1,4 @@
+import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -15,6 +16,7 @@ import { SubjectResponseDto } from './dto/subject-response.dto.js';
 import { UpdateSubjectDto } from './dto/update-subject.dto.js';
 import { SubjectsService } from './subjects.service.js';
 
+@AllowAnonymous()
 @Controller('subjects')
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}

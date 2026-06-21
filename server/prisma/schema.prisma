@@ -9,46 +9,107 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  password   String?
-  role       UserRole
-  isVerified Boolean  @default(false)
-  isActive   Boolean  @default(true)
+  id    String  @id
+  email String
+  name  String
+  image String?
+  role  String
 
-  setPasswordToken          String?
-  setPasswordTokenExpires   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  setPasswordToken        String?
+  setPasswordTokenExpires DateTime?
+
   resetPasswordToken        String?
   resetPasswordTokenExpires DateTime?
 
-  createdBy   String?
-  creator     Admin?    @relation("CreatedAccounts", fields: [createdBy], references: [adminId])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdBy String?
+  creator   Admin?  @relation("CreatedAccounts", fields: [createdBy], references: [adminId])
+
   lastLoginAt DateTime?
+
+  sessions Session[]
+  accounts Account[]
 
   student Student?
   teacher Teacher?
   admin   Admin?
 
-  @@index([email])
-  @@index([role])
+  @@unique([email])
   @@map("users")
 }
 
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ipAddress String?
+  userAgent String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id         String @id
+  accountId  String
+  providerId String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+
+  scope    String?
+  password String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([providerId, accountId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
 model Admin {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
+
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  adminId String   @unique
+  adminId String @unique
   name    String
-  role    UserRole @default(ADMIN)
 
   createdAccounts User[] @relation("CreatedAccounts")
 
   @@index([adminId])
-  @@index([role])
   @@map("admins")
 }
 
@@ -64,7 +125,6 @@ model Teacher {
   gender      UserGender
   dateOfBirth DateTime?
   image       String?
-  role        UserRole   @default(TEACHER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -89,7 +149,6 @@ model Student {
   gender      UserGender
   dateOfBirth DateTime?
   image       String?
-  role        UserRole   @default(STUDENT)
 
   parentId String?
   parent   Parent? @relation(fields: [parentId], references: [id])
@@ -156,27 +215,12 @@ model Subject {
   class   Class?  @relation(fields: [classId], references: [id])
 
   teachers    Teacher[]
-  lessons     Lesson[]
   assignments Assignment[]
   exams       Exam[]
 
   @@index([name])
   @@index([classId])
   @@map("subjects")
-}
-
-model Lesson {
-  id   String @id @default(uuid())
-  name String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  subjectId String
-  subject   Subject @relation(fields: [subjectId], references: [id])
-
-  @@index([subjectId])
-  @@map("lessons")
 }
 
 model Attendance {
@@ -239,12 +283,12 @@ model Result {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  examId       String
-  exam         Exam       @relation(fields: [examId], references: [id])
-  assignmentId String
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  examId       String?
+  exam         Exam?       @relation(fields: [examId], references: [id])
+  assignmentId String?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   studentId    String
-  student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student      Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([examId])
   @@index([assignmentId])

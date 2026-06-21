@@ -346,9 +346,9 @@ export type AssignmentMinOrderByAggregateInput = {
   subjectId?: Prisma.SortOrder
 }
 
-export type AssignmentScalarRelationFilter = {
-  is?: Prisma.AssignmentWhereInput
-  isNot?: Prisma.AssignmentWhereInput
+export type AssignmentNullableScalarRelationFilter = {
+  is?: Prisma.AssignmentWhereInput | null
+  isNot?: Prisma.AssignmentWhereInput | null
 }
 
 export type AssignmentCreateNestedManyWithoutSubjectInput = {
@@ -399,10 +399,12 @@ export type AssignmentCreateNestedOneWithoutResultsInput = {
   connect?: Prisma.AssignmentWhereUniqueInput
 }
 
-export type AssignmentUpdateOneRequiredWithoutResultsNestedInput = {
+export type AssignmentUpdateOneWithoutResultsNestedInput = {
   create?: Prisma.XOR<Prisma.AssignmentCreateWithoutResultsInput, Prisma.AssignmentUncheckedCreateWithoutResultsInput>
   connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutResultsInput
   upsert?: Prisma.AssignmentUpsertWithoutResultsInput
+  disconnect?: Prisma.AssignmentWhereInput | boolean
+  delete?: Prisma.AssignmentWhereInput | boolean
   connect?: Prisma.AssignmentWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AssignmentUpdateToOneWithWhereWithoutResultsInput, Prisma.AssignmentUpdateWithoutResultsInput>, Prisma.AssignmentUncheckedUpdateWithoutResultsInput>
 }

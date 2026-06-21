@@ -1,3 +1,4 @@
+import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -15,6 +16,7 @@ import { QueryParentDto } from './dto/query-parent-dto.js';
 import { UpdateParentDto } from './dto/update-parent.dto.js';
 import { ParentsService } from './parents.service.js';
 
+@AllowAnonymous()
 @Controller('parents')
 export class ParentsController {
   constructor(private readonly parentsService: ParentsService) {}

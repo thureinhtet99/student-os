@@ -34,7 +34,6 @@ export type StudentMinAggregateOutputType = {
   gender: $Enums.UserGender | null
   dateOfBirth: Date | null
   image: string | null
-  role: $Enums.UserRole | null
   parentId: string | null
   classId: string | null
   gradeId: string | null
@@ -50,7 +49,6 @@ export type StudentMaxAggregateOutputType = {
   gender: $Enums.UserGender | null
   dateOfBirth: Date | null
   image: string | null
-  role: $Enums.UserRole | null
   parentId: string | null
   classId: string | null
   gradeId: string | null
@@ -66,7 +64,6 @@ export type StudentCountAggregateOutputType = {
   gender: number
   dateOfBirth: number
   image: number
-  role: number
   parentId: number
   classId: number
   gradeId: number
@@ -84,7 +81,6 @@ export type StudentMinAggregateInputType = {
   gender?: true
   dateOfBirth?: true
   image?: true
-  role?: true
   parentId?: true
   classId?: true
   gradeId?: true
@@ -100,7 +96,6 @@ export type StudentMaxAggregateInputType = {
   gender?: true
   dateOfBirth?: true
   image?: true
-  role?: true
   parentId?: true
   classId?: true
   gradeId?: true
@@ -116,7 +111,6 @@ export type StudentCountAggregateInputType = {
   gender?: true
   dateOfBirth?: true
   image?: true
-  role?: true
   parentId?: true
   classId?: true
   gradeId?: true
@@ -205,7 +199,6 @@ export type StudentGroupByOutputType = {
   gender: $Enums.UserGender
   dateOfBirth: Date | null
   image: string | null
-  role: $Enums.UserRole
   parentId: string | null
   classId: string | null
   gradeId: string | null
@@ -242,7 +235,6 @@ export type StudentWhereInput = {
   gender?: Prisma.EnumUserGenderFilter<"Student"> | $Enums.UserGender
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   image?: Prisma.StringNullableFilter<"Student"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"Student"> | $Enums.UserRole
   parentId?: Prisma.StringNullableFilter<"Student"> | string | null
   classId?: Prisma.StringNullableFilter<"Student"> | string | null
   gradeId?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -264,7 +256,6 @@ export type StudentOrderByWithRelationInput = {
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   classId?: Prisma.SortOrderInput | Prisma.SortOrder
   gradeId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -289,7 +280,6 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   gender?: Prisma.EnumUserGenderFilter<"Student"> | $Enums.UserGender
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   image?: Prisma.StringNullableFilter<"Student"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"Student"> | $Enums.UserRole
   parentId?: Prisma.StringNullableFilter<"Student"> | string | null
   classId?: Prisma.StringNullableFilter<"Student"> | string | null
   gradeId?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -311,7 +301,6 @@ export type StudentOrderByWithAggregationInput = {
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   classId?: Prisma.SortOrderInput | Prisma.SortOrder
   gradeId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -333,7 +322,6 @@ export type StudentScalarWhereWithAggregatesInput = {
   gender?: Prisma.EnumUserGenderWithAggregatesFilter<"Student"> | $Enums.UserGender
   dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
-  role?: Prisma.EnumUserRoleWithAggregatesFilter<"Student"> | $Enums.UserRole
   parentId?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   classId?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   gradeId?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
@@ -348,7 +336,6 @@ export type StudentCreateInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   user: Prisma.UserCreateNestedOneWithoutStudentInput
   parent?: Prisma.ParentCreateNestedOneWithoutStudentsInput
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
@@ -367,7 +354,6 @@ export type StudentUncheckedCreateInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   classId?: string | null
   gradeId?: string | null
@@ -384,7 +370,6 @@ export type StudentUpdateInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
   parent?: Prisma.ParentUpdateOneWithoutStudentsNestedInput
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
@@ -403,7 +388,6 @@ export type StudentUncheckedUpdateInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -421,7 +405,6 @@ export type StudentCreateManyInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   classId?: string | null
   gradeId?: string | null
@@ -436,7 +419,6 @@ export type StudentUpdateManyMutationInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
 }
 
 export type StudentUncheckedUpdateManyInput = {
@@ -449,7 +431,6 @@ export type StudentUncheckedUpdateManyInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -470,7 +451,6 @@ export type StudentCountOrderByAggregateInput = {
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   gradeId?: Prisma.SortOrder
@@ -486,7 +466,6 @@ export type StudentMaxOrderByAggregateInput = {
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   gradeId?: Prisma.SortOrder
@@ -502,7 +481,6 @@ export type StudentMinOrderByAggregateInput = {
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   gradeId?: Prisma.SortOrder
@@ -718,7 +696,6 @@ export type StudentCreateWithoutUserInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parent?: Prisma.ParentCreateNestedOneWithoutStudentsInput
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   grade?: Prisma.GradeCreateNestedOneWithoutStudentsInput
@@ -735,7 +712,6 @@ export type StudentUncheckedCreateWithoutUserInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   classId?: string | null
   gradeId?: string | null
@@ -768,7 +744,6 @@ export type StudentUpdateWithoutUserInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parent?: Prisma.ParentUpdateOneWithoutStudentsNestedInput
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   grade?: Prisma.GradeUpdateOneWithoutStudentsNestedInput
@@ -785,7 +760,6 @@ export type StudentUncheckedUpdateWithoutUserInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -802,7 +776,6 @@ export type StudentCreateWithoutParentInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   user: Prisma.UserCreateNestedOneWithoutStudentInput
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   grade?: Prisma.GradeCreateNestedOneWithoutStudentsInput
@@ -820,7 +793,6 @@ export type StudentUncheckedCreateWithoutParentInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   classId?: string | null
   gradeId?: string | null
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentInput
@@ -866,7 +838,6 @@ export type StudentScalarWhereInput = {
   gender?: Prisma.EnumUserGenderFilter<"Student"> | $Enums.UserGender
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   image?: Prisma.StringNullableFilter<"Student"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"Student"> | $Enums.UserRole
   parentId?: Prisma.StringNullableFilter<"Student"> | string | null
   classId?: Prisma.StringNullableFilter<"Student"> | string | null
   gradeId?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -881,7 +852,6 @@ export type StudentCreateWithoutClassInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   user: Prisma.UserCreateNestedOneWithoutStudentInput
   parent?: Prisma.ParentCreateNestedOneWithoutStudentsInput
   grade?: Prisma.GradeCreateNestedOneWithoutStudentsInput
@@ -899,7 +869,6 @@ export type StudentUncheckedCreateWithoutClassInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   gradeId?: string | null
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentInput
@@ -941,7 +910,6 @@ export type StudentCreateWithoutAttendancesInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   user: Prisma.UserCreateNestedOneWithoutStudentInput
   parent?: Prisma.ParentCreateNestedOneWithoutStudentsInput
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
@@ -959,7 +927,6 @@ export type StudentUncheckedCreateWithoutAttendancesInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   classId?: string | null
   gradeId?: string | null
@@ -991,7 +958,6 @@ export type StudentUpdateWithoutAttendancesInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
   parent?: Prisma.ParentUpdateOneWithoutStudentsNestedInput
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
@@ -1009,7 +975,6 @@ export type StudentUncheckedUpdateWithoutAttendancesInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1025,7 +990,6 @@ export type StudentCreateWithoutResultsInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   user: Prisma.UserCreateNestedOneWithoutStudentInput
   parent?: Prisma.ParentCreateNestedOneWithoutStudentsInput
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
@@ -1043,7 +1007,6 @@ export type StudentUncheckedCreateWithoutResultsInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   classId?: string | null
   gradeId?: string | null
@@ -1075,7 +1038,6 @@ export type StudentUpdateWithoutResultsInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
   parent?: Prisma.ParentUpdateOneWithoutStudentsNestedInput
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
@@ -1093,7 +1055,6 @@ export type StudentUncheckedUpdateWithoutResultsInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1109,7 +1070,6 @@ export type StudentCreateWithoutGradeInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   user: Prisma.UserCreateNestedOneWithoutStudentInput
   parent?: Prisma.ParentCreateNestedOneWithoutStudentsInput
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
@@ -1127,7 +1087,6 @@ export type StudentUncheckedCreateWithoutGradeInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   classId?: string | null
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentInput
@@ -1170,7 +1129,6 @@ export type StudentCreateManyParentInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   classId?: string | null
   gradeId?: string | null
 }
@@ -1184,7 +1142,6 @@ export type StudentUpdateWithoutParentInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   grade?: Prisma.GradeUpdateOneWithoutStudentsNestedInput
@@ -1202,7 +1159,6 @@ export type StudentUncheckedUpdateWithoutParentInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentNestedInput
@@ -1219,7 +1175,6 @@ export type StudentUncheckedUpdateManyWithoutParentInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1234,7 +1189,6 @@ export type StudentCreateManyClassInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   gradeId?: string | null
 }
@@ -1248,7 +1202,6 @@ export type StudentUpdateWithoutClassInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
   parent?: Prisma.ParentUpdateOneWithoutStudentsNestedInput
   grade?: Prisma.GradeUpdateOneWithoutStudentsNestedInput
@@ -1266,7 +1219,6 @@ export type StudentUncheckedUpdateWithoutClassInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentNestedInput
@@ -1283,7 +1235,6 @@ export type StudentUncheckedUpdateManyWithoutClassInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1298,7 +1249,6 @@ export type StudentCreateManyGradeInput = {
   gender: $Enums.UserGender
   dateOfBirth?: Date | string | null
   image?: string | null
-  role?: $Enums.UserRole
   parentId?: string | null
   classId?: string | null
 }
@@ -1312,7 +1262,6 @@ export type StudentUpdateWithoutGradeInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
   parent?: Prisma.ParentUpdateOneWithoutStudentsNestedInput
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
@@ -1330,7 +1279,6 @@ export type StudentUncheckedUpdateWithoutGradeInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentNestedInput
@@ -1347,7 +1295,6 @@ export type StudentUncheckedUpdateManyWithoutGradeInput = {
   gender?: Prisma.EnumUserGenderFieldUpdateOperationsInput | $Enums.UserGender
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1402,7 +1349,6 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   gender?: boolean
   dateOfBirth?: boolean
   image?: boolean
-  role?: boolean
   parentId?: boolean
   classId?: boolean
   gradeId?: boolean
@@ -1425,7 +1371,6 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   gender?: boolean
   dateOfBirth?: boolean
   image?: boolean
-  role?: boolean
   parentId?: boolean
   classId?: boolean
   gradeId?: boolean
@@ -1445,7 +1390,6 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   gender?: boolean
   dateOfBirth?: boolean
   image?: boolean
-  role?: boolean
   parentId?: boolean
   classId?: boolean
   gradeId?: boolean
@@ -1465,13 +1409,12 @@ export type StudentSelectScalar = {
   gender?: boolean
   dateOfBirth?: boolean
   image?: boolean
-  role?: boolean
   parentId?: boolean
   classId?: boolean
   gradeId?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "studentId" | "name" | "phone" | "address" | "gender" | "dateOfBirth" | "image" | "role" | "parentId" | "classId" | "gradeId", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "studentId" | "name" | "phone" | "address" | "gender" | "dateOfBirth" | "image" | "parentId" | "classId" | "gradeId", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Student$parentArgs<ExtArgs>
@@ -1514,7 +1457,6 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     gender: $Enums.UserGender
     dateOfBirth: Date | null
     image: string | null
-    role: $Enums.UserRole
     parentId: string | null
     classId: string | null
     gradeId: string | null
@@ -1956,7 +1898,6 @@ export interface StudentFieldRefs {
   readonly gender: Prisma.FieldRef<"Student", 'UserGender'>
   readonly dateOfBirth: Prisma.FieldRef<"Student", 'DateTime'>
   readonly image: Prisma.FieldRef<"Student", 'String'>
-  readonly role: Prisma.FieldRef<"Student", 'UserRole'>
   readonly parentId: Prisma.FieldRef<"Student", 'String'>
   readonly classId: Prisma.FieldRef<"Student", 'String'>
   readonly gradeId: Prisma.FieldRef<"Student", 'String'>
