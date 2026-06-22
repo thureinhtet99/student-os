@@ -36,9 +36,9 @@ export class ResultsService {
         student: { connect: { id: createResultDto.student_id } },
       },
       include: {
-        exam: { select: { id: true, name: true } },
-        assignment: { select: { id: true, name: true } },
-        student: { select: { id: true, name: true } },
+        exam: true,
+        assignment: true,
+        student: true,
       },
     });
 
@@ -62,9 +62,9 @@ export class ResultsService {
       take: limit,
       orderBy: { createdAt: 'desc' },
       include: {
-        exam: { select: { id: true, name: true } },
-        assignment: { select: { id: true, name: true } },
-        student: { select: { id: true, name: true } },
+        exam: true,
+        assignment: true,
+        student: true,
       },
     });
 
@@ -83,9 +83,9 @@ export class ResultsService {
     const result = await this.prisma.result.findUnique({
       where: { id },
       include: {
-        exam: { select: { id: true, name: true } },
-        assignment: { select: { id: true, name: true } },
-        student: { select: { id: true, name: true } },
+        exam: true,
+        assignment: true,
+        student: true,
       },
     });
 
@@ -128,9 +128,9 @@ export class ResultsService {
           : undefined,
       },
       include: {
-        exam: { select: { id: true, name: true } },
-        assignment: { select: { id: true, name: true } },
-        student: { select: { id: true, name: true } },
+        exam: true,
+        assignment: true,
+        student: true,
       },
     });
 

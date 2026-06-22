@@ -25,14 +25,18 @@ export class ClassesService {
     const classItem = await this.prisma.class.create({
       data: {
         name: createClassDto.name,
-        teacher: createClassDto.teacher_id
+        teacher: createClassDto.teacherId
           ? {
-              connect: { id: createClassDto.teacher_id },
+              connect: { id: createClassDto.teacherId },
             }
           : undefined,
       },
       include: {
         teacher: true,
+        students: true,
+        subjects: true,
+        events: true,
+        announcements: true,
       },
     });
 
@@ -127,14 +131,18 @@ export class ClassesService {
       where: { id },
       data: {
         name: updateClassDto.name,
-        teacher: updateClassDto.teacher_id
+        teacher: updateClassDto.teacherId
           ? {
-              connect: { id: updateClassDto.teacher_id },
+              connect: { id: updateClassDto.teacherId },
             }
           : undefined,
       },
       include: {
         teacher: true,
+        students: true,
+        subjects: true,
+        events: true,
+        announcements: true,
       },
     });
 

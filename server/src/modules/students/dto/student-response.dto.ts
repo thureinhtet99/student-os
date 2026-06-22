@@ -1,3 +1,8 @@
+import {
+  Class,
+  Grade,
+  Parent,
+} from '../../../../prisma/generated/prisma/client.js';
 import { UserResponseDto } from '../../../common/dto/user-response.dto.js';
 
 export class GradeResponseDto {
@@ -13,9 +18,9 @@ export class GradeResponseDto {
 export class StudentResponseDto extends UserResponseDto {
   studentId!: string;
 
-  parent!: { id: string; name: string } | null;
+  parent!: Parent | null;
 
-  class!: { id: string; name: string } | null;
+  class!: Class | null;
 
-  grade!: { id: string; level: number } | null;
+  grade!: Grade | null;
 }

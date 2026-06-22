@@ -19,13 +19,11 @@ export class EventsService {
         description: createEventDto.description?.trim() || null,
         startTime: new Date(createEventDto.startTime),
         endTime: new Date(createEventDto.endTime),
-        class: createEventDto.classId
-          ? { connect: { id: createEventDto.classId } }
-          : undefined,
+        ...(createEventDto.classId !== undefined && {
+          classId: createEventDto.classId,
+        }),
       },
-      include: {
-        class: { select: { id: true, name: true } },
-      },
+      include: { class: true },
     });
 
     return formatEvent(event);
@@ -51,9 +49,7 @@ export class EventsService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { startTime: 'desc' },
-      include: {
-        class: { select: { id: true, name: true } },
-      },
+      include: { class: true },
     });
 
     return {
@@ -70,9 +66,7 @@ export class EventsService {
   async findOne(id: string): Promise<EventResponseDto> {
     const event = await this.prisma.event.findUnique({
       where: { id },
-      include: {
-        class: { select: { id: true, name: true } },
-      },
+      include: { class: true },
     });
 
     if (!event) throw new NotFoundException('Event is not found');
@@ -108,9 +102,7 @@ export class EventsService {
               ? { connect: { id: updateEventDto.classId } }
               : { disconnect: true },
       },
-      include: {
-        class: { select: { id: true, name: true } },
-      },
+      include: { class: true },
     });
 
     return formatEvent(event);

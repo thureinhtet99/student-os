@@ -21,9 +21,7 @@ export class AttendancesService {
         date: new Date(createAttendanceDto.date),
         student: { connect: { id: createAttendanceDto.student_id } },
       },
-      include: {
-        student: { select: { id: true, name: true } },
-      },
+      include: { student: true },
     });
 
     return formatAttendance(attendance);
@@ -47,7 +45,7 @@ export class AttendancesService {
       take: limit,
       orderBy: { date: 'desc' },
       include: {
-        student: { select: { id: true, name: true } },
+        student: true,
       },
     });
 
@@ -66,7 +64,7 @@ export class AttendancesService {
     const attendance = await this.prisma.attendance.findUnique({
       where: { id },
       include: {
-        student: { select: { id: true, name: true } },
+        student: true,
       },
     });
 
@@ -97,7 +95,7 @@ export class AttendancesService {
           : undefined,
       },
       include: {
-        student: { select: { id: true, name: true } },
+        student: true,
       },
     });
 
