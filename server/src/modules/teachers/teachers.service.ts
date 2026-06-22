@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { hashPassword } from 'better-auth/crypto';
 import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
@@ -17,6 +17,8 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto.js';
 
 @Injectable()
 export class TeachersService {
+  private readonly logger = new Logger(TeachersService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinary: CloudinaryService,
@@ -206,15 +208,13 @@ export class TeachersService {
     const teacher = await this.prisma.teacher.update({
       where: { id },
       data: {
-        user:
-          updateTeacherDto.email || updateTeacherDto.role
-            ? {
-                update: {
-                  email: updateTeacherDto.email?.trim(),
-                  role: updateTeacherDto.role,
-                },
-              }
-            : undefined,
+        user: updateTeacherDto.email
+          ? {
+              update: {
+                email: updateTeacherDto.email?.trim(),
+              },
+            }
+          : undefined,
         name: updateTeacherDto.name?.trim(),
         phone: updateTeacherDto.phone?.trim(),
         address:
@@ -234,7 +234,6 @@ export class TeachersService {
           updateTeacherDto.image === undefined
             ? undefined
             : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
-        role: updateTeacherDto.role,
       },
       include: {
         user: true,
