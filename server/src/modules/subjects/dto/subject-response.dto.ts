@@ -4,6 +4,6 @@ export class SubjectResponseDto {
   description!: string | null;
   class!: { id: string; name: string } | null;
   teachers!: { id: string; name: string }[];
-  created_at!: Date;
-  updated_at!: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
 }

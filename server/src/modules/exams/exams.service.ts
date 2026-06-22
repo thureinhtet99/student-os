@@ -4,8 +4,8 @@ import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js
 import { formatExam } from '../../common/formatters/exam.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateExamDto } from './dto/create-exam.dto.js';
-import { QueryExamDto } from './dto/query-exam-dto.js';
 import { ExamResponseDto } from './dto/exam-response.dto.js';
+import { QueryExamDto } from './dto/query-exam-dto.js';
 import { UpdateExamDto } from './dto/update-exam.dto.js';
 
 @Injectable()
@@ -58,7 +58,7 @@ export class ExamsService {
         total,
         page,
         limit,
-        total_pages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }

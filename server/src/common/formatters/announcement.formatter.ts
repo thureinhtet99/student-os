@@ -12,7 +12,7 @@ export function formatAnnouncement(
     class: announcement.class
       ? { id: announcement.class.id, name: announcement.class.name }
       : null,
-    created_at: announcement.createdAt,
-    updated_at: announcement.updatedAt,
+    createdAt: announcement.createdAt,
+    updatedAt: announcement.updatedAt,
   };
 }

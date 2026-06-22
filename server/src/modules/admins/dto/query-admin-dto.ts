@@ -1,13 +1,3 @@
-import { IsOptional, IsString } from 'class-validator';
+import { QueryDto } from '../../../common/dto/query.dto';
 
-export class QueryAdminDto {
-  @IsString()
-  @IsOptional()
-  search?: string;
-
-  @IsOptional()
-  page?: number;
-
-  @IsOptional()
-  limit?: number;
-}
+export class QueryAdminDto extends QueryDto {}

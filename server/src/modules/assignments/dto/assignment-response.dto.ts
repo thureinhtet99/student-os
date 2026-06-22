@@ -3,6 +3,6 @@ export class AssignmentResponseDto {
   name!: string;
   due_date!: Date | null;
   subject!: { id: string; name: string } | null;
-  created_at!: Date;
-  updated_at!: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
 }

@@ -6,17 +6,18 @@ export function formatTeacher(
 ): TeacherResponseDto {
   return {
     id: teacher.id,
+    userId: teacher.user.id,
+    teacherId: teacher.teacherId,
     name: teacher.name,
     email: teacher.user.email,
     phone: teacher.phone,
     address: teacher.address,
     gender: teacher.gender,
-    birthday: teacher.dateOfBirth,
+    dateOfBirth: teacher.dateOfBirth,
     image: teacher.image,
-    role: teacher.role,
     classes: teacher.classes.map((c) => ({ id: c.id, name: c.name })),
     subjects: teacher.subjects.map((s) => ({ id: s.id, name: s.name })),
-    created_at: teacher.createdAt,
-    updated_at: teacher.updatedAt,
+    createdAt: teacher.user.createdAt,
+    updatedAt: teacher.user.updatedAt,
   };
 }

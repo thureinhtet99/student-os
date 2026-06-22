@@ -9,7 +9,7 @@ export function formatEvent(event: EventWithRelations): EventResponseDto {
     startTime: event.startTime,
     endTime: event.endTime,
     class: event.class ? { id: event.class.id, name: event.class.name } : null,
-    created_at: event.createdAt,
-    updated_at: event.updatedAt,
+    createdAt: event.createdAt,
+    updatedAt: event.updatedAt,
   };
 }

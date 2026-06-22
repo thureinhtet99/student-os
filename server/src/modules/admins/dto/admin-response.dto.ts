@@ -1,10 +1,13 @@
-import { UserRole } from '../../../../prisma/generated/prisma/client.js';
+import { PickType } from '@nestjs/mapped-types';
+import { UserResponseDto } from '../../../common/dto/user-response.dto';
 
-export class AdminResponseDto {
-  id!: string;
-  name!: string;
-  email!: string;
-  role!: UserRole;
-  created_at!: Date | null;
-  updated_at!: Date | null;
+export class AdminResponseDto extends PickType(UserResponseDto, [
+  'id',
+  'userId',
+  'name',
+  'email',
+  'createdAt',
+  'updatedAt',
+]) {
+  adminId!: string;
 }

@@ -18,7 +18,7 @@ export function formatClass(classEntity: ClassWithRelations): ClassResponseDto {
     // announcements: classEntity.announcements
     //   ? classEntity.announcements.map((ann) => ann)
     //   : null,
-    created_at: classEntity.createdAt,
-    updated_at: classEntity.updatedAt,
+    createdAt: classEntity.createdAt,
+    updatedAt: classEntity.updatedAt,
   };
 }

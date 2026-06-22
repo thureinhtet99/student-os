@@ -1,16 +1,8 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { PickType } from '@nestjs/mapped-types';
+import { CreateUserDto } from '../../../common/dto/create-user.dto';
 
-export class CreateAdminDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(200)
-  name!: string;
-
-  @IsNotEmpty()
-  @IsEmail()
-  email!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password!: string;
-}
+export class CreateAdminDto extends PickType(CreateUserDto, [
+  'name',
+  'email',
+  'password',
+] as const) {}

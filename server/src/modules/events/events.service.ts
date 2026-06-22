@@ -62,7 +62,7 @@ export class EventsService {
         total,
         page,
         limit,
-        total_pages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }

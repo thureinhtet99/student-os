@@ -1,10 +1,13 @@
 import {
+  HttpException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import bcrypt from 'bcrypt';
+import { hashPassword } from 'better-auth/crypto';
+import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
+import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatAdmin } from '../../common/formatters/admin.formatter.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
@@ -16,7 +19,6 @@ import { UpdateAdminDto } from './dto/update-admin.dto.js';
 
 @Injectable()
 export class AdminsService {
-  private readonly SALT_ROUNDS = 12;
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createAdminDto: CreateAdminDto): Promise<AdminResponseDto> {
@@ -39,32 +41,42 @@ export class AdminsService {
         'Admin with this email already exists',
       );
 
-      const hashedPwd = await bcrypt.hash(password, this.SALT_ROUNDS);
+      const hashedPwd = await hashPassword(password);
+      const userId = randomUUID();
 
-      const createdUser = await this.prisma.user.create({
-        data: {
-          email: email.trim(),
-          password: hashedPwd,
-          role: UserRole.ADMIN,
-          isVerified: true,
-          isActive: true,
-        },
-      });
+      const admin = await this.prisma.$transaction(async (tx) => {
+        const createdUser = await tx.user.create({
+          data: {
+            id: userId,
+            email: email.trim(),
+            name: name.trim(),
+            role: UserRole.SUPER_ADMIN,
+            accounts: {
+              create: {
+                id: randomUUID(),
+                accountId: `${APP_CONSTANT.APP_NAME}-${userId.slice(-12)}`,
+                providerId: 'credential',
+                password: hashedPwd,
+              },
+            },
+          },
+        });
 
-      const adminId = `ADM-${createdUser.id.slice(-12)}`;
+        const adminId = `ADM-${createdUser.id.slice(-12)}`;
 
-      const admin = await this.prisma.admin.create({
-        data: {
-          adminId,
-          userId: createdUser.id,
-          name: name.trim(),
-          role: UserRole.ADMIN,
-        },
-        include: { user: true },
+        return tx.admin.create({
+          data: {
+            adminId,
+            userId: createdUser.id,
+            name: name.trim(),
+          },
+          include: { user: true },
+        });
       });
 
       return formatAdmin(admin);
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       const message = error instanceof Error ? error.message : 'Unknown error';
       console.error('Error during admin create:', message);
       throw new InternalServerErrorException(
@@ -109,7 +121,7 @@ export class AdminsService {
         total,
         page,
         limit,
-        total_pages: Math.ceil(total / (limit || 10)),
+        totalPages: Math.ceil(total / (limit || 10)),
       },
     };
   }

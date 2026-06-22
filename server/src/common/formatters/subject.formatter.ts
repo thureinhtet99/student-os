@@ -14,7 +14,7 @@ export function formatSubject(
     teachers: subject.teachers
       ? subject.teachers.map((t) => ({ id: t.id, name: t.name }))
       : [],
-    created_at: subject.createdAt,
-    updated_at: subject.updatedAt,
+    createdAt: subject.createdAt,
+    updatedAt: subject.updatedAt,
   };
 }

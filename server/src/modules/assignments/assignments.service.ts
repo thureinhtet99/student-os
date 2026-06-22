@@ -3,9 +3,9 @@ import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatAssignment } from '../../common/formatters/assignment.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
+import { AssignmentResponseDto } from './dto/assignment-response.dto.js';
 import { CreateAssignmentDto } from './dto/create-assignment.dto.js';
 import { QueryAssignmentDto } from './dto/query-assignment-dto.js';
-import { AssignmentResponseDto } from './dto/assignment-response.dto.js';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto.js';
 
 @Injectable()
@@ -62,7 +62,7 @@ export class AssignmentsService {
         total,
         page,
         limit,
-        total_pages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }

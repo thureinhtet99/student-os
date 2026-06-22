@@ -3,6 +3,6 @@ export class AttendanceResponseDto {
   present!: boolean;
   date!: Date;
   student!: { id: string; name: string } | null;
-  created_at!: Date;
-  updated_at!: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
 }

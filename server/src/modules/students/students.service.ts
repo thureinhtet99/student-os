@@ -70,8 +70,8 @@ export class StudentsService {
         name: createStudentDto.name.trim(),
         phone: createStudentDto.phone?.trim(),
         address: createStudentDto.address?.trim() || null,
-        dateOfBirth: createStudentDto.birthday
-          ? new Date(createStudentDto.birthday)
+        dateOfBirth: createStudentDto.dateOfBirth
+          ? new Date(createStudentDto.dateOfBirth)
           : null,
         gender: formatGender(createStudentDto.gender),
         image: imageUrl,
@@ -154,7 +154,7 @@ export class StudentsService {
         total,
         page,
         limit,
-        total_pages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }
@@ -262,10 +262,10 @@ export class StudentsService {
             ? undefined
             : updateStudentDto.address?.trim() || null,
         dateOfBirth:
-          updateStudentDto.birthday === undefined
+          updateStudentDto.dateOfBirth === undefined
             ? undefined
-            : updateStudentDto.birthday
-              ? new Date(updateStudentDto.birthday)
+            : updateStudentDto.dateOfBirth
+              ? new Date(updateStudentDto.dateOfBirth)
               : null,
         gender: updateStudentDto.gender
           ? formatGender(updateStudentDto.gender)

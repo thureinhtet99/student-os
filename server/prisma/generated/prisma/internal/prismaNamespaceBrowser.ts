@@ -169,9 +169,7 @@ export const TeacherScalarFieldEnum = {
   address: 'address',
   gender: 'gender',
   dateOfBirth: 'dateOfBirth',
-  image: 'image',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  image: 'image'
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]

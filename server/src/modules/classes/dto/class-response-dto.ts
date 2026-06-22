@@ -13,7 +13,7 @@ export class ClassResponseDto {
 
   // announcements!: Omit<Announcement, 'createdAt' | 'updatedAt'>[] | null;
 
-  created_at!: Date;
+  createdAt!: Date;
 
-  updated_at!: Date;
+  updatedAt!: Date;
 }

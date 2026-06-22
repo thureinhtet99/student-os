@@ -5,6 +5,6 @@ export class ExamResponseDto {
   startTime!: Date;
   endTime!: Date;
   subject!: { id: string; name: string } | null;
-  created_at!: Date;
-  updated_at!: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
 }

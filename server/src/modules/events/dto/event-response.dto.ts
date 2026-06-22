@@ -5,6 +5,6 @@ export class EventResponseDto {
   startTime!: Date;
   endTime!: Date;
   class!: { id: string; name: string } | null;
-  created_at!: Date;
-  updated_at!: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
 }

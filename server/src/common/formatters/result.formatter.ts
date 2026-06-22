@@ -13,7 +13,7 @@ export function formatResult(result: ResultWithRelations): ResultResponseDto {
     student: result.student
       ? { id: result.student.id, name: result.student.name }
       : null,
-    created_at: result.createdAt,
-    updated_at: result.updatedAt,
+    createdAt: result.createdAt,
+    updatedAt: result.updatedAt,
   };
 }

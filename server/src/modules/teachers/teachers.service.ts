@@ -1,6 +1,8 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import bcrypt from 'bcrypt';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { hashPassword } from 'better-auth/crypto';
+import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
+import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatTeacher } from '../../common/formatters/teacher.formatter.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
@@ -15,8 +17,6 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto.js';
 
 @Injectable()
 export class TeachersService {
-  private readonly logger = new Logger(TeachersService.name);
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinary: CloudinaryService,
@@ -25,6 +25,8 @@ export class TeachersService {
   async create(
     createTeacherDto: CreateTeacherDto,
   ): Promise<TeacherResponseDto> {
+    const { email, password, name, image, gender } = createTeacherDto;
+
     await checkDuplicate(
       this.prisma.teacher,
       'name',
@@ -51,37 +53,44 @@ export class TeachersService {
       );
     }
 
-    const imageUrl = resolveImageUrl(createTeacherDto.image, this.cloudinary);
-    const hashedPwd = await bcrypt.hash(createTeacherDto.password, 12);
-    const teacherId = `TCH-${Math.floor(100000 + Math.random() * 900000)}`;
+    const hashedPwd = await hashPassword(password);
+    const userId = randomUUID();
+    const imageUrl = resolveImageUrl(image, this.cloudinary);
 
-    const teacher = await this.prisma.teacher.create({
-      data: {
-        teacherId,
-        user: {
-          create: {
-            email: createTeacherDto.email.trim(),
-            password: hashedPwd,
-            role: createTeacherDto.role ?? UserRole.TEACHER,
-            isVerified: true,
-            isActive: true,
+    const teacher = await this.prisma.$transaction(async (tx) => {
+      const createdUser = await tx.user.create({
+        data: {
+          id: userId,
+          email: email.trim(),
+          name: name.trim(),
+          role: UserRole.TEACHER,
+          accounts: {
+            create: {
+              id: randomUUID(),
+              accountId: `${APP_CONSTANT.APP_NAME}-${userId.slice(-12)}`,
+              providerId: 'credential',
+              password: hashedPwd,
+            },
           },
         },
-        name: createTeacherDto.name.trim(),
-        phone: createTeacherDto.phone?.trim(),
-        address: createTeacherDto.address?.trim() || null,
-        dateOfBirth: createTeacherDto.birthday
-          ? new Date(createTeacherDto.birthday)
-          : null,
-        gender: formatGender(createTeacherDto.gender),
-        image: imageUrl,
-        role: createTeacherDto.role ?? UserRole.TEACHER,
-      },
-      include: {
-        user: true,
-        classes: { select: { id: true, name: true } },
-        subjects: { select: { id: true, name: true } },
-      },
+      });
+
+      const teacherId = `TCH-${createdUser.id.slice(-12)}`;
+
+      return tx.teacher.create({
+        data: {
+          teacherId,
+          userId: createdUser.id,
+          name: name.trim(),
+          gender,
+          image: imageUrl,
+        },
+        include: {
+          user: true,
+          classes: { select: { id: true, name: true } },
+          subjects: { select: { id: true, name: true } },
+        },
+      });
     });
 
     return formatTeacher(teacher);
@@ -124,7 +133,7 @@ export class TeachersService {
         total,
         page,
         limit,
-        total_pages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }
@@ -213,10 +222,10 @@ export class TeachersService {
             ? undefined
             : updateTeacherDto.address?.trim() || null,
         dateOfBirth:
-          updateTeacherDto.birthday === undefined
+          updateTeacherDto.dateOfBirth === undefined
             ? undefined
-            : updateTeacherDto.birthday
-              ? new Date(updateTeacherDto.birthday)
+            : updateTeacherDto.dateOfBirth
+              ? new Date(updateTeacherDto.dateOfBirth)
               : null,
         gender: updateTeacherDto.gender
           ? formatGender(updateTeacherDto.gender)
