@@ -19,8 +19,8 @@ export class EventsService {
         description: createEventDto.description?.trim() || null,
         startTime: new Date(createEventDto.startTime),
         endTime: new Date(createEventDto.endTime),
-        class: createEventDto.class_id
-          ? { connect: { id: createEventDto.class_id } }
+        class: createEventDto.classId
+          ? { connect: { id: createEventDto.classId } }
           : undefined,
       },
       include: {
@@ -34,11 +34,11 @@ export class EventsService {
   async findAll(
     queryEventDto: QueryEventDto,
   ): Promise<PaginatedResponseDto<EventResponseDto>> {
-    const { search, class_id, page = 1, limit = 10 } = queryEventDto;
+    const { search, classId, page = 1, limit = 10 } = queryEventDto;
 
     const where: Prisma.EventWhereInput = {};
 
-    if (class_id) where.classId = class_id;
+    if (classId) where.classId = classId;
 
     if (search) {
       where.name = { contains: search, mode: 'insensitive' };
@@ -102,10 +102,10 @@ export class EventsService {
           ? new Date(updateEventDto.endTime)
           : undefined,
         class:
-          updateEventDto.class_id === undefined
+          updateEventDto.classId === undefined
             ? undefined
-            : updateEventDto.class_id
-              ? { connect: { id: updateEventDto.class_id } }
+            : updateEventDto.classId
+              ? { connect: { id: updateEventDto.classId } }
               : { disconnect: true },
       },
       include: {

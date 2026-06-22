@@ -4,5 +4,5 @@ import {
 } from '../../../prisma/generated/prisma/client.js';
 
 export type AnnouncementWithRelations = Announcement & {
-  class?: Pick<Class, 'id' | 'name'> | null;
+  class: Class | null;
 };

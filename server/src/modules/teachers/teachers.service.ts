@@ -89,8 +89,8 @@ export class TeachersService {
         },
         include: {
           user: true,
-          classes: { select: { id: true, name: true } },
-          subjects: { select: { id: true, name: true } },
+          classes: true,
+          subjects: true,
         },
       });
     });
@@ -124,8 +124,8 @@ export class TeachersService {
       orderBy: { name: 'asc' },
       include: {
         user: true,
-        classes: { select: { id: true, name: true } },
-        subjects: { select: { id: true, name: true } },
+        classes: true,
+        subjects: true,
       },
     });
 
@@ -145,8 +145,8 @@ export class TeachersService {
       where: { id },
       include: {
         user: true,
-        classes: { select: { id: true, name: true } },
-        subjects: { select: { id: true, name: true } },
+        classes: true,
+        subjects: true,
       },
     });
 
@@ -237,8 +237,8 @@ export class TeachersService {
       },
       include: {
         user: true,
-        classes: { select: { id: true, name: true } },
-        subjects: { select: { id: true, name: true } },
+        classes: true,
+        subjects: true,
       },
     });
 

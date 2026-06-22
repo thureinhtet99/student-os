@@ -4,5 +4,5 @@ import {
 } from '../../../prisma/generated/prisma/client.js';
 
 export type AssignmentWithRelations = Assignment & {
-  subject?: Pick<Subject, 'id' | 'name'> | null;
+  subject: Subject | null;
 };

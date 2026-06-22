@@ -1,6 +1,8 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import bcrypt from 'bcrypt';
+import { hashPassword } from 'better-auth/crypto';
+import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
+import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatStudent } from '../../common/formatters/student.formatter.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
@@ -25,6 +27,17 @@ export class StudentsService {
   async create(
     createStudentDto: CreateStudentDto,
   ): Promise<StudentResponseDto> {
+    const {
+      email,
+      password,
+      name,
+      phone,
+      address,
+      image,
+      gender,
+      dateOfBirth,
+    } = createStudentDto;
+
     await checkDuplicate(
       this.prisma.student,
       'name',
@@ -51,47 +64,54 @@ export class StudentsService {
       );
     }
 
-    const imageUrl = resolveImageUrl(createStudentDto.image, this.cloudinary);
-    const hashedPwd = await bcrypt.hash(createStudentDto.password, 12);
-    const studentId = `STU-${Math.floor(100000 + Math.random() * 900000)}`;
+    const imageUrl = resolveImageUrl(image, this.cloudinary);
+    const hashedPwd = await hashPassword(password);
+    const userId = randomUUID();
 
-    const student = await this.prisma.student.create({
-      data: {
-        studentId,
-        user: {
-          create: {
-            email: createStudentDto.email.trim(),
-            password: hashedPwd,
-            role: createStudentDto.role ?? UserRole.STUDENT,
-            isVerified: true,
-            isActive: true,
+    const student = await this.prisma.$transaction(async (tx) => {
+      const createdUser = await tx.user.create({
+        data: {
+          id: userId,
+          email: email.trim(),
+          name: name.trim(),
+          role: UserRole.STUDENT,
+          accounts: {
+            create: {
+              id: randomUUID(),
+              accountId: `${APP_CONSTANT.APP_NAME}-${userId.slice(-12)}`,
+              providerId: 'credential',
+              password: hashedPwd,
+            },
           },
         },
-        name: createStudentDto.name.trim(),
-        phone: createStudentDto.phone?.trim(),
-        address: createStudentDto.address?.trim() || null,
-        dateOfBirth: createStudentDto.dateOfBirth
-          ? new Date(createStudentDto.dateOfBirth)
-          : null,
-        gender: formatGender(createStudentDto.gender),
-        image: imageUrl,
-        role: createStudentDto.role ?? UserRole.STUDENT,
-        class: createStudentDto.class_id
-          ? { connect: { id: createStudentDto.class_id } }
-          : undefined,
-        grade: createStudentDto.grade_id
-          ? { connect: { id: createStudentDto.grade_id } }
-          : undefined,
-        parent: createStudentDto.parent_id
-          ? { connect: { id: createStudentDto.parent_id } }
-          : undefined,
-      },
-      include: {
-        user: true,
-        parent: true,
-        class: true,
-        grade: true,
-      },
+      });
+
+      const studentId = `STU-${createdUser.id.slice(-12)}`;
+
+      return tx.student.create({
+        data: {
+          studentId,
+          userId: createdUser.id,
+          name: name.trim(),
+          phone,
+          address,
+          gender,
+          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+          image: imageUrl,
+          ...(createStudentDto.classId !== undefined && {
+            classId: createStudentDto.classId,
+          }),
+          ...(createStudentDto.parentId !== undefined && {
+            parentId: createStudentDto.parentId,
+          }),
+        },
+        include: {
+          user: true,
+          parent: true,
+          class: true,
+          grade: true,
+        },
+      });
     });
 
     return formatStudent(student);
@@ -103,7 +123,7 @@ export class StudentsService {
     const {
       class: classId,
       grade,
-      filter,
+      gender,
       search,
       page = 1,
       limit = 10,
@@ -115,7 +135,7 @@ export class StudentsService {
 
     if (grade) where.gradeId = grade;
 
-    if (filter) where.gender = filter;
+    if (gender) where.gender = gender;
 
     if (search) {
       where.OR = [
@@ -274,21 +294,20 @@ export class StudentsService {
           updateStudentDto.image === undefined
             ? undefined
             : resolveImageUrl(updateStudentDto.image, this.cloudinary),
-        role: updateStudentDto.role,
         class:
-          updateStudentDto.class_id === undefined
+          updateStudentDto.classId === undefined
             ? undefined
-            : updateStudentDto.class_id
-              ? { connect: { id: updateStudentDto.class_id } }
+            : updateStudentDto.classId
+              ? { connect: { id: updateStudentDto.classId } }
               : { disconnect: true },
         grade:
-          updateStudentDto.grade_id === undefined
+          updateStudentDto.gradeId === undefined
             ? undefined
-            : updateStudentDto.grade_id
-              ? { connect: { id: updateStudentDto.grade_id } }
+            : updateStudentDto.gradeId
+              ? { connect: { id: updateStudentDto.gradeId } }
               : { disconnect: true },
-        parent: updateStudentDto.parent_id
-          ? { connect: { id: updateStudentDto.parent_id } }
+        parent: updateStudentDto.parentId
+          ? { connect: { id: updateStudentDto.parentId } }
           : undefined,
       },
       include: {

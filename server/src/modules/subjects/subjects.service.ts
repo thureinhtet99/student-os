@@ -28,8 +28,8 @@ export class SubjectsService {
       data: {
         name: createSubjectDto.name.trim(),
         description: createSubjectDto.description?.trim() || null,
-        class: createSubjectDto.class_id
-          ? { connect: { id: createSubjectDto.class_id } }
+        class: createSubjectDto.classId
+          ? { connect: { id: createSubjectDto.classId } }
           : undefined,
       },
       include: {
@@ -125,10 +125,10 @@ export class SubjectsService {
             ? undefined
             : updateSubjectDto.description?.trim() || null,
         class:
-          updateSubjectDto.class_id === undefined
+          updateSubjectDto.classId === undefined
             ? undefined
-            : updateSubjectDto.class_id
-              ? { connect: { id: updateSubjectDto.class_id } }
+            : updateSubjectDto.classId
+              ? { connect: { id: updateSubjectDto.classId } }
               : { disconnect: true },
       },
       include: {

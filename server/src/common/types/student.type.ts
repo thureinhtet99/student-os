@@ -6,9 +6,9 @@ import {
   User,
 } from '../../../prisma/generated/prisma/client.js';
 
-export type StudentWithRelations = Student & {
+export type StudentWithRelations = Omit<Student, 'password'> & {
   user: User;
-  class: Pick<Class, 'id' | 'name'> | null;
-  grade: Pick<Grade, 'id' | 'level'> | null;
+  class: Class | null;
+  grade: Grade | null;
   parent: Parent | null;
 };

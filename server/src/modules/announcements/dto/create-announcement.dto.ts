@@ -23,5 +23,5 @@ export class CreateAnnouncementDto {
 
   @IsString()
   @IsOptional()
-  class_id!: string | null;
+  classId!: string | null;
 }
