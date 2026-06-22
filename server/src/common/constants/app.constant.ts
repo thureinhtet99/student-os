@@ -5,6 +5,15 @@ export const APP_CONSTANT = {
   // API_DOCS: '/api/docs',
 } as const;
 
+export const END_POINTS = {
+  // Auth
+  SIGN_IN: '/auth/sign-in/email',
+  SIGN_OUT: '/auth/sign-out',
+  GET_SESSION: '/auth/get-session',
+  SESSION: '/auth/session/me',
+  ACCOUNTS: '/auth/session/accounts',
+};
+
 export const CLOUDINARY_CONSTANT = {
   CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME!,
   API_KEY: process.env.CLOUDINARY_API_KEY!,

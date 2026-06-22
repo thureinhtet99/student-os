@@ -12,7 +12,7 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',')
   .filter(Boolean) ?? ['http://localhost:3001'];
 
 export const auth = betterAuth({
-  basePath: '/api/auth',
+  basePath: '/api/v1/auth',
   trustedOrigins: allowedOrigins,
   database: prismaAdapter(prisma, {
     provider: 'postgresql',

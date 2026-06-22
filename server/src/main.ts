@@ -15,7 +15,7 @@ async function bootstrap() {
     origin: process.env.ALLOWED_ORIGINS?.split(',') ?? 'http://localhost:3001',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    allowedHeader: ['Content-Type', 'Authorization', 'Accept'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
 
   // Global validation

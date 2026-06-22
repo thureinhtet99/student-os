@@ -1,36 +1,21 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
-import {
-  AllowAnonymous,
-  Session,
-  type UserSession,
-} from '@thallesp/nestjs-better-auth';
+import { Controller, Get, Req } from '@nestjs/common';
+import { Session, type UserSession } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
 import { AuthService } from './auth.service.js';
-import {
-  AccountsResponseDto,
-  SessionResponseDto,
-} from './dto/auth-response.dto.js';
+import { AccountsResponseDto } from './dto/auth-response.dto.js';
 
-@Controller('auth')
+// Note: sign-in, sign-up, sign-out, and get-session are handled directly by
+// better-auth's HTTP handler mounted at /api/v1/auth (see common/utils/auth.ts
+// and the AuthModule.forRoot registration in app.module.ts). This controller
+// only exposes app-specific session helpers that don't have a better-auth
+// equivalent.
+@Controller('session')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('me')
-  me(@Session() session: UserSession): SessionResponseDto {
-    return session as SessionResponseDto;
-  }
-
-  @AllowAnonymous()
-  @Get('session')
-  async session(@Req() req: Request) {
-    return this.authService.getSession(req.headers);
-  }
-
-  @AllowAnonymous()
-  @Post('sign-out')
-  async signOut(@Req() req: Request) {
-    await this.authService.signOut(req.headers);
-    return { message: 'Signed out successfully' };
+  me(@Session() session: UserSession) {
+    return session;
   }
 
   @Get('accounts')
