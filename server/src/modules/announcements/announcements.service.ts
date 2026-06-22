@@ -20,8 +20,8 @@ export class AnnouncementsService {
         name: createAnnouncementDto.name.trim(),
         description: createAnnouncementDto.description?.trim() || null,
         date: new Date(createAnnouncementDto.date),
-        class: createAnnouncementDto.class_id
-          ? { connect: { id: createAnnouncementDto.class_id } }
+        class: createAnnouncementDto.classId
+          ? { connect: { id: createAnnouncementDto.classId } }
           : undefined,
       },
       include: {
@@ -35,11 +35,11 @@ export class AnnouncementsService {
   async findAll(
     queryAnnouncementDto: QueryAnnouncementDto,
   ): Promise<PaginatedResponseDto<AnnouncementResponseDto>> {
-    const { search, class_id, page = 1, limit = 10 } = queryAnnouncementDto;
+    const { search, classId, page = 1, limit = 10 } = queryAnnouncementDto;
 
     const where: Prisma.AnnouncementWhereInput = {};
 
-    if (class_id) where.classId = class_id;
+    if (classId) where.classId = classId;
 
     if (search) {
       where.name = { contains: search, mode: 'insensitive' };
@@ -105,10 +105,10 @@ export class AnnouncementsService {
           ? new Date(updateAnnouncementDto.date)
           : undefined,
         class:
-          updateAnnouncementDto.class_id === undefined
+          updateAnnouncementDto.classId === undefined
             ? undefined
-            : updateAnnouncementDto.class_id
-              ? { connect: { id: updateAnnouncementDto.class_id } }
+            : updateAnnouncementDto.classId
+              ? { connect: { id: updateAnnouncementDto.classId } }
               : { disconnect: true },
       },
       include: {

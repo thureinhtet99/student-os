@@ -4,5 +4,5 @@ import {
 } from '../../../prisma/generated/prisma/client.js';
 
 export type AttendanceWithRelations = Attendance & {
-  student?: Pick<Student, 'id' | 'name'> | null;
+  student: Student | null;
 };

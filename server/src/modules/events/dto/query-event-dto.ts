@@ -7,7 +7,7 @@ export class QueryEventDto {
 
   @IsString()
   @IsOptional()
-  class_id?: string;
+  classId?: string;
 
   @IsOptional()
   page?: number;

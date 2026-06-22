@@ -13,5 +13,5 @@ export class CreateSubjectDto {
 
   @IsString()
   @IsOptional()
-  class_id!: string | null;
+  classId!: string | null;
 }
