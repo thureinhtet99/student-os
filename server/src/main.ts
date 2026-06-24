@@ -1,5 +1,6 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import 'dotenv/config';
 import { AppModule } from './app.module.js';
 import { APP_CONSTANT } from './common/constants/app.constant.js';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-client-exception.filter.js';
