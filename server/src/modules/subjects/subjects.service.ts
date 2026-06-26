@@ -28,13 +28,13 @@ export class SubjectsService {
       data: {
         name: createSubjectDto.name.trim(),
         description: createSubjectDto.description?.trim() || null,
-        class: createSubjectDto.classId
-          ? { connect: { id: createSubjectDto.classId } }
-          : undefined,
+        ...(createSubjectDto.classId !== undefined && {
+          classId: createSubjectDto.classId,
+        }),
       },
       include: {
-        class: { select: { id: true, name: true } },
-        teachers: { select: { id: true, name: true } },
+        class: true,
+        teachers: true,
       },
     });
 
@@ -63,8 +63,8 @@ export class SubjectsService {
       take: limit,
       orderBy: { name: 'asc' },
       include: {
-        class: { select: { id: true, name: true } },
-        teachers: { select: { id: true, name: true } },
+        class: true,
+        teachers: true,
       },
     });
 
@@ -83,8 +83,8 @@ export class SubjectsService {
     const subject = await this.prisma.subject.findUnique({
       where: { id },
       include: {
-        class: { select: { id: true, name: true } },
-        teachers: { select: { id: true, name: true } },
+        class: true,
+        teachers: true,
       },
     });
 
@@ -132,8 +132,8 @@ export class SubjectsService {
               : { disconnect: true },
       },
       include: {
-        class: { select: { id: true, name: true } },
-        teachers: { select: { id: true, name: true } },
+        class: true,
+        teachers: true,
       },
     });
 

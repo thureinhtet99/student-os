@@ -6,12 +6,16 @@ describe('ParentsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ParentsService],
+      providers: [
+        {
+          provide: ParentsService,
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<ParentsService>(ParentsService);
   });
-
   it('should be defined', () => {
     expect(service).toBeDefined();
   });

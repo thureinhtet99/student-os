@@ -1,6 +1,5 @@
 import {
   Class,
-  Grade,
   Parent,
   Student,
   User,
@@ -9,6 +8,5 @@ import {
 export type StudentWithRelations = Omit<Student, 'password'> & {
   user: User;
   class: Class | null;
-  grade: Grade | null;
   parent: Parent | null;
 };

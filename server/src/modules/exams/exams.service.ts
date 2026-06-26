@@ -21,9 +21,7 @@ export class ExamsService {
         endTime: new Date(createExamDto.endTime),
         subject: { connect: { id: createExamDto.subject_id } },
       },
-      include: {
-        subject: { select: { id: true, name: true } },
-      },
+      include: { subject: true },
     });
 
     return formatExam(exam);
@@ -47,9 +45,7 @@ export class ExamsService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { startTime: 'desc' },
-      include: {
-        subject: { select: { id: true, name: true } },
-      },
+      include: { subject: true },
     });
 
     return {
@@ -66,9 +62,7 @@ export class ExamsService {
   async findOne(id: string): Promise<ExamResponseDto> {
     const exam = await this.prisma.exam.findUnique({
       where: { id },
-      include: {
-        subject: { select: { id: true, name: true } },
-      },
+      include: { subject: true },
     });
 
     if (!exam) throw new NotFoundException('Exam is not found');
@@ -101,9 +95,7 @@ export class ExamsService {
           ? { connect: { id: updateExamDto.subject_id } }
           : undefined,
       },
-      include: {
-        subject: { select: { id: true, name: true } },
-      },
+      include: { subject: true },
     });
 
     return formatExam(exam);

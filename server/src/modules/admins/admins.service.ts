@@ -23,7 +23,7 @@ export class AdminsService {
 
   async create(createAdminDto: CreateAdminDto): Promise<AdminResponseDto> {
     try {
-      const { email, password, name } = createAdminDto;
+      const { email, password, name, role } = createAdminDto;
 
       await checkDuplicate(
         this.prisma.admin,
@@ -50,7 +50,7 @@ export class AdminsService {
             id: userId,
             email: email.trim(),
             name: name.trim(),
-            role: UserRole.SUPER_ADMIN,
+            role: role ?? UserRole.ADMIN,
             accounts: {
               create: {
                 id: randomUUID(),
@@ -62,7 +62,10 @@ export class AdminsService {
           },
         });
 
-        const adminId = `ADM-${createdUser.id.slice(-12)}`;
+        const adminId =
+          role === UserRole.SUPER_ADMIN
+            ? `SUPER-ADM-${createdUser.id.slice(-12)}`
+            : `ADM-${createdUser.id.slice(-12)}`;
 
         return tx.admin.create({
           data: {

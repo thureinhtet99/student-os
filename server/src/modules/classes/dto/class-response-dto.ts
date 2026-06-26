@@ -1,17 +1,25 @@
+import {
+  Announcement,
+  Event,
+  Student,
+  Subject,
+  Teacher,
+} from '../../../../prisma/generated/prisma/client';
+
 export class ClassResponseDto {
   id!: string;
 
   name!: string;
 
-  teacher!: { id: string; name: string } | null;
+  teacher!: Teacher | null;
 
-  // students!: Omit<Student, 'password'>[] | null;
+  students!: Omit<Student, 'password'>[] | null;
 
-  // subjects!: Omit<Subject, 'createdAt' | 'updatedAt'>[] | null;
+  subjects!: Subject[] | null;
 
-  // events!: Omit<Event, 'createdAt' | 'updatedAt'>[] | null;
+  events!: Event[] | null;
 
-  // announcements!: Omit<Announcement, 'createdAt' | 'updatedAt'>[] | null;
+  announcements!: Announcement[] | null;
 
   createdAt!: Date;
 

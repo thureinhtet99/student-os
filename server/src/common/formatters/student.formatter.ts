@@ -1,6 +1,5 @@
 import { StudentResponseDto } from '../../modules/students/dto/student-response.dto.js';
 import { StudentWithRelations } from '../types/student.type.js';
-import { formatParent } from './parent.formatter.js';
 
 export function formatStudent(
   student: StudentWithRelations,
@@ -16,13 +15,8 @@ export function formatStudent(
     gender: student.gender,
     dateOfBirth: student.dateOfBirth,
     image: student.image,
-    parent: student.parent ? formatParent(student.parent) : null,
-    class: student.class
-      ? { id: student.class.id, name: student.class.name }
-      : null,
-    grade: student.grade
-      ? { id: student.grade.id, level: student.grade.level }
-      : null,
+    parent: student.parent ?? null,
+    class: student.class ?? null,
     createdAt: student.user.createdAt,
     updatedAt: student.user.updatedAt,
   };

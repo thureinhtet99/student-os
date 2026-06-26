@@ -1,7 +1,9 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import 'dotenv/config';
 import { AppModule } from './app.module.js';
 import { APP_CONSTANT } from './common/constants/app.constant.js';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-client-exception.filter.js';
 
 async function bootstrap() {
@@ -28,8 +30,13 @@ async function bootstrap() {
     }),
   );
 
-  // Global exception filters
-  app.useGlobalFilters(new PrismaClientExceptionFilter());
+  // Global exception filters. Register the catch-all first and the more
+  // specific Prisma filter last so Nest resolves the latter first for
+  // Prisma errors and falls through to the catch-all for everything else.
+  app.useGlobalFilters(
+    new AllExceptionsFilter(),
+    new PrismaClientExceptionFilter(),
+  );
 
   await app.listen(process.env.PORT ?? 3001);
 }

@@ -109,7 +109,6 @@ export class StudentsService {
           user: true,
           parent: true,
           class: true,
-          grade: true,
         },
       });
     });
@@ -122,7 +121,6 @@ export class StudentsService {
   ): Promise<PaginatedResponseDto<StudentResponseDto>> {
     const {
       class: classId,
-      grade,
       gender,
       search,
       page = 1,
@@ -132,8 +130,6 @@ export class StudentsService {
     const where: Prisma.StudentWhereInput = {};
 
     if (classId) where.classId = classId;
-
-    if (grade) where.gradeId = grade;
 
     if (gender) where.gender = gender;
 
@@ -164,7 +160,6 @@ export class StudentsService {
         user: true,
         parent: true,
         class: true,
-        grade: true,
       },
     });
 
@@ -186,7 +181,6 @@ export class StudentsService {
         user: true,
         parent: true,
         class: true,
-        grade: true,
       },
     });
 
@@ -194,24 +188,6 @@ export class StudentsService {
 
     return formatStudent(student);
   }
-
-  // async findByClass(classId: number) {
-  //   if (!classId) {
-  //     throw new BadRequestException('Class id is required');
-  //   }
-
-  //   const students = await this.prisma.student.findMany({
-  //     where: { classId },
-  //     include: {
-  //       class: true,
-  //       attendances: true,
-  //       results: true,
-  //     },
-  //     orderBy: { name: 'asc' },
-  //   });
-
-  //   return { students, success: true, error: false };
-  // }
 
   async update(
     id: string,
@@ -300,12 +276,7 @@ export class StudentsService {
             : updateStudentDto.classId
               ? { connect: { id: updateStudentDto.classId } }
               : { disconnect: true },
-        grade:
-          updateStudentDto.gradeId === undefined
-            ? undefined
-            : updateStudentDto.gradeId
-              ? { connect: { id: updateStudentDto.gradeId } }
-              : { disconnect: true },
+
         parent: updateStudentDto.parentId
           ? { connect: { id: updateStudentDto.parentId } }
           : undefined,
@@ -314,7 +285,6 @@ export class StudentsService {
         user: true,
         parent: true,
         class: true,
-        grade: true,
       },
     });
 

@@ -25,7 +25,7 @@ export class AnnouncementsService {
           : undefined,
       },
       include: {
-        class: { select: { id: true, name: true } },
+        class: true,
       },
     });
 
@@ -53,7 +53,7 @@ export class AnnouncementsService {
       take: limit,
       orderBy: { date: 'desc' },
       include: {
-        class: { select: { id: true, name: true } },
+        class: true,
       },
     });
 
@@ -74,7 +74,7 @@ export class AnnouncementsService {
     const announcement = await this.prisma.announcement.findUnique({
       where: { id },
       include: {
-        class: { select: { id: true, name: true } },
+        class: true,
       },
     });
 
@@ -112,7 +112,7 @@ export class AnnouncementsService {
               : { disconnect: true },
       },
       include: {
-        class: { select: { id: true, name: true } },
+        class: true,
       },
     });
 

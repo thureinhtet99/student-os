@@ -1,21 +1,11 @@
+import { OmitType } from '@nestjs/mapped-types';
+import { Class, Parent } from '../../../../prisma/generated/prisma/client.js';
 import { UserResponseDto } from '../../../common/dto/user-response.dto.js';
 
-export class GradeResponseDto {
-  id!: string;
-
-  level!: number;
-
-  createdAt!: Date;
-
-  updatedAt!: Date;
-}
-
-export class StudentResponseDto extends UserResponseDto {
+export class StudentResponseDto extends OmitType(UserResponseDto, ['role']) {
   studentId!: string;
 
-  parent!: { id: string; name: string } | null;
+  parent!: Parent | null;
 
-  class!: { id: string; name: string } | null;
-
-  grade!: { id: string; level: number } | null;
+  class!: Class | null;
 }

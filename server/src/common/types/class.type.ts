@@ -1,6 +1,7 @@
 import {
   Announcement,
   Class,
+  Event,
   Student,
   Subject,
   Teacher,

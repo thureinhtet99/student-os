@@ -119,8 +119,3 @@ export type Event = Prisma.EventModel
  * 
  */
 export type Announcement = Prisma.AnnouncementModel
-/**
- * Model Grade
- * 
- */
-export type Grade = Prisma.GradeModel

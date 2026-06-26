@@ -6,13 +6,9 @@ export function formatResult(result: ResultWithRelations): ResultResponseDto {
     id: result.id,
     score: result.score,
     comment: result.comment,
-    exam: result.exam ? { id: result.exam.id, name: result.exam.name } : null,
-    assignment: result.assignment
-      ? { id: result.assignment.id, name: result.assignment.name }
-      : null,
-    student: result.student
-      ? { id: result.student.id, name: result.student.name }
-      : null,
+    exam: result.exam ?? null,
+    assignment: result.assignment ?? null,
+    student: result.student ?? null,
     createdAt: result.createdAt,
     updatedAt: result.updatedAt,
   };

@@ -1,4 +1,4 @@
-import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
+import { Roles } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -10,13 +10,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { UserRole } from '../../common/constants/role.constant.js';
 import { AdminsService } from './admins.service.js';
 import { AdminResponseDto } from './dto/admin-response.dto.js';
 import { CreateAdminDto } from './dto/create-admin.dto.js';
 import { QueryAdminDto } from './dto/query-admin-dto.js';
 import { UpdateAdminDto } from './dto/update-admin.dto.js';
 
-@AllowAnonymous()
+@Roles([UserRole.SUPER_ADMIN])
 @Controller('admins')
 export class AdminsController {
   constructor(private readonly adminsService: AdminsService) {}

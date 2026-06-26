@@ -26,7 +26,7 @@ export class AssignmentsService {
           : undefined,
       },
       include: {
-        subject: { select: { id: true, name: true } },
+        subject: true,
       },
     });
 
@@ -52,7 +52,7 @@ export class AssignmentsService {
       take: limit,
       orderBy: { createdAt: 'desc' },
       include: {
-        subject: { select: { id: true, name: true } },
+        subject: true,
       },
     });
 
@@ -71,7 +71,7 @@ export class AssignmentsService {
     const assignment = await this.prisma.assignment.findUnique({
       where: { id },
       include: {
-        subject: { select: { id: true, name: true } },
+        subject: true,
       },
     });
 
@@ -108,7 +108,7 @@ export class AssignmentsService {
               : { disconnect: true },
       },
       include: {
-        subject: { select: { id: true, name: true } },
+        subject: true,
       },
     });
 

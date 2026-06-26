@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateClassDto {
   @IsString()
@@ -8,25 +14,25 @@ export class CreateClassDto {
 
   @IsString()
   @IsOptional()
-  teacher_id!: string | null;
+  teacherId!: string | null;
 
-  //   @IsArray()
-  //   @IsString({ each: true })
-  //   @IsOptional()
-  //   subjects!: string[] | null;
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  subjects!: string[] | null;
 
-  //   @IsArray()
-  //   @IsString({ each: true })
-  //   @IsOptional()
-  //   students!: string[] | null;
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  students!: string[] | null;
 
-  //   @IsArray()
-  //   @IsString({ each: true })
-  //   @IsOptional()
-  //   events!: string[] | null;
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  events!: string[] | null;
 
-  //   @IsArray()
-  //   @IsString({ each: true })
-  //   @IsOptional()
-  //   announcements!: string[] | null;
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  announcements!: string[] | null;
 }
