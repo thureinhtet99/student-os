@@ -1,4 +1,4 @@
-import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
+import { Roles } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -10,13 +10,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
 import { CreateAttendanceDto } from './dto/create-attendance.dto.js';
 import { QueryAttendanceDto } from './dto/query-attendance-dto.js';
 import { AttendanceResponseDto } from './dto/attendance-response.dto.js';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto.js';
 import { AttendancesService } from './attendances.service.js';
 
-@AllowAnonymous()
+@Roles(TEACHING_ROLES)
 @Controller('attendances')
 export class AttendancesController {
   constructor(private readonly attendancesService: AttendancesService) {}

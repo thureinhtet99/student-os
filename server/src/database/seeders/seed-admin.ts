@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../../app.module.js';
+import { UserRole } from '../../common/constants/role.constant.js';
 import { AdminsService } from '../../modules/admins/admins.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 
@@ -35,6 +36,7 @@ async function run() {
         name: 'Super Admin',
         email: trimmedEmail,
         password: password,
+        role: UserRole.SUPER_ADMIN,
       });
       console.log('Super admin seeded successfully!');
     }

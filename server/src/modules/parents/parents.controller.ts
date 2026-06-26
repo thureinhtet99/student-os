@@ -1,4 +1,4 @@
-import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
+import { Roles } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -10,13 +10,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import { CreateParentDto } from './dto/create-parent.dto.js';
 import { ParentResponseDto } from './dto/parent-response.dto.js';
 import { QueryParentDto } from './dto/query-parent-dto.js';
 import { UpdateParentDto } from './dto/update-parent.dto.js';
 import { ParentsService } from './parents.service.js';
 
-@AllowAnonymous()
+@Roles(ADMIN_ROLES)
 @Controller('parents')
 export class ParentsController {
   constructor(private readonly parentsService: ParentsService) {}

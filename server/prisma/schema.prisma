@@ -151,8 +151,6 @@ model Student {
   parent   Parent? @relation(fields: [parentId], references: [id])
   classId  String?
   class    Class?  @relation(fields: [classId], references: [id])
-  gradeId  String?
-  grade    Grade?  @relation(fields: [gradeId], references: [id])
 
   attendances Attendance[]
   results     Result[]
@@ -161,7 +159,6 @@ model Student {
   @@index([gender])
   @@index([parentId])
   @@index([classId])
-  @@index([gradeId])
   @@map("students")
 }
 
@@ -324,19 +321,6 @@ model Announcement {
 
   @@index([classId])
   @@map("announcements")
-}
-
-model Grade {
-  id    String @id @default(uuid())
-  level Int    @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  students Student[]
-
-  @@index([level])
-  @@map("grades")
 }
 
 enum UserGender {

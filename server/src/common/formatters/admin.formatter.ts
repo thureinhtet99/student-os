@@ -6,8 +6,9 @@ export function formatAdmin(admin: AdminWithRelations): AdminResponseDto {
     id: admin.id,
     userId: admin.userId,
     adminId: admin.adminId,
-    name: admin.name,
     email: admin.user.email,
+    name: admin.name,
+    role: admin.user.role,
     createdAt: admin.user.createdAt,
     updatedAt: admin.user.updatedAt,
   };

@@ -15,6 +15,8 @@ export class UserResponseDto {
 
   gender!: UserGender;
 
+  role!: string;
+
   dateOfBirth!: Date | null;
 
   image!: string | null;

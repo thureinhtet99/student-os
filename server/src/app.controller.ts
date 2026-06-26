@@ -1,8 +1,10 @@
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { Controller, Get } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 import { AppService } from './app.service';
 
 @AllowAnonymous()
+@SkipThrottle({ default: true })
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}

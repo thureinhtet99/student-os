@@ -17,7 +17,6 @@ export function formatStudent(
     image: student.image,
     parent: student.parent ?? null,
     class: student.class ?? null,
-    grade: student.grade ?? null,
     createdAt: student.user.createdAt,
     updatedAt: student.user.updatedAt,
   };

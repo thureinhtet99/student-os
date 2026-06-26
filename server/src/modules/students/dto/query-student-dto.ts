@@ -8,10 +8,6 @@ export class QueryStudentDto extends QueryDto {
   class?: string;
 
   @IsOptional()
-  @IsString()
-  grade?: string;
-
-  @IsOptional()
   @IsEnum(UserGender)
   gender?: UserGender;
 }

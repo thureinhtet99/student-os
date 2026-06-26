@@ -1,4 +1,3 @@
-import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -9,6 +8,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { Roles } from '@thallesp/nestjs-better-auth';
+import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { CreateStudentDto } from './dto/create-student.dto.js';
 import { QueryStudentDto } from './dto/query-student-dto.js';
@@ -16,7 +17,7 @@ import { StudentResponseDto } from './dto/student-response.dto.js';
 import { UpdateStudentDto } from './dto/update-student.dto.js';
 import { StudentsService } from './students.service.js';
 
-@AllowAnonymous()
+@Roles(ADMIN_ROLES)
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
@@ -36,11 +37,6 @@ export class StudentsController {
   ): Promise<PaginatedResponseDto<StudentResponseDto>> {
     return this.studentsService.findAll(queryStudentDto);
   }
-
-  // @Get('class/:classId')
-  // findByClass(@Param('classId') classId: string) {
-  //   return this.studentsService.findByClass(+classId);
-  // }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<StudentResponseDto> {

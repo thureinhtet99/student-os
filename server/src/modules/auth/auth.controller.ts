@@ -1,6 +1,7 @@
 import { Controller, Get, Req } from '@nestjs/common';
-import { Session, type UserSession } from '@thallesp/nestjs-better-auth';
+import { Session } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
+import type { SessionUser } from '../../common/types/session-user.type.js';
 import { AuthService } from './auth.service.js';
 import { AccountsResponseDto } from './dto/auth-response.dto.js';
 
@@ -14,7 +15,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('me')
-  me(@Session() session: UserSession) {
+  me(@Session() session: SessionUser) {
     return session;
   }
 

@@ -1,4 +1,4 @@
-import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
+import { Roles } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -10,13 +10,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
 import { CreateEventDto } from './dto/create-event.dto.js';
 import { EventResponseDto } from './dto/event-response.dto.js';
 import { QueryEventDto } from './dto/query-event-dto.js';
 import { UpdateEventDto } from './dto/update-event.dto.js';
 import { EventsService } from './events.service.js';
 
-@AllowAnonymous()
+@Roles(TEACHING_ROLES)
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
