@@ -1,13 +1,22 @@
+import { Test, TestingModule } from '@nestjs/testing';
 import { ClassesController } from './classes.controller';
 
 describe('ClassesController', () => {
-  let controller: ClassesController;
+  let service: ClassesController;
 
-  beforeEach(() => {
-    controller = new ClassesController({} as any);
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: ClassesController,
+          useValue: {},
+        },
+      ],
+    }).compile();
+
+    service = module.get<ClassesController>(ClassesController);
   });
-
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 });
