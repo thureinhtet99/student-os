@@ -1,10 +1,10 @@
 import { COLORS } from "@/constants/theme";
 import {
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-  ViewProps,
+    StatusBar,
+    StyleSheet,
+    useColorScheme,
+    View,
+    ViewProps,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -22,8 +22,8 @@ export function ScreenWrapper({
   ...props
 }: Props) {
   const colorScheme = useColorScheme();
-  const themeTextStyle =
-    colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
+  // const themeTextStyle =
+  //   colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
   const themeContainerStyle =
     colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
 
