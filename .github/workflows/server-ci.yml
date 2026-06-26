@@ -36,6 +36,7 @@ jobs:
         with:
           node-version: 24
           cache: "pnpm"
+          cache-dependency-path: server/pnpm-lock.yaml
 
       - name: Install server dependencies
         run: pnpm install
@@ -65,6 +66,7 @@ jobs:
         with:
           node-version: 24
           cache: "pnpm"
+          cache-dependency-path: server/pnpm-lock.yaml
 
       - name: Install server dependencies
         run: pnpm install
@@ -94,6 +96,7 @@ jobs:
   #       with:
   #         node-version: 24
   #         cache: "pnpm"
+  #         cache-dependency-path: server/pnpm-lock.yaml
 
   #     - name: Install server dependencies
   #       run: pnpm install
@@ -123,6 +126,7 @@ jobs:
         with:
           node-version: 24
           cache: "pnpm"
+          cache-dependency-path: server/pnpm-lock.yaml
 
       - name: Install server dependencies
         run: pnpm install
@@ -170,6 +174,7 @@ jobs:
   #       with:
   #         node-version: 24
   #         cache: "pnpm"
+  #         cache-dependency-path: server/pnpm-lock.yaml
 
   #     - name: Install server dependencies
   #       run: pnpm install
