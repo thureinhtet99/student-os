@@ -11,13 +11,15 @@ module.exports = {
     extend: {
       colors: {
         primary: "#002D56",
+        "primary-foreground": "#ffffff",
         secondary: "#ffffff",
+        "secondary-foreground": "#000000",
         background: "#ffffff",
         foreground: "#000000",
         muted: "#8E8E93",
         "muted-foreground": "#8E8E93",
-        // card: "#ffffff",
-        // "card-foreground": "#002D56",
+        card: "#ffffff",
+        "card-foreground": "#002D56",
       },
     },
   },
