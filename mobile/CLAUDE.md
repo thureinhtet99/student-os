@@ -1,22 +1,14 @@
 ## Objective
 
-Develop the mobile application for the School Management System using Expo, React Native, NativeWind, and React Native Reusables.
+Develop the **UI layer** of the mobile application for the School Management System using Expo, React Native, NativeWind, and React Native Reusables.
+
+> **Scope note:** This phase is UI-only. Backend API integration, data fetching, and business logic are out of scope here and are covered separately in `@CLAUDE.MD`. Use static/mock data where data is needed to render a screen.
 
 ---
 
-## 1. Backend API
+## 1. UI Implementation
 
-Before implementing any feature:
-
-- Study the backend implementation located in the sibling `@/server` directory (outside of the mobile project).
-- Learn the available API endpoints, request/response payloads, validation rules, authentication flow, and business logic.
-- Reuse the existing backend APIs instead of creating assumptions about endpoints or data models.
-
----
-
-## 2. UI Implementation
-
-Implement every feature using **React Native Reusables** components.
+Implement every screen using **React Native Reusables** components.
 
 Requirements:
 
@@ -25,16 +17,17 @@ Requirements:
 - Use NativeWind for styling.
 - Keep components reusable and maintainable.
 - Do not introduce another UI library unless absolutely necessary.
+- Use static/mock/placeholder data to populate screens — do not wire up real API calls.
 
 ---
 
-## 3. Global Navigation Sheet
+## 2. Global Navigation Sheet
 
 **Completed:** Implemented global navigation sheet inside `@/screen-wrapper`, including a custom Header component with menu and notification icons. Configured drawer navigation with `expo-router/drawer`.
 
 ---
 
-## 4. Theme
+## 3. Theme
 
 Do **not** modify the existing color palette located in:
 
@@ -48,23 +41,23 @@ Requirements:
 
 ---
 
-## 5. Development Process
+## 4. Development Process
 
 Implement features incrementally.
 
 For each feature:
 
 1. Create a dedicated Git branch.
-2. Implement the feature.
-3. Ensure the feature is complete before moving to the next one.
+2. Implement the UI for the feature.
+3. Ensure the UI is complete before moving to the next one.
 
 Branch naming convention:
 
-- `mobile/feat/students`
-- `mobile/feat/teachers`
-- `mobile/feat/classes`
-- `mobile/feat/subjects`
-- `mobile/feat/attendance`
+- `mobile/ui/students`
+- `mobile/ui/teachers`
+- `mobile/ui/classes`
+- `mobile/ui/subjects`
+- `mobile/ui/attendance`
 - `mobile/fix/teachers`
 - `mobile/fix/students`
 
@@ -72,38 +65,37 @@ Do not combine multiple unrelated features into a single branch.
 
 ---
 
-## 6. Feature Order
+## 5. Feature Order
 
-**Completed Features:**
+**Completed (UI):**
+
 - Students
 - Teachers
-- Global Navigation Drawer
 
-**Remaining Features to implement in the following order:**
+**Remaining UI to implement in the following order:**
 
-1.  Classes
-2.  Subjects
-3.  Attendance
-4.  Timetable
-5.  Exams
-6.  Results
-7.  Announcements
-8.  Notifications
-9.  Settings
-10. User Profile
-11. Authentication (Sign In & Sign Up)
+1.  Subjects
+2.  Attendance
+3.  Timetable
+4.  Exams
+5.  Results
+6.  Announcements
+7.  Notifications
+8.  Settings
+9.  User Profile
+10. Authentication (Sign In & Sign Up)
 
 ---
 
-## 7. Expectations
+## 6. Expectations
 
-For every feature:
+For every screen:
 
-- Study the corresponding backend APIs before implementation.
-- Build production-ready UI.
-- Implement loading, empty, success, and error states.
+- Build production-ready UI with static/mock data.
+- Implement loading, empty, success, and error **UI states** as visual placeholders (no real data wiring needed yet).
 - Ensure responsive layouts for different device sizes.
 - Follow TypeScript best practices.
 - Reuse components whenever possible.
 - Keep the codebase clean, modular, and maintainable.
 - Avoid unnecessary code duplication.
+- Leave clear `// TODO: wire to backend API` markers where real data will later be connected, per `@CLAUDE.MD`.
