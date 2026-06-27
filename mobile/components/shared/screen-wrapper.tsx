@@ -1,5 +1,6 @@
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/lib/utils";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { usePathname } from "expo-router";
 import { StatusBar, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -21,7 +22,12 @@ const AUTH_ROUTES = [
 
 export function ScreenWrapper({ children, title }: ScreenWrapperProps) {
   const pathname = usePathname();
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
 
   const isAuthOrOnboardingScreen = AUTH_ROUTES.some((route) =>
     pathname.startsWith(route),
@@ -50,7 +56,7 @@ export function ScreenWrapper({ children, title }: ScreenWrapperProps) {
           title={title || "Home"}
           user={mockUser}
           notificationCount={mockNotificationCount}
-          onMenuPress={() => console.log("Menu pressed")}
+          onMenuPress={openDrawer}
           onNotificationPress={() => console.log("Notification pressed")}
         />
       )}

@@ -33,7 +33,9 @@ export const ROUTES = {
 
   // Feature Management from CLAUDE.md
   STUDENTS: '/management/students',
+  STUDENTS_DETAIL: (id: string) => `/management/students/${id}`,
   TEACHERS: '/management/teachers',
+  TEACHERS_DETAIL: (id: string) => `/management/teachers/${id}`,
   GRADES: '/management/grades',
   CLASSES: '/management/classes',
   SUBJECTS: '/management/subjects',

@@ -1,6 +1,12 @@
 import "@/global.css";
-import { Stack } from "expo-router";
+import { Drawer } from "expo-router/drawer";
+import { DrawerContent } from "@/components/shared/drawer-content";
 
 export default function Layout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Drawer
+      drawerContent={(props) => <DrawerContent {...props} />}
+      screenOptions={{ headerShown: false, swipeEnabled: false }}
+    />
+  );
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,7 +12,7 @@ export function Skeleton({ className }: { className?: string }) {
 
   React.useEffect(() => {
     progress.value = withRepeat(withTiming(1, { duration: 1000 }), -1, true);
-  }, []);
+  }, [progress]);
 
   const animatedStyle = useAnimatedStyle(() => {
     const opacity = interpolate(progress.value, [0, 1], [0.5, 1]);
