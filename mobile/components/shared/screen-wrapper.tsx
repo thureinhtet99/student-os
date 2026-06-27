@@ -1,61 +1,60 @@
-import { COLORS } from "@/constants/theme";
-import {
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-  ViewProps,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ROUTES } from "@/constants/routes";
+import { cn } from "@/lib/utils";
+import { usePathname } from "expo-router";
+import { StatusBar, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Header } from "./header";
 
-interface Props extends ViewProps {
+interface ScreenWrapperProps {
   children: React.ReactNode;
-  bg?: string;
-  color?: string;
+  title?: string;
 }
 
-export function ScreenWrapper({
-  children,
-  bg = COLORS.background.light,
-  color = COLORS.background.light,
-  style,
-  ...props
-}: Props) {
-  const colorScheme = useColorScheme();
-  const themeTextStyle =
-    colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
-  const themeContainerStyle =
-    colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
+const AUTH_ROUTES = [
+  ROUTES.LOGIN,
+  ROUTES.REGISTER,
+  ROUTES.ONBOARDING,
+  ROUTES.ONBOARDING_WELCOME,
+  ROUTES.ONBOARDING_SETUP_PROFILE,
+  ROUTES.ONBOARDING_SELECT_INTEREST,
+];
+
+export function ScreenWrapper({ children, title }: ScreenWrapperProps) {
+  const pathname = usePathname();
+  const insets = useSafeAreaInsets();
+
+  const isAuthOrOnboardingScreen = AUTH_ROUTES.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  // Mock user and notification data
+  const mockUser = {
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+    fullName: "John Doe",
+    studentId: "STU-0001",
+    grade: "Grade 10",
+    className: "Class A",
+  };
+  const mockNotificationCount = 5;
 
   return (
-    <SafeAreaView style={[styles.container, themeContainerStyle]}>
+    <View
+      className={cn(
+        "flex-1 bg-background",
+        isAuthOrOnboardingScreen ? `pt-[${insets.top}px]` : "",
+      )}
+    >
       <StatusBar barStyle="default" />
-      <View style={[{ flex: 1 }, style]} {...props}>
-        {children}
-      </View>
-    </SafeAreaView>
+      {!isAuthOrOnboardingScreen && (
+        <Header
+          title={title || "Home"}
+          user={mockUser}
+          notificationCount={mockNotificationCount}
+          onMenuPress={() => console.log("Menu pressed")}
+          onNotificationPress={() => console.log("Notification pressed")}
+        />
+      )}
+      <View className="flex-1">{children}</View>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  // text: {
-  //   fontSize: 20,
-  // },
-  lightContainer: {
-    backgroundColor: COLORS.background.light,
-  },
-  darkContainer: {
-    backgroundColor: COLORS.background.dark,
-  },
-  lightThemeText: {
-    color: COLORS.text.light,
-  },
-  darkThemeText: {
-    color: COLORS.text.dark,
-  },
-});

@@ -1,6 +1,24 @@
+import { ROUTES } from "@/constants/routes";
 import "@/global.css";
-import { Stack } from "expo-router";
+import { AntDesign } from "@react-native-vector-icons/ant-design";
+import { Drawer } from "expo-router/drawer";
 
 export default function Layout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Drawer>
+      {ROUTES.DRAWER_ROUTES.map((route) => (
+        <Drawer.Screen
+          key={route.path}
+          name={route.path}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <AntDesign name={route.icon} size={size} color={color} />
+            ),
+            drawerLabel: route.name,
+            title: route.name,
+          }}
+        />
+      ))}
+    </Drawer>
+  );
 }
