@@ -1,12 +1,24 @@
+import { ROUTES } from "@/constants/routes";
 import "@/global.css";
+import { AntDesign } from "@react-native-vector-icons/ant-design";
 import { Drawer } from "expo-router/drawer";
-import { DrawerContent } from "@/components/shared/drawer-content";
 
 export default function Layout() {
   return (
-    <Drawer
-      drawerContent={(props) => <DrawerContent {...props} />}
-      screenOptions={{ headerShown: false, swipeEnabled: false }}
-    />
+    <Drawer>
+      {ROUTES.DRAWER_ROUTES.map((route) => (
+        <Drawer.Screen
+          key={route.path}
+          name={route.path}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <AntDesign name={route.icon} size={size} color={color} />
+            ),
+            drawerLabel: route.name,
+            title: route.name,
+          }}
+        />
+      ))}
+    </Drawer>
   );
 }
