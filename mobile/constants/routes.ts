@@ -11,7 +11,10 @@ interface DrawerRoute {
 export const ROUTES = {
   DRAWER_ROUTES: [
     { name: "Home", path: "index", icon: "home" },
-    { name: "Announcements", path: "announcement", icon: "home" },
+    { name: "Announcements", path: "announcement", icon: "notification" }, // Changed icon to 'notification'
+    { name: "Students", path: "management/students/index", icon: "team" },
+    { name: "Teachers", path: "management/teachers/index", icon: "idcard" },
+    { name: "Classes", path: "management/classes/index", icon: "book" },
   ] satisfies DrawerRoute[],
   // Main Tab routes
   HOME: "/",
@@ -50,8 +53,9 @@ export const ROUTES = {
   STUDENTS_DETAIL: (id: string) => `/management/students/${id}`,
   TEACHERS: "/management/teachers",
   TEACHERS_DETAIL: (id: string) => `/management/teachers/${id}`,
-  GRADES: "/management/grades",
+
   CLASSES: "/management/classes",
+  CLASSES_DETAIL: (id: string) => `/management/classes/${id}`,
   SUBJECTS: "/management/subjects",
   ATTENDANCE: "/management/attendance",
   TIMETABLE: "/management/timetable",
