@@ -36,7 +36,6 @@
           }
         }
       ],
-      "@react-native-vector-icons/ant-design"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -1,30 +1,38 @@
-import { Image, View, ViewProps } from "react-native";
+import { cn } from '@/lib/utils';
+import * as AvatarPrimitive from '@rn-primitives/avatar';
 
-interface AvatarProps extends ViewProps {
-  src?: string;
-  size?: number;
-}
-
-export function Avatar({ src, size = 40, style, ...props }: AvatarProps) {
+function Avatar({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
-    <View
-      style={[
-        {
-          width: size,
-          height: size,
-          borderRadius: size / 2,
-          backgroundColor: "#ccc",
-          overflow: "hidden",
-        },
-        style,
-      ]}
+    <AvatarPrimitive.Root
+      className={cn('relative flex size-8 shrink-0 overflow-hidden rounded-full', className)}
       {...props}
-    >
-      {src ? (
-        <Image source={{ uri: src }} style={{ width: "100%", height: "100%" }} />
-      ) : (
-        <View style={{ flex: 1, backgroundColor: "#666" }} />
-      )}
-    </View>
+    />
   );
 }
+
+function AvatarImage({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+  return <AvatarPrimitive.Image className={cn('aspect-square size-full', className)} {...props} />;
+}
+
+function AvatarFallback({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+  return (
+    <AvatarPrimitive.Fallback
+      className={cn(
+        'bg-muted flex size-full flex-row items-center justify-center rounded-full',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Avatar, AvatarFallback, AvatarImage };

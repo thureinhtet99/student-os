@@ -11,15 +11,25 @@ module.exports = {
     extend: {
       colors: {
         primary: "#002D56",
-        "primary-foreground": "#ffffff",
         secondary: "#ffffff",
-        "secondary-foreground": "#000000",
-        background: "#ffffff",
-        foreground: "#000000",
         muted: "#8E8E93",
-        "muted-foreground": "#8E8E93",
         card: "#ffffff",
         "card-foreground": "#002D56",
+        destructive: "#EF4444", // Added destructive color
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

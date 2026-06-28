@@ -57,7 +57,7 @@ export function TeacherList() {
       }
       refreshing={isLoading}
       onRefresh={refresh}
-      contentContainerStyle={{ padding: 16 }}
+      className="p-4"
     />
   );
 }

@@ -1,21 +1,22 @@
-import { AntDesign } from "@react-native-vector-icons/ant-design";
-
-type AntDesignIconName = React.ComponentProps<typeof AntDesign>["name"];
-
-interface DrawerRoute {
-  path: string;
-  name: string;
-  icon: AntDesignIconName; // instead of `string`
-}
+import { DrawerRoute } from "@/types/routes.types";
 
 export const ROUTES = {
   DRAWER_ROUTES: [
     { name: "Home", path: "index", icon: "home" },
-    { name: "Announcements", path: "announcement", icon: "notification" }, // Changed icon to 'notification'
+    { name: "Announcements", path: "announcement", icon: "notification" },
+    { name: "Profile", path: "profile", icon: "user" },
     { name: "Students", path: "management/students/index", icon: "team" },
     { name: "Teachers", path: "management/teachers/index", icon: "idcard" },
     { name: "Classes", path: "management/classes/index", icon: "book" },
+    { name: "Subjects", path: "academic/index", icon: "solution" }, // Adding Subjects to drawer
+    { name: "Attendance", path: "attendance/index", icon: "check-square" }, // Assuming attendance/index
+    { name: "Timetable", path: "timetable/index", icon: "calendar" }, // Assuming timetable/index
+    { name: "Exams", path: "exams/index", icon: "form" }, // Assuming exams/index
+    { name: "Results", path: "results/index", icon: "profile" }, // Assuming results/index
+    { name: "Fees", path: "fees/index", icon: "credit-card" }, // New route for Fees
+    { name: "I-Card", path: "i-card/index", icon: "idcard" }, // New route for I-Card
   ] satisfies DrawerRoute[],
+
   // Main Tab routes
   HOME: "/",
   EXPLORE: "/explore",
@@ -56,9 +57,12 @@ export const ROUTES = {
 
   CLASSES: "/management/classes",
   CLASSES_DETAIL: (id: string) => `/management/classes/${id}`,
-  SUBJECTS: "/management/subjects",
+  SUBJECTS: "/management/subjects", // Renamed from ACADEMIC
   ATTENDANCE: "/management/attendance",
+  ATTENDANCE_REQUEST: "/management/attendance/request", // New route for Attendance Request
   TIMETABLE: "/management/timetable",
   EXAMS: "/management/exams",
   RESULTS: "/management/results",
-};
+  FEES: "/management/fees", // New route for Fees
+  I_CARD: "/management/i-card", // New route for I-Card
+} as const;
