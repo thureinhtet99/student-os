@@ -1,7 +1,5 @@
 import { Controller, Get, Req } from '@nestjs/common';
-import { Session } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
-import type { SessionUser } from '../../common/types/session-user.type.js';
 import { AuthService } from './auth.service.js';
 import { AccountsResponseDto } from './dto/auth-response.dto.js';
 
@@ -10,14 +8,15 @@ import { AccountsResponseDto } from './dto/auth-response.dto.js';
 // and the AuthModule.forRoot registration in app.module.ts). This controller
 // only exposes app-specific session helpers that don't have a better-auth
 // equivalent.
+
 @Controller('session')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('me')
-  me(@Session() session: SessionUser) {
-    return session;
-  }
+  // @Get('me')
+  // me(@Session() session: SessionUser) {
+  //   return session;
+  // }
 
   @Get('accounts')
   async accounts(@Req() req: Request): Promise<AccountsResponseDto> {
