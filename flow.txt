@@ -1,0 +1,70 @@
+User
+├── Admin
+├── Teacher
+└── Student
+      │
+      ├── ParentStudent
+      │      │
+      │      └── Parent
+      │
+      └── Enrollment
+              │
+              ├── AcademicYear
+              ├── Class
+              │      │
+              │      └── Grade
+              │
+              ├── Attendance
+              └── Result
+                     │
+                     ├── Exam
+                     └── Assignment
+
+Teacher
+      │
+      └── TeachingAssignment
+              │
+              ├── Subject
+              ├── Class
+              ├── AcademicYear
+              ├── Timetable
+              ├── Exam
+              └── Assignment
+
+
+
+Authentication (Better Auth)
+────────────────────────────
+User
+Session
+Account
+Verification
+
+            │
+            │ 1:1
+            ▼
+
+School Domain
+────────────────────────────
+Admin
+Teacher
+Student
+
+Parent
+ParentStudent
+
+AcademicYear
+Grade
+Class
+Enrollment
+
+Subject
+TeachingAssignment
+Timetable
+
+Attendance
+Assignment
+Exam
+Result
+
+Announcement
