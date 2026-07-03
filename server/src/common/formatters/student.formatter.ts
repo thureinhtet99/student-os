@@ -6,17 +6,17 @@ export function formatStudent(
 ): StudentResponseDto {
   return {
     id: student.id,
-    name: student.name,
+    name: student.user.name,
     email: student.user.email,
     userId: student.user.id,
-    studentId: student.studentId,
+    studentId: student.studentNumber,
     phone: student.phone,
     address: student.address,
     gender: student.gender,
     dateOfBirth: student.dateOfBirth,
-    image: student.image,
-    parent: student.parent ?? null,
-    class: student.class ?? null,
+    image: student.user.image,
+    parent: student.parents?.[0]?.parent ?? null,
+    class: student.enrollments?.[0]?.class ?? null,
     createdAt: student.user.createdAt,
     updatedAt: student.user.updatedAt,
   };

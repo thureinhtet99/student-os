@@ -7,16 +7,24 @@ export function formatTeacher(
   return {
     id: teacher.id,
     userId: teacher.user.id,
-    teacherId: teacher.teacherId,
-    name: teacher.name,
+    teacherId: teacher.employeeCode,
+    name: teacher.user.name,
     email: teacher.user.email,
     phone: teacher.phone,
     address: teacher.address,
     gender: teacher.gender,
     dateOfBirth: teacher.dateOfBirth,
-    image: teacher.image,
-    classes: teacher.classes.map((c) => ({ id: c.id, name: c.name })),
-    subjects: teacher.subjects.map((s) => ({ id: s.id, name: s.name })),
+    image: teacher.user.image,
+    classes: Array.from(
+      new Map(
+        teacher.teachingAssignments.map((ta) => [ta.class.id, ta.class]),
+      ).values(),
+    ).map((c) => ({ id: c.id, name: c.name })),
+    subjects: Array.from(
+      new Map(
+        teacher.teachingAssignments.map((ta) => [ta.subject.id, ta.subject]),
+      ).values(),
+    ).map((s) => ({ id: s.id, name: s.name })),
     createdAt: teacher.user.createdAt,
     updatedAt: teacher.user.updatedAt,
   };

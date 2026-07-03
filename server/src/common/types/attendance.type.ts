@@ -1,8 +1,3 @@
-import {
-  Attendance,
-  Student,
-} from '../../../prisma/generated/prisma/client.js';
+import type { AttendanceModel } from '../../../prisma/generated/prisma/models/Attendance.js';
 
-export type AttendanceWithRelations = Attendance & {
-  student: Student | null;
-};
+export type AttendanceWithRelations = AttendanceModel;

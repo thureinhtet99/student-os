@@ -4,14 +4,12 @@ import { ExamWithRelations } from '../types/exam.type.js';
 export function formatExam(exam: ExamWithRelations): ExamResponseDto {
   return {
     id: exam.id,
-    name: exam.name,
+    title: exam.title,
     description: exam.description,
+    totalMarks: exam.totalMarks as unknown as number,
+    passMarks: exam.passMarks as unknown as number,
     startTime: exam.startTime,
     endTime: exam.endTime,
-    subject: exam.subject
-      ? { id: exam.subject.id, name: exam.subject.name }
-      : null,
-    createdAt: exam.createdAt,
-    updatedAt: exam.updatedAt,
+    teachingAssignmentId: exam.teachingAssignmentId,
   };
 }

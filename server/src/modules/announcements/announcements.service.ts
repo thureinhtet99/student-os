@@ -17,9 +17,9 @@ export class AnnouncementsService {
   ): Promise<AnnouncementResponseDto> {
     const announcement = await this.prisma.announcement.create({
       data: {
-        name: createAnnouncementDto.name.trim(),
-        description: createAnnouncementDto.description?.trim() || null,
-        date: new Date(createAnnouncementDto.date),
+        title: createAnnouncementDto.title.trim(),
+        content: createAnnouncementDto.content?.trim(),
+        publishedAt: new Date(createAnnouncementDto.date),
         class: createAnnouncementDto.classId
           ? { connect: { id: createAnnouncementDto.classId } }
           : undefined,
@@ -42,7 +42,7 @@ export class AnnouncementsService {
     if (classId) where.classId = classId;
 
     if (search) {
-      where.name = { contains: search, mode: 'insensitive' };
+      where.title = { contains: search, mode: 'insensitive' };
     }
 
     const total = await this.prisma.announcement.count({ where });
@@ -51,7 +51,7 @@ export class AnnouncementsService {
       where,
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: { date: 'desc' },
+      orderBy: { publishedAt: 'desc' },
       include: {
         class: true,
       },
@@ -96,12 +96,9 @@ export class AnnouncementsService {
     const announcement = await this.prisma.announcement.update({
       where: { id },
       data: {
-        name: updateAnnouncementDto.name?.trim(),
-        description:
-          updateAnnouncementDto.description === undefined
-            ? undefined
-            : updateAnnouncementDto.description?.trim() || null,
-        date: updateAnnouncementDto.date
+        title: updateAnnouncementDto.title?.trim(),
+        content: updateAnnouncementDto.content?.trim(),
+        publishedAt: updateAnnouncementDto.date
           ? new Date(updateAnnouncementDto.date)
           : undefined,
         class:

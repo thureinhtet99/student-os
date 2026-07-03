@@ -4,12 +4,11 @@ import { ResultWithRelations } from '../types/result.type.js';
 export function formatResult(result: ResultWithRelations): ResultResponseDto {
   return {
     id: result.id,
-    score: result.score,
+    score: Number(result.score),
     comment: result.comment,
     exam: result.exam ?? null,
-    assignment: result.assignment ?? null,
-    student: result.student ?? null,
-    createdAt: result.createdAt,
-    updatedAt: result.updatedAt,
+    examId: result.examId ?? null,
+    academicYearId: result.academicYearId,
+    enrollmentId: result.enrollmentId,
   };
 }

@@ -8,10 +8,8 @@ export function formatAttendance(
     id: attendance.id,
     present: attendance.present,
     date: attendance.date,
-    student: attendance.student
-      ? { id: attendance.student.id, name: attendance.student.name }
-      : null,
+    enrollmentId: attendance.enrollmentId,
+    academicYearId: attendance.academicYearId,
     createdAt: attendance.createdAt,
-    updatedAt: attendance.updatedAt,
   };
 }

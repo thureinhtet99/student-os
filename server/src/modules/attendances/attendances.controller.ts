@@ -1,4 +1,3 @@
-import { Roles } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -9,19 +8,24 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
+import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { AttendancesService } from './attendances.service.js';
+import { AttendanceResponseDto } from './dto/attendance-response.dto.js';
 import { CreateAttendanceDto } from './dto/create-attendance.dto.js';
 import { QueryAttendanceDto } from './dto/query-attendance-dto.js';
-import { AttendanceResponseDto } from './dto/attendance-response.dto.js';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto.js';
-import { AttendancesService } from './attendances.service.js';
 
+@ApiTags('Attendances')
 @Roles(TEACHING_ROLES)
 @Controller('attendances')
 export class AttendancesController {
   constructor(private readonly attendancesService: AttendancesService) {}
 
+  @ApiOperation({ summary: 'Create attendance record' })
+  @ApiResponse({ status: 201, type: AttendanceResponseDto })
   @Post()
   async create(
     @Body() createAttendanceDto: CreateAttendanceDto,
@@ -29,6 +33,8 @@ export class AttendancesController {
     return this.attendancesService.create(createAttendanceDto);
   }
 
+  @ApiOperation({ summary: 'List attendance records' })
+  @ApiResponse({ status: 200, type: PaginatedResponseDto })
   @Get()
   async findAll(
     @Query() queryAttendanceDto: QueryAttendanceDto,
@@ -36,11 +42,15 @@ export class AttendancesController {
     return this.attendancesService.findAll(queryAttendanceDto);
   }
 
+  @ApiOperation({ summary: 'Get attendance by id' })
+  @ApiResponse({ status: 200, type: AttendanceResponseDto })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<AttendanceResponseDto> {
     return this.attendancesService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Update attendance record' })
+  @ApiResponse({ status: 200, type: AttendanceResponseDto })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -49,6 +59,11 @@ export class AttendancesController {
     return this.attendancesService.update(id, updateAttendanceDto);
   }
 
+  @ApiOperation({ summary: 'Delete attendance record' })
+  @ApiResponse({
+    status: 200,
+    schema: { example: { message: 'Attendance deleted successfully' } },
+  })
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<{ message: string }> {
     return this.attendancesService.remove(id);

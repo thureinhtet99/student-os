@@ -5,6 +5,7 @@ import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatTeacher } from '../../common/formatters/teacher.formatter.js';
+import { TeacherWithRelations } from '../../common/types/teacher.type.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
 import { resolveImageUrl } from '../../common/utils/image.util.js';
@@ -30,7 +31,7 @@ export class TeachersService {
     const { email, password, name, image, gender } = createTeacherDto;
 
     await checkDuplicate(
-      this.prisma.teacher,
+      this.prisma.user,
       'name',
       createTeacherDto.name,
       null,
@@ -66,6 +67,7 @@ export class TeachersService {
           email: email.trim(),
           name: name.trim(),
           role: UserRole.TEACHER,
+          image: imageUrl,
           accounts: {
             create: {
               id: randomUUID(),
@@ -81,21 +83,23 @@ export class TeachersService {
 
       return tx.teacher.create({
         data: {
-          teacherId,
+          employeeCode: teacherId,
           userId: createdUser.id,
-          name: name.trim(),
           gender,
-          image: imageUrl,
         },
         include: {
           user: true,
-          classes: true,
-          subjects: true,
+          teachingAssignments: {
+            include: {
+              class: true,
+              subject: true,
+            },
+          },
         },
       });
     });
 
-    return formatTeacher(teacher);
+    return formatTeacher(teacher as TeacherWithRelations);
   }
 
   async findAll(
@@ -109,7 +113,7 @@ export class TeachersService {
 
     if (search) {
       where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
+        { user: { name: { contains: search, mode: 'insensitive' } } },
         { user: { email: { contains: search, mode: 'insensitive' } } },
         { address: { contains: search, mode: 'insensitive' } },
       ];
@@ -121,16 +125,20 @@ export class TeachersService {
       where,
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: { name: 'asc' },
+      orderBy: { user: { name: 'asc' } },
       include: {
         user: true,
-        classes: true,
-        subjects: true,
+        teachingAssignments: {
+          include: {
+            class: true,
+            subject: true,
+          },
+        },
       },
     });
 
     return {
-      data: teachers.map((teacher) => formatTeacher(teacher)),
+      data: teachers.map((teacher) => formatTeacher(teacher as TeacherWithRelations)),
       meta: {
         total,
         page,
@@ -145,14 +153,18 @@ export class TeachersService {
       where: { id },
       include: {
         user: true,
-        classes: true,
-        subjects: true,
+        teachingAssignments: {
+          include: {
+            class: true,
+            subject: true,
+          },
+        },
       },
     });
 
     if (!teacher) throw new NotFoundException('Teacher is not found');
 
-    return formatTeacher(teacher);
+    return formatTeacher(teacher as TeacherWithRelations);
   }
 
   async update(
@@ -167,14 +179,14 @@ export class TeachersService {
 
     if (
       updateTeacherDto.name &&
-      existingTeacher.name.toLowerCase() !==
+      existingTeacher.user.name.toLowerCase() !==
         updateTeacherDto.name.trim().toLowerCase()
     ) {
       await checkDuplicate(
-        this.prisma.teacher,
+        this.prisma.user,
         'name',
         updateTeacherDto.name,
-        id,
+        existingTeacher.userId,
         'Teacher with this name already exists',
       );
     }
@@ -208,14 +220,16 @@ export class TeachersService {
     const teacher = await this.prisma.teacher.update({
       where: { id },
       data: {
-        user: updateTeacherDto.email
-          ? {
-              update: {
-                email: updateTeacherDto.email?.trim(),
-              },
-            }
-          : undefined,
-        name: updateTeacherDto.name?.trim(),
+        user: {
+          update: {
+            email: updateTeacherDto.email?.trim(),
+            name: updateTeacherDto.name?.trim(),
+            image:
+              updateTeacherDto.image === undefined
+                ? undefined
+                : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
+          },
+        },
         phone: updateTeacherDto.phone?.trim(),
         address:
           updateTeacherDto.address === undefined
@@ -230,30 +244,31 @@ export class TeachersService {
         gender: updateTeacherDto.gender
           ? formatGender(updateTeacherDto.gender)
           : undefined,
-        image:
-          updateTeacherDto.image === undefined
-            ? undefined
-            : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
       },
       include: {
         user: true,
-        classes: true,
-        subjects: true,
+        teachingAssignments: {
+          include: {
+            class: true,
+            subject: true,
+          },
+        },
       },
     });
 
-    return formatTeacher(teacher);
+    return formatTeacher(teacher as TeacherWithRelations);
   }
 
   async remove(id: string): Promise<{ message: string }> {
     const existingTeacher = await this.prisma.teacher.findUnique({
       where: { id },
+      include: { user: true },
     });
     if (!existingTeacher) throw new NotFoundException('Teacher is not found');
 
-    if (existingTeacher.image) {
+    if (existingTeacher.user.image) {
       try {
-        await this.cloudinary.deleteFromCloudinary(existingTeacher.image);
+        await this.cloudinary.deleteFromCloudinary(existingTeacher.user.image);
       } catch (error) {
         this.logger.warn(
           `Failed to delete image from Cloudinary for teacher ${id}: ${(error as Error).message}`,

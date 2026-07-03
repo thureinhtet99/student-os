@@ -200,9 +200,17 @@ model AcademicYear {
 
   isCurrent Boolean @default(false)
 
+  classes Class[]
+
   enrollments Enrollment[]
 
   teachingAssignments TeachingAssignment[]
+
+  attendances Attendance[]
+
+  exams Exam[]
+
+  results Result[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -226,6 +234,10 @@ model Class {
 
   name String
 
+  academicYearId String
+
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+
   // gradeId String
 
   // grade Grade @relation(fields: [gradeId], references: [id])
@@ -237,7 +249,7 @@ model Class {
   announcements Announcement[]
 
   // @@unique([gradeId, name])
-  @@unique([name])
+  @@unique([name, academicYearId])
   @@map("classes")
 }
 
@@ -337,7 +349,11 @@ model Attendance {
 
   enrollmentId String
 
+  academicYearId String
+
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id])
+
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
 
   date DateTime
 
@@ -366,7 +382,11 @@ model Exam {
 
   teachingAssignmentId String
 
+  academicYearId String
+
   teachingAssignment TeachingAssignment @relation(fields: [teachingAssignmentId], references: [id])
+
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
 
   results Result[]
 
@@ -378,11 +398,13 @@ model Result {
 
   enrollmentId String
 
+  academicYearId String
+
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id])
 
-  examId String?
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
 
-  assignmentId String?
+  examId String?
 
   exam Exam? @relation(fields: [examId], references: [id])
 
@@ -393,7 +415,6 @@ model Result {
   comment String?
 
   @@unique([enrollmentId, examId])
-  @@unique([enrollmentId, assignmentId])
   @@map("results")
 }
 

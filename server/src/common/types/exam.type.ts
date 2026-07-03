@@ -1,5 +1,6 @@
-import { Exam, Subject } from '../../../prisma/generated/prisma/client.js';
+import type { ExamModel } from '../../../prisma/generated/prisma/models/Exam.js';
+import type { TeachingAssignmentModel } from '../../../prisma/generated/prisma/models/TeachingAssignment.js';
 
-export type ExamWithRelations = Exam & {
-  subject: Subject | null;
+export type ExamWithRelations = ExamModel & {
+  teachingAssignment?: TeachingAssignmentModel | null;
 };

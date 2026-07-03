@@ -19,9 +19,9 @@ export class AttendancesService {
       data: {
         present: createAttendanceDto.present,
         date: new Date(createAttendanceDto.date),
-        student: { connect: { id: createAttendanceDto.student_id } },
+        enrollmentId: createAttendanceDto.enrollmentId,
+        academicYearId: createAttendanceDto.academicYearId,
       },
-      include: { student: true },
     });
 
     return formatAttendance(attendance);
@@ -30,11 +30,18 @@ export class AttendancesService {
   async findAll(
     queryAttendanceDto: QueryAttendanceDto,
   ): Promise<PaginatedResponseDto<AttendanceResponseDto>> {
-    const { student_id, present, page = 1, limit = 10 } = queryAttendanceDto;
+    const {
+      enrollmentId,
+      academicYearId,
+      present,
+      page = 1,
+      limit = 10,
+    } = queryAttendanceDto;
 
     const where: Prisma.AttendanceWhereInput = {};
 
-    if (student_id) where.studentId = student_id;
+    if (enrollmentId) where.enrollmentId = enrollmentId;
+    if (academicYearId) where.academicYearId = academicYearId;
     if (present !== undefined) where.present = present;
 
     const total = await this.prisma.attendance.count({ where });
@@ -44,9 +51,6 @@ export class AttendancesService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { date: 'desc' },
-      include: {
-        student: true,
-      },
     });
 
     return {
@@ -63,9 +67,6 @@ export class AttendancesService {
   async findOne(id: string): Promise<AttendanceResponseDto> {
     const attendance = await this.prisma.attendance.findUnique({
       where: { id },
-      include: {
-        student: true,
-      },
     });
 
     if (!attendance) throw new NotFoundException('Attendance is not found');
@@ -90,12 +91,8 @@ export class AttendancesService {
         date: updateAttendanceDto.date
           ? new Date(updateAttendanceDto.date)
           : undefined,
-        student: updateAttendanceDto.student_id
-          ? { connect: { id: updateAttendanceDto.student_id } }
-          : undefined,
-      },
-      include: {
-        student: true,
+        enrollmentId: updateAttendanceDto.enrollmentId,
+        academicYearId: updateAttendanceDto.academicYearId,
       },
     });
 

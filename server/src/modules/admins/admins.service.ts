@@ -10,6 +10,7 @@ import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatAdmin } from '../../common/formatters/admin.formatter.js';
+import { AdminWithRelations } from '../../common/types/admin.type.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { AdminResponseDto } from './dto/admin-response.dto.js';
@@ -26,7 +27,7 @@ export class AdminsService {
       const { email, password, name, role } = createAdminDto;
 
       await checkDuplicate(
-        this.prisma.admin,
+        this.prisma.user,
         'name',
         name,
         null,
@@ -69,15 +70,14 @@ export class AdminsService {
 
         return tx.admin.create({
           data: {
-            adminId,
+            employeeCode: adminId,
             userId: createdUser.id,
-            name: name.trim(),
           },
           include: { user: true },
         });
       });
 
-      return formatAdmin(admin);
+      return formatAdmin(admin as AdminWithRelations);
     } catch (error) {
       if (error instanceof HttpException) throw error;
       const message = error instanceof Error ? error.message : 'Unknown error';
@@ -98,7 +98,9 @@ export class AdminsService {
     if (search) {
       where.OR = [
         {
-          name: { contains: search, mode: 'insensitive' },
+          user: {
+            name: { contains: search, mode: 'insensitive' },
+          },
         },
         {
           user: {
@@ -114,12 +116,12 @@ export class AdminsService {
       where,
       skip: (page - 1) * (limit || 10),
       take: limit || 10,
-      orderBy: { name: 'asc' },
+      orderBy: { user: { name: 'asc' } },
       include: { user: true },
     });
 
     return {
-      data: admins.map((admin) => formatAdmin(admin)),
+      data: admins.map((admin) => formatAdmin(admin as AdminWithRelations)),
       meta: {
         total,
         page,
@@ -152,14 +154,14 @@ export class AdminsService {
 
     if (
       updateAdminDto.name &&
-      existingAdmin.name.toLowerCase() !==
+      existingAdmin.user.name.toLowerCase() !==
         updateAdminDto.name.trim().toLowerCase()
     ) {
       await checkDuplicate(
-        this.prisma.admin,
+        this.prisma.user,
         'name',
         updateAdminDto.name,
-        id,
+        existingAdmin.userId,
         'Admin with this name already exists',
       );
     }
@@ -180,19 +182,17 @@ export class AdminsService {
     const admin = await this.prisma.admin.update({
       where: { id },
       data: {
-        user: updateAdminDto.email
-          ? {
-              update: {
-                email: updateAdminDto.email?.trim(),
-              },
-            }
-          : undefined,
-        name: updateAdminDto.name?.trim(),
+        user: {
+          update: {
+            email: updateAdminDto.email ? updateAdminDto.email.trim() : undefined,
+            name: updateAdminDto.name ? updateAdminDto.name.trim() : undefined,
+          },
+        },
       },
       include: { user: true },
     });
 
-    return formatAdmin(admin);
+    return formatAdmin(admin as AdminWithRelations);
   }
 
   async remove(id: string): Promise<{ message: string }> {
