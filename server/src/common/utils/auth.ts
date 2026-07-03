@@ -50,11 +50,11 @@ export const auth = betterAuth({
         required: false,
         input: false,
       },
-      createdBy: {
-        type: 'string',
-        required: false,
-        input: false,
-      },
+      // createdBy: {
+      //   type: 'string',
+      //   required: false,
+      //   input: false,
+      // },
       lastLoginAt: {
         type: 'date',
         required: false,
