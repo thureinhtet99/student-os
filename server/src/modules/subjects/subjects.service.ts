@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatSubject } from '../../common/formatters/subject.formatter.js';
+import { SubjectWithRelations } from '../../common/types/subject.type.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateSubjectDto } from './dto/create-subject.dto.js';
@@ -28,17 +29,13 @@ export class SubjectsService {
       data: {
         name: createSubjectDto.name.trim(),
         description: createSubjectDto.description?.trim() || null,
-        ...(createSubjectDto.classId !== undefined && {
-          classId: createSubjectDto.classId,
-        }),
       },
       include: {
-        class: true,
-        teachers: true,
+        teachingAssignments: true,
       },
     });
 
-    return formatSubject(subject);
+    return formatSubject(subject as SubjectWithRelations);
   }
 
   async findAll(
@@ -63,13 +60,12 @@ export class SubjectsService {
       take: limit,
       orderBy: { name: 'asc' },
       include: {
-        class: true,
-        teachers: true,
+        teachingAssignments: true,
       },
     });
 
     return {
-      data: subjects.map((subject) => formatSubject(subject)),
+      data: subjects.map((subject) => formatSubject(subject as SubjectWithRelations)),
       meta: {
         total,
         page,
@@ -83,14 +79,13 @@ export class SubjectsService {
     const subject = await this.prisma.subject.findUnique({
       where: { id },
       include: {
-        class: true,
-        teachers: true,
+        teachingAssignments: true,
       },
     });
 
     if (!subject) throw new NotFoundException('Subject is not found');
 
-    return formatSubject(subject);
+    return formatSubject(subject as SubjectWithRelations);
   }
 
   async update(
@@ -124,20 +119,13 @@ export class SubjectsService {
           updateSubjectDto.description === undefined
             ? undefined
             : updateSubjectDto.description?.trim() || null,
-        class:
-          updateSubjectDto.classId === undefined
-            ? undefined
-            : updateSubjectDto.classId
-              ? { connect: { id: updateSubjectDto.classId } }
-              : { disconnect: true },
       },
       include: {
-        class: true,
-        teachers: true,
+        teachingAssignments: true,
       },
     });
 
-    return formatSubject(subject);
+    return formatSubject(subject as SubjectWithRelations);
   }
 
   async remove(id: string): Promise<{ message: string }> {

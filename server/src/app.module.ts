@@ -8,19 +8,20 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { auth } from './common/utils/auth';
 import { PrismaModule } from './database/prisma/prisma.module';
+import { AcademicYearsModule } from './modules/academic-years/academic-years.module.js';
 import { AdminsModule } from './modules/admins/admins.module';
 import { AnnouncementsModule } from './modules/announcements/announcements.module';
-import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { AttendancesModule } from './modules/attendances/attendances.module';
 import { AuthModule as LocalAuthModule } from './modules/auth/auth.module.js';
 import { ClassesModule } from './modules/classes/classes.module';
-import { EventsModule } from './modules/events/events.module';
+import { EnrollmentsModule } from './modules/enrollments/enrollments.module.js';
 import { ExamsModule } from './modules/exams/exams.module';
 import { ParentsModule } from './modules/parents/parents.module';
 import { ResultsModule } from './modules/results/results.module';
 import { StudentsModule } from './modules/students/students.module';
 import { SubjectsModule } from './modules/subjects/subjects.module';
 import { TeachersModule } from './modules/teachers/teachers.module';
+import { TeachingAssignmentsModule } from './modules/teaching-assignments/teaching-assignments.module.js';
 
 // Rate limiter for the better-auth HTTP handler at /api/v1/auth/*.
 // Nest guards and @Throttle() do not run on these routes (better-auth is
@@ -53,16 +54,17 @@ const authRateLimiter = rateLimit({
     ]),
     PrismaModule,
     StudentsModule,
+    AcademicYearsModule,
     ClassesModule,
     ParentsModule,
     TeachersModule,
     AdminsModule,
     SubjectsModule,
+    EnrollmentsModule,
     AttendancesModule,
-    AssignmentsModule,
     ExamsModule,
     ResultsModule,
-    EventsModule,
+    TeachingAssignmentsModule,
     AnnouncementsModule,
     AuthModule.forRoot({
       auth,

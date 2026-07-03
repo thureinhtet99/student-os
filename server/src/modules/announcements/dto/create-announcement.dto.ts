@@ -10,12 +10,12 @@ export class CreateAnnouncementDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(200)
-  name!: string;
+  title!: string;
 
   @IsString()
   @IsOptional()
   @MaxLength(1000)
-  description!: string | null;
+  content!: string;
 
   @IsDateString()
   @IsNotEmpty()

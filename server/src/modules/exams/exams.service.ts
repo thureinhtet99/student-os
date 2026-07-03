@@ -15,13 +15,15 @@ export class ExamsService {
   async create(createExamDto: CreateExamDto): Promise<ExamResponseDto> {
     const exam = await this.prisma.exam.create({
       data: {
-        name: createExamDto.name.trim(),
+        title: createExamDto.title.trim(),
         description: createExamDto.description?.trim() || null,
+        totalMarks: createExamDto.totalMarks,
+        passMarks: createExamDto.passMarks,
         startTime: new Date(createExamDto.startTime),
         endTime: new Date(createExamDto.endTime),
-        subject: { connect: { id: createExamDto.subject_id } },
+        teachingAssignmentId: createExamDto.teachingAssignmentId,
+        academicYearId: createExamDto.academicYearId,
       },
-      include: { subject: true },
     });
 
     return formatExam(exam);
@@ -35,7 +37,7 @@ export class ExamsService {
     const where: Prisma.ExamWhereInput = {};
 
     if (search) {
-      where.name = { contains: search, mode: 'insensitive' };
+      where.title = { contains: search, mode: 'insensitive' };
     }
 
     const total = await this.prisma.exam.count({ where });
@@ -45,7 +47,6 @@ export class ExamsService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { startTime: 'desc' },
-      include: { subject: true },
     });
 
     return {
@@ -62,7 +63,6 @@ export class ExamsService {
   async findOne(id: string): Promise<ExamResponseDto> {
     const exam = await this.prisma.exam.findUnique({
       where: { id },
-      include: { subject: true },
     });
 
     if (!exam) throw new NotFoundException('Exam is not found');
@@ -80,22 +80,28 @@ export class ExamsService {
     const exam = await this.prisma.exam.update({
       where: { id },
       data: {
-        name: updateExamDto.name?.trim(),
+        title: updateExamDto.title?.trim(),
         description:
           updateExamDto.description === undefined
             ? undefined
             : updateExamDto.description?.trim() || null,
+        totalMarks:
+          updateExamDto.totalMarks === undefined
+            ? undefined
+            : updateExamDto.totalMarks,
+        passMarks:
+          updateExamDto.passMarks === undefined
+            ? undefined
+            : updateExamDto.passMarks,
         startTime: updateExamDto.startTime
           ? new Date(updateExamDto.startTime)
           : undefined,
         endTime: updateExamDto.endTime
           ? new Date(updateExamDto.endTime)
           : undefined,
-        subject: updateExamDto.subject_id
-          ? { connect: { id: updateExamDto.subject_id } }
-          : undefined,
+        teachingAssignmentId: updateExamDto.teachingAssignmentId,
+        academicYearId: updateExamDto.academicYearId,
       },
-      include: { subject: true },
     });
 
     return formatExam(exam);

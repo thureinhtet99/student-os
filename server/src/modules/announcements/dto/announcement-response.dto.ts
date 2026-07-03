@@ -1,7 +1,7 @@
 export class AnnouncementResponseDto {
   id!: string;
-  name!: string;
-  description!: string | null;
+  title!: string;
+  content!: string;
   date!: Date;
   class!: { id: string; name: string } | null;
   createdAt!: Date;

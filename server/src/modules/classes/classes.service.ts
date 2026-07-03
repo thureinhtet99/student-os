@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto';
 import { formatClass } from '../../common/formatters/class.formatter';
-import { checkDuplicate } from '../../common/utils/db.util';
 import { PrismaService } from '../../database/prisma/prisma.service';
 import { ClassResponseDto } from './dto/class-response-dto';
 import { CreateClassDto } from './dto/create-class.dto';
@@ -14,29 +13,26 @@ export class ClassesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createClassDto: CreateClassDto): Promise<ClassResponseDto> {
-    await checkDuplicate(
-      this.prisma.class,
-      'name',
-      createClassDto.name,
-      null,
-      'Class with this name already exists',
-    );
+    const existingClass = await this.prisma.class.findFirst({
+      where: {
+        name: createClassDto.name.trim(),
+        academicYearId: createClassDto.academicYearId,
+      },
+    });
+
+    if (existingClass) {
+      throw new NotFoundException('Class with this name already exists');
+    }
 
     const classItem = await this.prisma.class.create({
       data: {
-        name: createClassDto.name,
-        teacher: createClassDto.teacherId
-          ? {
-              connect: { id: createClassDto.teacherId },
-            }
-          : undefined,
+        name: createClassDto.name.trim(),
+        academicYear: {
+          connect: { id: createClassDto.academicYearId },
+        },
       },
       include: {
-        teacher: true,
-        students: true,
-        subjects: true,
-        events: true,
-        announcements: true,
+        academicYear: true,
       },
     });
 
@@ -46,11 +42,11 @@ export class ClassesService {
   async findAll(
     queryClassDto: QueryClassDto,
   ): Promise<PaginatedResponseDto<ClassResponseDto>> {
-    const { limit = 10, page = 1, teacher, search } = queryClassDto;
+    const { limit = 10, page = 1, academicYearId, search } = queryClassDto;
 
     const where: Prisma.ClassWhereInput = {};
 
-    if (teacher) where.teacherId = teacher;
+    if (academicYearId) where.academicYearId = academicYearId;
 
     if (search) {
       where.OR = [
@@ -68,11 +64,7 @@ export class ClassesService {
       take: limit,
       orderBy: { name: 'asc' },
       include: {
-        teacher: true,
-        students: true,
-        subjects: true,
-        events: true,
-        announcements: true,
+        academicYear: true,
       },
     });
 
@@ -91,11 +83,7 @@ export class ClassesService {
     const classById = await this.prisma.class.findUnique({
       where: { id },
       include: {
-        teacher: true,
-        students: true,
-        subjects: true,
-        events: true,
-        announcements: true,
+        academicYear: true,
       },
     });
 
@@ -118,31 +106,29 @@ export class ClassesService {
       existingClass.name.toLowerCase() !==
         updateClassDto.name.trim().toLowerCase()
     ) {
-      await checkDuplicate(
-        this.prisma.class,
-        'name',
-        updateClassDto.name,
-        id,
-        'Class with this name already exists',
-      );
+      const duplicateClass = await this.prisma.class.findFirst({
+        where: {
+          name: updateClassDto.name.trim(),
+          academicYearId: existingClass.academicYearId,
+          NOT: { id },
+        },
+      });
+
+      if (duplicateClass) {
+        throw new NotFoundException('Class with this name already exists');
+      }
     }
 
     const classItem = await this.prisma.class.update({
       where: { id },
       data: {
-        name: updateClassDto.name,
-        teacher: updateClassDto.teacherId
-          ? {
-              connect: { id: updateClassDto.teacherId },
-            }
+        name: updateClassDto.name?.trim(),
+        academicYear: updateClassDto.academicYearId
+          ? { connect: { id: updateClassDto.academicYearId } }
           : undefined,
       },
       include: {
-        teacher: true,
-        students: true,
-        subjects: true,
-        events: true,
-        announcements: true,
+        academicYear: true,
       },
     });
 

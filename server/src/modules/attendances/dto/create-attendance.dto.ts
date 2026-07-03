@@ -1,15 +1,24 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsDateString, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateAttendanceDto {
+  @ApiProperty({ example: true })
   @IsBoolean()
   @IsNotEmpty()
   present!: boolean;
 
+  @ApiProperty({ example: '2026-07-03' })
   @IsDateString()
   @IsNotEmpty()
   date!: string;
 
+  @ApiProperty({ example: 'ckx123enrollmentid' })
   @IsString()
   @IsNotEmpty()
-  student_id!: string;
+  enrollmentId!: string;
+
+  @ApiProperty({ example: 'ckx123academicyearid' })
+  @IsString()
+  @IsNotEmpty()
+  academicYearId!: string;
 }

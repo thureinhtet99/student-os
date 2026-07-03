@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const ParentRelationship = {
+  FATHER: 'FATHER',
+  MOTHER: 'MOTHER',
+  GUARDIAN: 'GUARDIAN'
+} as const
+
+export type ParentRelationship = (typeof ParentRelationship)[keyof typeof ParentRelationship]
+
+
 export const UserGender = {
   MALE: 'MALE',
   FEMALE: 'FEMALE'
@@ -25,15 +34,6 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
-
-
-export const SubmissionStatus = {
-  PENDING: 'PENDING',
-  APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
-} as const
-
-export type SubmissionStatus = (typeof SubmissionStatus)[keyof typeof SubmissionStatus]
 
 
 export const Day = {

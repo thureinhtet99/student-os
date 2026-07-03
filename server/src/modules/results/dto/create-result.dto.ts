@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsInt,
   IsNotEmpty,
@@ -8,25 +9,30 @@ import {
 } from 'class-validator';
 
 export class CreateResultDto {
+  @ApiProperty({ example: 88 })
   @IsInt()
   @Min(0)
   @IsNotEmpty()
   score!: number;
 
+  @ApiProperty({ example: 'Solid performance', required: false })
   @IsString()
   @IsOptional()
   @MaxLength(1000)
   comment!: string | null;
 
+  @ApiProperty({ example: 'ckx123examid', required: false })
   @IsString()
   @IsOptional()
   exam_id!: string | null;
 
-  @IsString()
-  @IsOptional()
-  assignment_id!: string | null;
-
+  @ApiProperty({ example: 'ckx123academicyearid' })
   @IsString()
   @IsNotEmpty()
-  student_id!: string;
+  academicYearId!: string;
+
+  @ApiProperty({ example: 'ckx123enrollmentid' })
+  @IsString()
+  @IsNotEmpty()
+  enrollmentId!: string;
 }

@@ -2,11 +2,14 @@ import {
   Class,
   Subject,
   Teacher,
+  TeachingAssignment,
   User,
 } from '../../../prisma/generated/prisma/client.js';
 
-export type TeacherWithRelations = Omit<Teacher, 'password'> & {
+export type TeacherWithRelations = Teacher & {
   user: User;
-  classes: Class[];
-  subjects: Subject[];
+  teachingAssignments: (TeachingAssignment & {
+    class: Class;
+    subject: Subject;
+  })[];
 };

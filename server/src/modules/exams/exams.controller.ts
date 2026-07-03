@@ -1,4 +1,3 @@
-import { Roles } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -9,24 +8,31 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
+import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { CreateExamDto } from './dto/create-exam.dto.js';
-import { QueryExamDto } from './dto/query-exam-dto.js';
 import { ExamResponseDto } from './dto/exam-response.dto.js';
+import { QueryExamDto } from './dto/query-exam-dto.js';
 import { UpdateExamDto } from './dto/update-exam.dto.js';
 import { ExamsService } from './exams.service.js';
 
+@ApiTags('Exams')
 @Roles(TEACHING_ROLES)
 @Controller('exams')
 export class ExamsController {
   constructor(private readonly examsService: ExamsService) {}
 
+  @ApiOperation({ summary: 'Create exam' })
+  @ApiResponse({ status: 201, type: ExamResponseDto })
   @Post()
   async create(@Body() createExamDto: CreateExamDto): Promise<ExamResponseDto> {
     return this.examsService.create(createExamDto);
   }
 
+  @ApiOperation({ summary: 'List exams' })
+  @ApiResponse({ status: 200, type: PaginatedResponseDto })
   @Get()
   async findAll(
     @Query() queryExamDto: QueryExamDto,
@@ -34,11 +40,15 @@ export class ExamsController {
     return this.examsService.findAll(queryExamDto);
   }
 
+  @ApiOperation({ summary: 'Get exam by id' })
+  @ApiResponse({ status: 200, type: ExamResponseDto })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ExamResponseDto> {
     return this.examsService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Update exam' })
+  @ApiResponse({ status: 200, type: ExamResponseDto })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -47,6 +57,11 @@ export class ExamsController {
     return this.examsService.update(id, updateExamDto);
   }
 
+  @ApiOperation({ summary: 'Delete exam' })
+  @ApiResponse({
+    status: 200,
+    schema: { example: { message: 'Exam deleted successfully' } },
+  })
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<{ message: string }> {
     return this.examsService.remove(id);

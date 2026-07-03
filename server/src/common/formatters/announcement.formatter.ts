@@ -6,9 +6,9 @@ export function formatAnnouncement(
 ): AnnouncementResponseDto {
   return {
     id: announcement.id,
-    name: announcement.name,
-    description: announcement.description,
-    date: announcement.date,
+    title: announcement.title,
+    content: announcement.content,
+    date: announcement.publishedAt,
     class: announcement.class
       ? { id: announcement.class.id, name: announcement.class.name }
       : null,

@@ -8,9 +8,9 @@ export function formatParent(parent: ParentWithRelations): ParentResponseDto {
     phone: parent.phone,
     address: parent.address,
     students: parent.students
-      ? parent.students.map((std) => ({
-          id: std.id,
-          name: std.name,
+      ? parent.students.map((ps) => ({
+          id: ps.student.id,
+          name: ps.student.user.name,
         }))
       : null,
     createdAt: parent.createdAt,

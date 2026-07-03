@@ -20,76 +20,104 @@ export type ExamModel = runtime.Types.Result.DefaultSelection<Prisma.$ExamPayloa
 
 export type AggregateExam = {
   _count: ExamCountAggregateOutputType | null
+  _avg: ExamAvgAggregateOutputType | null
+  _sum: ExamSumAggregateOutputType | null
   _min: ExamMinAggregateOutputType | null
   _max: ExamMaxAggregateOutputType | null
 }
 
+export type ExamAvgAggregateOutputType = {
+  totalMarks: runtime.Decimal | null
+  passMarks: runtime.Decimal | null
+}
+
+export type ExamSumAggregateOutputType = {
+  totalMarks: runtime.Decimal | null
+  passMarks: runtime.Decimal | null
+}
+
 export type ExamMinAggregateOutputType = {
   id: string | null
-  name: string | null
+  title: string | null
   description: string | null
+  totalMarks: runtime.Decimal | null
+  passMarks: runtime.Decimal | null
   startTime: Date | null
   endTime: Date | null
-  createdAt: Date | null
-  updatedAt: Date | null
-  subjectId: string | null
+  teachingAssignmentId: string | null
+  academicYearId: string | null
 }
 
 export type ExamMaxAggregateOutputType = {
   id: string | null
-  name: string | null
+  title: string | null
   description: string | null
+  totalMarks: runtime.Decimal | null
+  passMarks: runtime.Decimal | null
   startTime: Date | null
   endTime: Date | null
-  createdAt: Date | null
-  updatedAt: Date | null
-  subjectId: string | null
+  teachingAssignmentId: string | null
+  academicYearId: string | null
 }
 
 export type ExamCountAggregateOutputType = {
   id: number
-  name: number
+  title: number
   description: number
+  totalMarks: number
+  passMarks: number
   startTime: number
   endTime: number
-  createdAt: number
-  updatedAt: number
-  subjectId: number
+  teachingAssignmentId: number
+  academicYearId: number
   _all: number
 }
 
 
+export type ExamAvgAggregateInputType = {
+  totalMarks?: true
+  passMarks?: true
+}
+
+export type ExamSumAggregateInputType = {
+  totalMarks?: true
+  passMarks?: true
+}
+
 export type ExamMinAggregateInputType = {
   id?: true
-  name?: true
+  title?: true
   description?: true
+  totalMarks?: true
+  passMarks?: true
   startTime?: true
   endTime?: true
-  createdAt?: true
-  updatedAt?: true
-  subjectId?: true
+  teachingAssignmentId?: true
+  academicYearId?: true
 }
 
 export type ExamMaxAggregateInputType = {
   id?: true
-  name?: true
+  title?: true
   description?: true
+  totalMarks?: true
+  passMarks?: true
   startTime?: true
   endTime?: true
-  createdAt?: true
-  updatedAt?: true
-  subjectId?: true
+  teachingAssignmentId?: true
+  academicYearId?: true
 }
 
 export type ExamCountAggregateInputType = {
   id?: true
-  name?: true
+  title?: true
   description?: true
+  totalMarks?: true
+  passMarks?: true
   startTime?: true
   endTime?: true
-  createdAt?: true
-  updatedAt?: true
-  subjectId?: true
+  teachingAssignmentId?: true
+  academicYearId?: true
   _all?: true
 }
 
@@ -131,6 +159,18 @@ export type ExamAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ExamAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ExamSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ExamMinAggregateInputType
@@ -161,20 +201,25 @@ export type ExamGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: ExamCountAggregateInputType | true
+  _avg?: ExamAvgAggregateInputType
+  _sum?: ExamSumAggregateInputType
   _min?: ExamMinAggregateInputType
   _max?: ExamMaxAggregateInputType
 }
 
 export type ExamGroupByOutputType = {
   id: string
-  name: string
+  title: string
   description: string | null
+  totalMarks: runtime.Decimal
+  passMarks: runtime.Decimal
   startTime: Date
   endTime: Date
-  createdAt: Date
-  updatedAt: Date
-  subjectId: string
+  teachingAssignmentId: string
+  academicYearId: string
   _count: ExamCountAggregateOutputType | null
+  _avg: ExamAvgAggregateOutputType | null
+  _sum: ExamSumAggregateOutputType | null
   _min: ExamMinAggregateOutputType | null
   _max: ExamMaxAggregateOutputType | null
 }
@@ -199,27 +244,31 @@ export type ExamWhereInput = {
   OR?: Prisma.ExamWhereInput[]
   NOT?: Prisma.ExamWhereInput | Prisma.ExamWhereInput[]
   id?: Prisma.StringFilter<"Exam"> | string
-  name?: Prisma.StringFilter<"Exam"> | string
+  title?: Prisma.StringFilter<"Exam"> | string
   description?: Prisma.StringNullableFilter<"Exam"> | string | null
+  totalMarks?: Prisma.DecimalFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
   endTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  subjectId?: Prisma.StringFilter<"Exam"> | string
-  subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
+  teachingAssignmentId?: Prisma.StringFilter<"Exam"> | string
+  academicYearId?: Prisma.StringFilter<"Exam"> | string
+  teachingAssignment?: Prisma.XOR<Prisma.TeachingAssignmentScalarRelationFilter, Prisma.TeachingAssignmentWhereInput>
+  academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   results?: Prisma.ResultListRelationFilter
 }
 
 export type ExamOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalMarks?: Prisma.SortOrder
+  passMarks?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
-  subject?: Prisma.SubjectOrderByWithRelationInput
+  teachingAssignmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
+  teachingAssignment?: Prisma.TeachingAssignmentOrderByWithRelationInput
+  academicYear?: Prisma.AcademicYearOrderByWithRelationInput
   results?: Prisma.ResultOrderByRelationAggregateInput
 }
 
@@ -228,29 +277,34 @@ export type ExamWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ExamWhereInput | Prisma.ExamWhereInput[]
   OR?: Prisma.ExamWhereInput[]
   NOT?: Prisma.ExamWhereInput | Prisma.ExamWhereInput[]
-  name?: Prisma.StringFilter<"Exam"> | string
+  title?: Prisma.StringFilter<"Exam"> | string
   description?: Prisma.StringNullableFilter<"Exam"> | string | null
+  totalMarks?: Prisma.DecimalFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
   endTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  subjectId?: Prisma.StringFilter<"Exam"> | string
-  subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
+  teachingAssignmentId?: Prisma.StringFilter<"Exam"> | string
+  academicYearId?: Prisma.StringFilter<"Exam"> | string
+  teachingAssignment?: Prisma.XOR<Prisma.TeachingAssignmentScalarRelationFilter, Prisma.TeachingAssignmentWhereInput>
+  academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   results?: Prisma.ResultListRelationFilter
 }, "id">
 
 export type ExamOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalMarks?: Prisma.SortOrder
+  passMarks?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  teachingAssignmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
   _count?: Prisma.ExamCountOrderByAggregateInput
+  _avg?: Prisma.ExamAvgOrderByAggregateInput
   _max?: Prisma.ExamMaxOrderByAggregateInput
   _min?: Prisma.ExamMinOrderByAggregateInput
+  _sum?: Prisma.ExamSumOrderByAggregateInput
 }
 
 export type ExamScalarWhereWithAggregatesInput = {
@@ -258,93 +312,100 @@ export type ExamScalarWhereWithAggregatesInput = {
   OR?: Prisma.ExamScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ExamScalarWhereWithAggregatesInput | Prisma.ExamScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Exam"> | string
-  name?: Prisma.StringWithAggregatesFilter<"Exam"> | string
+  title?: Prisma.StringWithAggregatesFilter<"Exam"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Exam"> | string | null
+  totalMarks?: Prisma.DecimalWithAggregatesFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalWithAggregatesFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
   endTime?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
-  subjectId?: Prisma.StringWithAggregatesFilter<"Exam"> | string
+  teachingAssignmentId?: Prisma.StringWithAggregatesFilter<"Exam"> | string
+  academicYearId?: Prisma.StringWithAggregatesFilter<"Exam"> | string
 }
 
 export type ExamCreateInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  subject: Prisma.SubjectCreateNestedOneWithoutExamsInput
+  teachingAssignment: Prisma.TeachingAssignmentCreateNestedOneWithoutExamsInput
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutExamsInput
   results?: Prisma.ResultCreateNestedManyWithoutExamInput
 }
 
 export type ExamUncheckedCreateInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  subjectId: string
+  teachingAssignmentId: string
+  academicYearId: string
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutExamInput
 }
 
 export type ExamUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subject?: Prisma.SubjectUpdateOneRequiredWithoutExamsNestedInput
+  teachingAssignment?: Prisma.TeachingAssignmentUpdateOneRequiredWithoutExamsNestedInput
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutExamsNestedInput
   results?: Prisma.ResultUpdateManyWithoutExamNestedInput
 }
 
 export type ExamUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   results?: Prisma.ResultUncheckedUpdateManyWithoutExamNestedInput
 }
 
 export type ExamCreateManyInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  subjectId: string
+  teachingAssignmentId: string
+  academicYearId: string
 }
 
 export type ExamUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ExamListRelationFilter = {
@@ -359,35 +420,48 @@ export type ExamOrderByRelationAggregateInput = {
 
 export type ExamCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  totalMarks?: Prisma.SortOrder
+  passMarks?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  teachingAssignmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
+}
+
+export type ExamAvgOrderByAggregateInput = {
+  totalMarks?: Prisma.SortOrder
+  passMarks?: Prisma.SortOrder
 }
 
 export type ExamMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  totalMarks?: Prisma.SortOrder
+  passMarks?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  teachingAssignmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
 }
 
 export type ExamMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  totalMarks?: Prisma.SortOrder
+  passMarks?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  subjectId?: Prisma.SortOrder
+  teachingAssignmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
+}
+
+export type ExamSumOrderByAggregateInput = {
+  totalMarks?: Prisma.SortOrder
+  passMarks?: Prisma.SortOrder
 }
 
 export type ExamNullableScalarRelationFilter = {
@@ -395,46 +469,96 @@ export type ExamNullableScalarRelationFilter = {
   isNot?: Prisma.ExamWhereInput | null
 }
 
-export type ExamCreateNestedManyWithoutSubjectInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutSubjectInput, Prisma.ExamUncheckedCreateWithoutSubjectInput> | Prisma.ExamCreateWithoutSubjectInput[] | Prisma.ExamUncheckedCreateWithoutSubjectInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutSubjectInput | Prisma.ExamCreateOrConnectWithoutSubjectInput[]
-  createMany?: Prisma.ExamCreateManySubjectInputEnvelope
+export type ExamCreateNestedManyWithoutAcademicYearInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutAcademicYearInput, Prisma.ExamUncheckedCreateWithoutAcademicYearInput> | Prisma.ExamCreateWithoutAcademicYearInput[] | Prisma.ExamUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutAcademicYearInput | Prisma.ExamCreateOrConnectWithoutAcademicYearInput[]
+  createMany?: Prisma.ExamCreateManyAcademicYearInputEnvelope
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
 }
 
-export type ExamUncheckedCreateNestedManyWithoutSubjectInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutSubjectInput, Prisma.ExamUncheckedCreateWithoutSubjectInput> | Prisma.ExamCreateWithoutSubjectInput[] | Prisma.ExamUncheckedCreateWithoutSubjectInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutSubjectInput | Prisma.ExamCreateOrConnectWithoutSubjectInput[]
-  createMany?: Prisma.ExamCreateManySubjectInputEnvelope
+export type ExamUncheckedCreateNestedManyWithoutAcademicYearInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutAcademicYearInput, Prisma.ExamUncheckedCreateWithoutAcademicYearInput> | Prisma.ExamCreateWithoutAcademicYearInput[] | Prisma.ExamUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutAcademicYearInput | Prisma.ExamCreateOrConnectWithoutAcademicYearInput[]
+  createMany?: Prisma.ExamCreateManyAcademicYearInputEnvelope
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
 }
 
-export type ExamUpdateManyWithoutSubjectNestedInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutSubjectInput, Prisma.ExamUncheckedCreateWithoutSubjectInput> | Prisma.ExamCreateWithoutSubjectInput[] | Prisma.ExamUncheckedCreateWithoutSubjectInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutSubjectInput | Prisma.ExamCreateOrConnectWithoutSubjectInput[]
-  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutSubjectInput | Prisma.ExamUpsertWithWhereUniqueWithoutSubjectInput[]
-  createMany?: Prisma.ExamCreateManySubjectInputEnvelope
+export type ExamUpdateManyWithoutAcademicYearNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutAcademicYearInput, Prisma.ExamUncheckedCreateWithoutAcademicYearInput> | Prisma.ExamCreateWithoutAcademicYearInput[] | Prisma.ExamUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutAcademicYearInput | Prisma.ExamCreateOrConnectWithoutAcademicYearInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutAcademicYearInput | Prisma.ExamUpsertWithWhereUniqueWithoutAcademicYearInput[]
+  createMany?: Prisma.ExamCreateManyAcademicYearInputEnvelope
   set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
-  update?: Prisma.ExamUpdateWithWhereUniqueWithoutSubjectInput | Prisma.ExamUpdateWithWhereUniqueWithoutSubjectInput[]
-  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutSubjectInput | Prisma.ExamUpdateManyWithWhereWithoutSubjectInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutAcademicYearInput | Prisma.ExamUpdateWithWhereUniqueWithoutAcademicYearInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutAcademicYearInput | Prisma.ExamUpdateManyWithWhereWithoutAcademicYearInput[]
   deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
 }
 
-export type ExamUncheckedUpdateManyWithoutSubjectNestedInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutSubjectInput, Prisma.ExamUncheckedCreateWithoutSubjectInput> | Prisma.ExamCreateWithoutSubjectInput[] | Prisma.ExamUncheckedCreateWithoutSubjectInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutSubjectInput | Prisma.ExamCreateOrConnectWithoutSubjectInput[]
-  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutSubjectInput | Prisma.ExamUpsertWithWhereUniqueWithoutSubjectInput[]
-  createMany?: Prisma.ExamCreateManySubjectInputEnvelope
+export type ExamUncheckedUpdateManyWithoutAcademicYearNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutAcademicYearInput, Prisma.ExamUncheckedCreateWithoutAcademicYearInput> | Prisma.ExamCreateWithoutAcademicYearInput[] | Prisma.ExamUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutAcademicYearInput | Prisma.ExamCreateOrConnectWithoutAcademicYearInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutAcademicYearInput | Prisma.ExamUpsertWithWhereUniqueWithoutAcademicYearInput[]
+  createMany?: Prisma.ExamCreateManyAcademicYearInputEnvelope
   set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
-  update?: Prisma.ExamUpdateWithWhereUniqueWithoutSubjectInput | Prisma.ExamUpdateWithWhereUniqueWithoutSubjectInput[]
-  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutSubjectInput | Prisma.ExamUpdateManyWithWhereWithoutSubjectInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutAcademicYearInput | Prisma.ExamUpdateWithWhereUniqueWithoutAcademicYearInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutAcademicYearInput | Prisma.ExamUpdateManyWithWhereWithoutAcademicYearInput[]
   deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
+}
+
+export type ExamCreateNestedManyWithoutTeachingAssignmentInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.ExamCreateWithoutTeachingAssignmentInput[] | Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput | Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput[]
+  createMany?: Prisma.ExamCreateManyTeachingAssignmentInputEnvelope
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+}
+
+export type ExamUncheckedCreateNestedManyWithoutTeachingAssignmentInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.ExamCreateWithoutTeachingAssignmentInput[] | Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput | Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput[]
+  createMany?: Prisma.ExamCreateManyTeachingAssignmentInputEnvelope
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+}
+
+export type ExamUpdateManyWithoutTeachingAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.ExamCreateWithoutTeachingAssignmentInput[] | Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput | Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.ExamUpsertWithWhereUniqueWithoutTeachingAssignmentInput[]
+  createMany?: Prisma.ExamCreateManyTeachingAssignmentInputEnvelope
+  set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.ExamUpdateWithWhereUniqueWithoutTeachingAssignmentInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutTeachingAssignmentInput | Prisma.ExamUpdateManyWithWhereWithoutTeachingAssignmentInput[]
+  deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
+}
+
+export type ExamUncheckedUpdateManyWithoutTeachingAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.ExamCreateWithoutTeachingAssignmentInput[] | Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput | Prisma.ExamCreateOrConnectWithoutTeachingAssignmentInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.ExamUpsertWithWhereUniqueWithoutTeachingAssignmentInput[]
+  createMany?: Prisma.ExamCreateManyTeachingAssignmentInputEnvelope
+  set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.ExamUpdateWithWhereUniqueWithoutTeachingAssignmentInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutTeachingAssignmentInput | Prisma.ExamUpdateManyWithWhereWithoutTeachingAssignmentInput[]
+  deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type ExamCreateNestedOneWithoutResultsInput = {
@@ -453,52 +577,54 @@ export type ExamUpdateOneWithoutResultsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ExamUpdateToOneWithWhereWithoutResultsInput, Prisma.ExamUpdateWithoutResultsInput>, Prisma.ExamUncheckedUpdateWithoutResultsInput>
 }
 
-export type ExamCreateWithoutSubjectInput = {
+export type ExamCreateWithoutAcademicYearInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  teachingAssignment: Prisma.TeachingAssignmentCreateNestedOneWithoutExamsInput
   results?: Prisma.ResultCreateNestedManyWithoutExamInput
 }
 
-export type ExamUncheckedCreateWithoutSubjectInput = {
+export type ExamUncheckedCreateWithoutAcademicYearInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  teachingAssignmentId: string
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutExamInput
 }
 
-export type ExamCreateOrConnectWithoutSubjectInput = {
+export type ExamCreateOrConnectWithoutAcademicYearInput = {
   where: Prisma.ExamWhereUniqueInput
-  create: Prisma.XOR<Prisma.ExamCreateWithoutSubjectInput, Prisma.ExamUncheckedCreateWithoutSubjectInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutAcademicYearInput, Prisma.ExamUncheckedCreateWithoutAcademicYearInput>
 }
 
-export type ExamCreateManySubjectInputEnvelope = {
-  data: Prisma.ExamCreateManySubjectInput | Prisma.ExamCreateManySubjectInput[]
+export type ExamCreateManyAcademicYearInputEnvelope = {
+  data: Prisma.ExamCreateManyAcademicYearInput | Prisma.ExamCreateManyAcademicYearInput[]
   skipDuplicates?: boolean
 }
 
-export type ExamUpsertWithWhereUniqueWithoutSubjectInput = {
+export type ExamUpsertWithWhereUniqueWithoutAcademicYearInput = {
   where: Prisma.ExamWhereUniqueInput
-  update: Prisma.XOR<Prisma.ExamUpdateWithoutSubjectInput, Prisma.ExamUncheckedUpdateWithoutSubjectInput>
-  create: Prisma.XOR<Prisma.ExamCreateWithoutSubjectInput, Prisma.ExamUncheckedCreateWithoutSubjectInput>
+  update: Prisma.XOR<Prisma.ExamUpdateWithoutAcademicYearInput, Prisma.ExamUncheckedUpdateWithoutAcademicYearInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutAcademicYearInput, Prisma.ExamUncheckedCreateWithoutAcademicYearInput>
 }
 
-export type ExamUpdateWithWhereUniqueWithoutSubjectInput = {
+export type ExamUpdateWithWhereUniqueWithoutAcademicYearInput = {
   where: Prisma.ExamWhereUniqueInput
-  data: Prisma.XOR<Prisma.ExamUpdateWithoutSubjectInput, Prisma.ExamUncheckedUpdateWithoutSubjectInput>
+  data: Prisma.XOR<Prisma.ExamUpdateWithoutAcademicYearInput, Prisma.ExamUncheckedUpdateWithoutAcademicYearInput>
 }
 
-export type ExamUpdateManyWithWhereWithoutSubjectInput = {
+export type ExamUpdateManyWithWhereWithoutAcademicYearInput = {
   where: Prisma.ExamScalarWhereInput
-  data: Prisma.XOR<Prisma.ExamUpdateManyMutationInput, Prisma.ExamUncheckedUpdateManyWithoutSubjectInput>
+  data: Prisma.XOR<Prisma.ExamUpdateManyMutationInput, Prisma.ExamUncheckedUpdateManyWithoutAcademicYearInput>
 }
 
 export type ExamScalarWhereInput = {
@@ -506,35 +632,88 @@ export type ExamScalarWhereInput = {
   OR?: Prisma.ExamScalarWhereInput[]
   NOT?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
   id?: Prisma.StringFilter<"Exam"> | string
-  name?: Prisma.StringFilter<"Exam"> | string
+  title?: Prisma.StringFilter<"Exam"> | string
   description?: Prisma.StringNullableFilter<"Exam"> | string | null
+  totalMarks?: Prisma.DecimalFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFilter<"Exam"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
   endTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
-  subjectId?: Prisma.StringFilter<"Exam"> | string
+  teachingAssignmentId?: Prisma.StringFilter<"Exam"> | string
+  academicYearId?: Prisma.StringFilter<"Exam"> | string
+}
+
+export type ExamCreateWithoutTeachingAssignmentInput = {
+  id?: string
+  title: string
+  description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  startTime: Date | string
+  endTime: Date | string
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutExamsInput
+  results?: Prisma.ResultCreateNestedManyWithoutExamInput
+}
+
+export type ExamUncheckedCreateWithoutTeachingAssignmentInput = {
+  id?: string
+  title: string
+  description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  startTime: Date | string
+  endTime: Date | string
+  academicYearId: string
+  results?: Prisma.ResultUncheckedCreateNestedManyWithoutExamInput
+}
+
+export type ExamCreateOrConnectWithoutTeachingAssignmentInput = {
+  where: Prisma.ExamWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExamCreateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput>
+}
+
+export type ExamCreateManyTeachingAssignmentInputEnvelope = {
+  data: Prisma.ExamCreateManyTeachingAssignmentInput | Prisma.ExamCreateManyTeachingAssignmentInput[]
+  skipDuplicates?: boolean
+}
+
+export type ExamUpsertWithWhereUniqueWithoutTeachingAssignmentInput = {
+  where: Prisma.ExamWhereUniqueInput
+  update: Prisma.XOR<Prisma.ExamUpdateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedUpdateWithoutTeachingAssignmentInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedCreateWithoutTeachingAssignmentInput>
+}
+
+export type ExamUpdateWithWhereUniqueWithoutTeachingAssignmentInput = {
+  where: Prisma.ExamWhereUniqueInput
+  data: Prisma.XOR<Prisma.ExamUpdateWithoutTeachingAssignmentInput, Prisma.ExamUncheckedUpdateWithoutTeachingAssignmentInput>
+}
+
+export type ExamUpdateManyWithWhereWithoutTeachingAssignmentInput = {
+  where: Prisma.ExamScalarWhereInput
+  data: Prisma.XOR<Prisma.ExamUpdateManyMutationInput, Prisma.ExamUncheckedUpdateManyWithoutTeachingAssignmentInput>
 }
 
 export type ExamCreateWithoutResultsInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  subject: Prisma.SubjectCreateNestedOneWithoutExamsInput
+  teachingAssignment: Prisma.TeachingAssignmentCreateNestedOneWithoutExamsInput
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutExamsInput
 }
 
 export type ExamUncheckedCreateWithoutResultsInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  subjectId: string
+  teachingAssignmentId: string
+  academicYearId: string
 }
 
 export type ExamCreateOrConnectWithoutResultsInput = {
@@ -555,66 +734,118 @@ export type ExamUpdateToOneWithWhereWithoutResultsInput = {
 
 export type ExamUpdateWithoutResultsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subject?: Prisma.SubjectUpdateOneRequiredWithoutExamsNestedInput
+  teachingAssignment?: Prisma.TeachingAssignmentUpdateOneRequiredWithoutExamsNestedInput
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutExamsNestedInput
 }
 
 export type ExamUncheckedUpdateWithoutResultsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type ExamCreateManySubjectInput = {
+export type ExamCreateManyAcademicYearInput = {
   id?: string
-  name: string
+  title: string
   description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  teachingAssignmentId: string
 }
 
-export type ExamUpdateWithoutSubjectInput = {
+export type ExamUpdateWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  teachingAssignment?: Prisma.TeachingAssignmentUpdateOneRequiredWithoutExamsNestedInput
   results?: Prisma.ResultUpdateManyWithoutExamNestedInput
 }
 
-export type ExamUncheckedUpdateWithoutSubjectInput = {
+export type ExamUncheckedUpdateWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   results?: Prisma.ResultUncheckedUpdateManyWithoutExamNestedInput
 }
 
-export type ExamUncheckedUpdateManyWithoutSubjectInput = {
+export type ExamUncheckedUpdateManyWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ExamCreateManyTeachingAssignmentInput = {
+  id?: string
+  title: string
+  description?: string | null
+  totalMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
+  startTime: Date | string
+  endTime: Date | string
+  academicYearId: string
+}
+
+export type ExamUpdateWithoutTeachingAssignmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutExamsNestedInput
+  results?: Prisma.ResultUpdateManyWithoutExamNestedInput
+}
+
+export type ExamUncheckedUpdateWithoutTeachingAssignmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  results?: Prisma.ResultUncheckedUpdateManyWithoutExamNestedInput
+}
+
+export type ExamUncheckedUpdateManyWithoutTeachingAssignmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -650,81 +881,93 @@ export type ExamCountOutputTypeCountResultsArgs<ExtArgs extends runtime.Types.Ex
 
 export type ExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
+  title?: boolean
   description?: boolean
+  totalMarks?: boolean
+  passMarks?: boolean
   startTime?: boolean
   endTime?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  subjectId?: boolean
-  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  teachingAssignmentId?: boolean
+  academicYearId?: boolean
+  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   results?: boolean | Prisma.Exam$resultsArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
 
 export type ExamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
+  title?: boolean
   description?: boolean
+  totalMarks?: boolean
+  passMarks?: boolean
   startTime?: boolean
   endTime?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  subjectId?: boolean
-  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  teachingAssignmentId?: boolean
+  academicYearId?: boolean
+  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
 
 export type ExamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
+  title?: boolean
   description?: boolean
+  totalMarks?: boolean
+  passMarks?: boolean
   startTime?: boolean
   endTime?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  subjectId?: boolean
-  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  teachingAssignmentId?: boolean
+  academicYearId?: boolean
+  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
 
 export type ExamSelectScalar = {
   id?: boolean
-  name?: boolean
+  title?: boolean
   description?: boolean
+  totalMarks?: boolean
+  passMarks?: boolean
   startTime?: boolean
   endTime?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  subjectId?: boolean
+  teachingAssignmentId?: boolean
+  academicYearId?: boolean
 }
 
-export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "startTime" | "endTime" | "createdAt" | "updatedAt" | "subjectId", ExtArgs["result"]["exam"]>
+export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "totalMarks" | "passMarks" | "startTime" | "endTime" | "teachingAssignmentId" | "academicYearId", ExtArgs["result"]["exam"]>
 export type ExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   results?: boolean | Prisma.Exam$resultsArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ExamIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
 }
 export type ExamIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
+  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
 }
 
 export type $ExamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Exam"
   objects: {
-    subject: Prisma.$SubjectPayload<ExtArgs>
+    teachingAssignment: Prisma.$TeachingAssignmentPayload<ExtArgs>
+    academicYear: Prisma.$AcademicYearPayload<ExtArgs>
     results: Prisma.$ResultPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    name: string
+    title: string
     description: string | null
+    totalMarks: runtime.Decimal
+    passMarks: runtime.Decimal
     startTime: Date
     endTime: Date
-    createdAt: Date
-    updatedAt: Date
-    subjectId: string
+    teachingAssignmentId: string
+    academicYearId: string
   }, ExtArgs["result"]["exam"]>
   composites: {}
 }
@@ -1119,7 +1362,8 @@ readonly fields: ExamFieldRefs;
  */
 export interface Prisma__ExamClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  subject<T extends Prisma.SubjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubjectDefaultArgs<ExtArgs>>): Prisma.Prisma__SubjectClient<runtime.Types.Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  teachingAssignment<T extends Prisma.TeachingAssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeachingAssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__TeachingAssignmentClient<runtime.Types.Result.GetResult<Prisma.$TeachingAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  academicYear<T extends Prisma.AcademicYearDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicYearDefaultArgs<ExtArgs>>): Prisma.Prisma__AcademicYearClient<runtime.Types.Result.GetResult<Prisma.$AcademicYearPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   results<T extends Prisma.Exam$resultsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$resultsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1151,13 +1395,14 @@ export interface Prisma__ExamClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface ExamFieldRefs {
   readonly id: Prisma.FieldRef<"Exam", 'String'>
-  readonly name: Prisma.FieldRef<"Exam", 'String'>
+  readonly title: Prisma.FieldRef<"Exam", 'String'>
   readonly description: Prisma.FieldRef<"Exam", 'String'>
+  readonly totalMarks: Prisma.FieldRef<"Exam", 'Decimal'>
+  readonly passMarks: Prisma.FieldRef<"Exam", 'Decimal'>
   readonly startTime: Prisma.FieldRef<"Exam", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"Exam", 'DateTime'>
-  readonly createdAt: Prisma.FieldRef<"Exam", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Exam", 'DateTime'>
-  readonly subjectId: Prisma.FieldRef<"Exam", 'String'>
+  readonly teachingAssignmentId: Prisma.FieldRef<"Exam", 'String'>
+  readonly academicYearId: Prisma.FieldRef<"Exam", 'String'>
 }
     
 

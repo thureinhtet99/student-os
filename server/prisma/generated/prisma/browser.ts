@@ -58,25 +58,45 @@ export type Student = Prisma.StudentModel
  */
 export type Parent = Prisma.ParentModel
 /**
+ * Model ParentStudent
+ * 
+ */
+export type ParentStudent = Prisma.ParentStudentModel
+/**
+ * Model AcademicYear
+ * 
+ */
+export type AcademicYear = Prisma.AcademicYearModel
+/**
  * Model Class
  * 
  */
 export type Class = Prisma.ClassModel
+/**
+ * Model Enrollment
+ * 
+ */
+export type Enrollment = Prisma.EnrollmentModel
 /**
  * Model Subject
  * 
  */
 export type Subject = Prisma.SubjectModel
 /**
+ * Model TeachingAssignment
+ * 
+ */
+export type TeachingAssignment = Prisma.TeachingAssignmentModel
+/**
+ * Model Timetable
+ * 
+ */
+export type Timetable = Prisma.TimetableModel
+/**
  * Model Attendance
  * 
  */
 export type Attendance = Prisma.AttendanceModel
-/**
- * Model Assignment
- * 
- */
-export type Assignment = Prisma.AssignmentModel
 /**
  * Model Exam
  * 
@@ -87,11 +107,6 @@ export type Exam = Prisma.ExamModel
  * 
  */
 export type Result = Prisma.ResultModel
-/**
- * Model Event
- * 
- */
-export type Event = Prisma.EventModel
 /**
  * Model Announcement
  * 

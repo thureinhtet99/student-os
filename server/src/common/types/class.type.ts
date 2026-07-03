@@ -1,16 +1,6 @@
-import {
-  Announcement,
-  Class,
-  Event,
-  Student,
-  Subject,
-  Teacher,
-} from '../../../prisma/generated/prisma/client';
+import type { AcademicYearModel } from '../../../prisma/generated/prisma/models/AcademicYear.js';
+import type { ClassModel } from '../../../prisma/generated/prisma/models/Class.js';
 
-export type ClassWithRelations = Class & {
-  teacher: Teacher | null;
-  students: Omit<Student, 'password'>[];
-  subjects: Subject[] | null;
-  events: Event[] | null;
-  announcements: Announcement[] | null;
+export type ClassWithRelations = ClassModel & {
+  academicYear?: AcademicYearModel | null;
 };

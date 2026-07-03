@@ -5,6 +5,7 @@ import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatStudent } from '../../common/formatters/student.formatter.js';
+import { StudentWithRelations } from '../../common/types/student.type.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
 import { resolveImageUrl } from '../../common/utils/image.util.js';
@@ -39,7 +40,7 @@ export class StudentsService {
     } = createStudentDto;
 
     await checkDuplicate(
-      this.prisma.student,
+      this.prisma.user,
       'name',
       createStudentDto.name,
       null,
@@ -88,32 +89,53 @@ export class StudentsService {
 
       const studentId = `STU-${createdUser.id.slice(-12)}`;
 
+      const currentYear = await tx.academicYear.findFirst({
+        where: { isCurrent: true },
+      });
+      const academicYearId = currentYear?.id || (await tx.academicYear.findFirst())?.id;
+
       return tx.student.create({
         data: {
-          studentId,
+          studentNumber: studentId,
           userId: createdUser.id,
-          name: name.trim(),
           phone,
           address,
           gender,
           dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-          image: imageUrl,
-          ...(createStudentDto.classId !== undefined && {
-            classId: createStudentDto.classId,
+          ...(createStudentDto.classId && academicYearId && {
+            enrollments: {
+              create: {
+                classId: createStudentDto.classId,
+                academicYearId,
+              },
+            },
           }),
-          ...(createStudentDto.parentId !== undefined && {
-            parentId: createStudentDto.parentId,
+          ...(createStudentDto.parentId && {
+            parents: {
+              create: {
+                parentId: createStudentDto.parentId,
+                relationship: 'GUARDIAN',
+              },
+            },
           }),
         },
         include: {
           user: true,
-          parent: true,
-          class: true,
+          parents: {
+            include: {
+              parent: true,
+            },
+          },
+          enrollments: {
+            include: {
+              class: true,
+            },
+          },
         },
       });
     });
 
-    return formatStudent(student);
+    return formatStudent(student as StudentWithRelations);
   }
 
   async findAll(
@@ -129,14 +151,22 @@ export class StudentsService {
 
     const where: Prisma.StudentWhereInput = {};
 
-    if (classId) where.classId = classId;
+    if (classId) {
+      where.enrollments = {
+        some: {
+          classId,
+        },
+      };
+    }
 
     if (gender) where.gender = gender;
 
     if (search) {
       where.OR = [
         {
-          name: { contains: search, mode: 'insensitive' },
+          user: {
+            name: { contains: search, mode: 'insensitive' },
+          },
         },
         {
           user: {
@@ -155,16 +185,24 @@ export class StudentsService {
       where,
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: { name: 'asc' },
+      orderBy: { user: { name: 'asc' } },
       include: {
         user: true,
-        parent: true,
-        class: true,
+        parents: {
+          include: {
+            parent: true,
+          },
+        },
+        enrollments: {
+          include: {
+            class: true,
+          },
+        },
       },
     });
 
     return {
-      data: students.map((student) => formatStudent(student)),
+      data: students.map((student) => formatStudent(student as StudentWithRelations)),
       meta: {
         total,
         page,
@@ -179,14 +217,22 @@ export class StudentsService {
       where: { id },
       include: {
         user: true,
-        parent: true,
-        class: true,
+        parents: {
+          include: {
+            parent: true,
+          },
+        },
+        enrollments: {
+          include: {
+            class: true,
+          },
+        },
       },
     });
 
     if (!student) throw new NotFoundException('Student is not found');
 
-    return formatStudent(student);
+    return formatStudent(student as StudentWithRelations);
   }
 
   async update(
@@ -201,14 +247,14 @@ export class StudentsService {
 
     if (
       updateStudentDto.name &&
-      existingStudent.name.toLowerCase() !==
+      existingStudent.user.name.toLowerCase() !==
         updateStudentDto.name.trim().toLowerCase()
     ) {
       await checkDuplicate(
-        this.prisma.student,
+        this.prisma.user,
         'name',
         updateStudentDto.name,
-        id,
+        existingStudent.userId,
         'Student with this name already exists',
       );
     }
@@ -239,19 +285,25 @@ export class StudentsService {
       );
     }
 
+    const currentYear = await this.prisma.academicYear.findFirst({
+      where: { isCurrent: true },
+    });
+    const academicYearId = currentYear?.id || (await this.prisma.academicYear.findFirst())?.id;
+
     const student = await this.prisma.student.update({
       where: { id },
       data: {
-        user:
-          updateStudentDto.email || updateStudentDto.role
-            ? {
-                update: {
-                  email: updateStudentDto.email?.trim(),
-                  role: updateStudentDto.role,
-                },
-              }
-            : undefined,
-        name: updateStudentDto.name?.trim(),
+        user: {
+          update: {
+            email: updateStudentDto.email?.trim(),
+            role: updateStudentDto.role,
+            name: updateStudentDto.name?.trim(),
+            image:
+              updateStudentDto.image === undefined
+                ? undefined
+                : resolveImageUrl(updateStudentDto.image, this.cloudinary),
+          },
+        },
         phone: updateStudentDto.phone?.trim(),
         address:
           updateStudentDto.address === undefined
@@ -266,40 +318,61 @@ export class StudentsService {
         gender: updateStudentDto.gender
           ? formatGender(updateStudentDto.gender)
           : undefined,
-        image:
-          updateStudentDto.image === undefined
-            ? undefined
-            : resolveImageUrl(updateStudentDto.image, this.cloudinary),
-        class:
-          updateStudentDto.classId === undefined
-            ? undefined
-            : updateStudentDto.classId
-              ? { connect: { id: updateStudentDto.classId } }
-              : { disconnect: true },
-
-        parent: updateStudentDto.parentId
-          ? { connect: { id: updateStudentDto.parentId } }
-          : undefined,
+        ...(updateStudentDto.classId !== undefined && academicYearId && {
+          enrollments: updateStudentDto.classId
+            ? {
+                deleteMany: {},
+                create: {
+                  classId: updateStudentDto.classId,
+                  academicYearId,
+                },
+              }
+            : {
+                deleteMany: {},
+              },
+        }),
+        ...(updateStudentDto.parentId !== undefined && {
+          parents: updateStudentDto.parentId
+            ? {
+                deleteMany: {},
+                create: {
+                  parentId: updateStudentDto.parentId,
+                  relationship: 'GUARDIAN',
+                },
+              }
+            : {
+                deleteMany: {},
+              },
+        }),
       },
       include: {
         user: true,
-        parent: true,
-        class: true,
+        parents: {
+          include: {
+            parent: true,
+          },
+        },
+        enrollments: {
+          include: {
+            class: true,
+          },
+        },
       },
     });
 
-    return formatStudent(student);
+    return formatStudent(student as StudentWithRelations);
   }
 
   async remove(id: string): Promise<{ message: string }> {
     const existingStudent = await this.prisma.student.findUnique({
       where: { id },
+      include: { user: true },
     });
     if (!existingStudent) throw new NotFoundException('Student is not found');
 
-    if (existingStudent.image) {
+    if (existingStudent.user.image) {
       try {
-        await this.cloudinary.deleteFromCloudinary(existingStudent.image);
+        await this.cloudinary.deleteFromCloudinary(existingStudent.user.image);
       } catch (error) {
         this.logger.warn(
           `Failed to delete image from Cloudinary for student ${id}: ${(error as Error).message}`,

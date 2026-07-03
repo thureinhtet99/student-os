@@ -27,44 +27,41 @@ export type AggregateResult = {
 }
 
 export type ResultAvgAggregateOutputType = {
-  score: number | null
+  score: runtime.Decimal | null
 }
 
 export type ResultSumAggregateOutputType = {
-  score: number | null
+  score: runtime.Decimal | null
 }
 
 export type ResultMinAggregateOutputType = {
   id: string | null
-  score: number | null
-  comment: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  enrollmentId: string | null
+  academicYearId: string | null
   examId: string | null
-  assignmentId: string | null
-  studentId: string | null
+  score: runtime.Decimal | null
+  grade: string | null
+  comment: string | null
 }
 
 export type ResultMaxAggregateOutputType = {
   id: string | null
-  score: number | null
-  comment: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  enrollmentId: string | null
+  academicYearId: string | null
   examId: string | null
-  assignmentId: string | null
-  studentId: string | null
+  score: runtime.Decimal | null
+  grade: string | null
+  comment: string | null
 }
 
 export type ResultCountAggregateOutputType = {
   id: number
-  score: number
-  comment: number
-  createdAt: number
-  updatedAt: number
+  enrollmentId: number
+  academicYearId: number
   examId: number
-  assignmentId: number
-  studentId: number
+  score: number
+  grade: number
+  comment: number
   _all: number
 }
 
@@ -79,35 +76,32 @@ export type ResultSumAggregateInputType = {
 
 export type ResultMinAggregateInputType = {
   id?: true
-  score?: true
-  comment?: true
-  createdAt?: true
-  updatedAt?: true
+  enrollmentId?: true
+  academicYearId?: true
   examId?: true
-  assignmentId?: true
-  studentId?: true
+  score?: true
+  grade?: true
+  comment?: true
 }
 
 export type ResultMaxAggregateInputType = {
   id?: true
-  score?: true
-  comment?: true
-  createdAt?: true
-  updatedAt?: true
+  enrollmentId?: true
+  academicYearId?: true
   examId?: true
-  assignmentId?: true
-  studentId?: true
+  score?: true
+  grade?: true
+  comment?: true
 }
 
 export type ResultCountAggregateInputType = {
   id?: true
-  score?: true
-  comment?: true
-  createdAt?: true
-  updatedAt?: true
+  enrollmentId?: true
+  academicYearId?: true
   examId?: true
-  assignmentId?: true
-  studentId?: true
+  score?: true
+  grade?: true
+  comment?: true
   _all?: true
 }
 
@@ -199,13 +193,12 @@ export type ResultGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type ResultGroupByOutputType = {
   id: string
-  score: number
-  comment: string | null
-  createdAt: Date
-  updatedAt: Date
+  enrollmentId: string
+  academicYearId: string
   examId: string | null
-  assignmentId: string | null
-  studentId: string
+  score: runtime.Decimal
+  grade: string | null
+  comment: string | null
   _count: ResultCountAggregateOutputType | null
   _avg: ResultAvgAggregateOutputType | null
   _sum: ResultSumAggregateOutputType | null
@@ -233,58 +226,55 @@ export type ResultWhereInput = {
   OR?: Prisma.ResultWhereInput[]
   NOT?: Prisma.ResultWhereInput | Prisma.ResultWhereInput[]
   id?: Prisma.StringFilter<"Result"> | string
-  score?: Prisma.IntFilter<"Result"> | number
-  comment?: Prisma.StringNullableFilter<"Result"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Result"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Result"> | Date | string
+  enrollmentId?: Prisma.StringFilter<"Result"> | string
+  academicYearId?: Prisma.StringFilter<"Result"> | string
   examId?: Prisma.StringNullableFilter<"Result"> | string | null
-  assignmentId?: Prisma.StringNullableFilter<"Result"> | string | null
-  studentId?: Prisma.StringFilter<"Result"> | string
+  score?: Prisma.DecimalFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.StringNullableFilter<"Result"> | string | null
+  comment?: Prisma.StringNullableFilter<"Result"> | string | null
+  enrollment?: Prisma.XOR<Prisma.EnrollmentScalarRelationFilter, Prisma.EnrollmentWhereInput>
+  academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   exam?: Prisma.XOR<Prisma.ExamNullableScalarRelationFilter, Prisma.ExamWhereInput> | null
-  assignment?: Prisma.XOR<Prisma.AssignmentNullableScalarRelationFilter, Prisma.AssignmentWhereInput> | null
-  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
 }
 
 export type ResultOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  score?: Prisma.SortOrder
-  comment?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  enrollmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
   examId?: Prisma.SortOrderInput | Prisma.SortOrder
-  assignmentId?: Prisma.SortOrderInput | Prisma.SortOrder
-  studentId?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  grade?: Prisma.SortOrderInput | Prisma.SortOrder
+  comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  enrollment?: Prisma.EnrollmentOrderByWithRelationInput
+  academicYear?: Prisma.AcademicYearOrderByWithRelationInput
   exam?: Prisma.ExamOrderByWithRelationInput
-  assignment?: Prisma.AssignmentOrderByWithRelationInput
-  student?: Prisma.StudentOrderByWithRelationInput
 }
 
 export type ResultWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  enrollmentId_examId?: Prisma.ResultEnrollmentIdExamIdCompoundUniqueInput
   AND?: Prisma.ResultWhereInput | Prisma.ResultWhereInput[]
   OR?: Prisma.ResultWhereInput[]
   NOT?: Prisma.ResultWhereInput | Prisma.ResultWhereInput[]
-  score?: Prisma.IntFilter<"Result"> | number
-  comment?: Prisma.StringNullableFilter<"Result"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Result"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Result"> | Date | string
+  enrollmentId?: Prisma.StringFilter<"Result"> | string
+  academicYearId?: Prisma.StringFilter<"Result"> | string
   examId?: Prisma.StringNullableFilter<"Result"> | string | null
-  assignmentId?: Prisma.StringNullableFilter<"Result"> | string | null
-  studentId?: Prisma.StringFilter<"Result"> | string
+  score?: Prisma.DecimalFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.StringNullableFilter<"Result"> | string | null
+  comment?: Prisma.StringNullableFilter<"Result"> | string | null
+  enrollment?: Prisma.XOR<Prisma.EnrollmentScalarRelationFilter, Prisma.EnrollmentWhereInput>
+  academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   exam?: Prisma.XOR<Prisma.ExamNullableScalarRelationFilter, Prisma.ExamWhereInput> | null
-  assignment?: Prisma.XOR<Prisma.AssignmentNullableScalarRelationFilter, Prisma.AssignmentWhereInput> | null
-  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
-}, "id">
+}, "id" | "enrollmentId_examId">
 
 export type ResultOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  score?: Prisma.SortOrder
-  comment?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  enrollmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
   examId?: Prisma.SortOrderInput | Prisma.SortOrder
-  assignmentId?: Prisma.SortOrderInput | Prisma.SortOrder
-  studentId?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  grade?: Prisma.SortOrderInput | Prisma.SortOrder
+  comment?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ResultCountOrderByAggregateInput
   _avg?: Prisma.ResultAvgOrderByAggregateInput
   _max?: Prisma.ResultMaxOrderByAggregateInput
@@ -297,87 +287,79 @@ export type ResultScalarWhereWithAggregatesInput = {
   OR?: Prisma.ResultScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ResultScalarWhereWithAggregatesInput | Prisma.ResultScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Result"> | string
-  score?: Prisma.IntWithAggregatesFilter<"Result"> | number
-  comment?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Result"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Result"> | Date | string
+  enrollmentId?: Prisma.StringWithAggregatesFilter<"Result"> | string
+  academicYearId?: Prisma.StringWithAggregatesFilter<"Result"> | string
   examId?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
-  assignmentId?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
-  studentId?: Prisma.StringWithAggregatesFilter<"Result"> | string
+  score?: Prisma.DecimalWithAggregatesFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
+  comment?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
 }
 
 export type ResultCreateInput = {
   id?: string
-  score: number
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
   comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  enrollment: Prisma.EnrollmentCreateNestedOneWithoutResultsInput
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutResultsInput
   exam?: Prisma.ExamCreateNestedOneWithoutResultsInput
-  assignment?: Prisma.AssignmentCreateNestedOneWithoutResultsInput
-  student: Prisma.StudentCreateNestedOneWithoutResultsInput
 }
 
 export type ResultUncheckedCreateInput = {
   id?: string
-  score: number
-  comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  enrollmentId: string
+  academicYearId: string
   examId?: string | null
-  assignmentId?: string | null
-  studentId: string
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
+  comment?: string | null
 }
 
 export type ResultUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollment?: Prisma.EnrollmentUpdateOneRequiredWithoutResultsNestedInput
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutResultsNestedInput
   exam?: Prisma.ExamUpdateOneWithoutResultsNestedInput
-  assignment?: Prisma.AssignmentUpdateOneWithoutResultsNestedInput
-  student?: Prisma.StudentUpdateOneRequiredWithoutResultsNestedInput
 }
 
 export type ResultUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  assignmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ResultCreateManyInput = {
   id?: string
-  score: number
-  comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  enrollmentId: string
+  academicYearId: string
   examId?: string | null
-  assignmentId?: string | null
-  studentId: string
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
+  comment?: string | null
 }
 
 export type ResultUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  assignmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ResultListRelationFilter = {
@@ -390,15 +372,19 @@ export type ResultOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ResultEnrollmentIdExamIdCompoundUniqueInput = {
+  enrollmentId: string
+  examId: string
+}
+
 export type ResultCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  score?: Prisma.SortOrder
-  comment?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  enrollmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
   examId?: Prisma.SortOrder
-  assignmentId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  grade?: Prisma.SortOrder
+  comment?: Prisma.SortOrder
 }
 
 export type ResultAvgOrderByAggregateInput = {
@@ -407,111 +393,109 @@ export type ResultAvgOrderByAggregateInput = {
 
 export type ResultMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  score?: Prisma.SortOrder
-  comment?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  enrollmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
   examId?: Prisma.SortOrder
-  assignmentId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  grade?: Prisma.SortOrder
+  comment?: Prisma.SortOrder
 }
 
 export type ResultMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  score?: Prisma.SortOrder
-  comment?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  enrollmentId?: Prisma.SortOrder
+  academicYearId?: Prisma.SortOrder
   examId?: Prisma.SortOrder
-  assignmentId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  grade?: Prisma.SortOrder
+  comment?: Prisma.SortOrder
 }
 
 export type ResultSumOrderByAggregateInput = {
   score?: Prisma.SortOrder
 }
 
-export type ResultCreateNestedManyWithoutStudentInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutStudentInput, Prisma.ResultUncheckedCreateWithoutStudentInput> | Prisma.ResultCreateWithoutStudentInput[] | Prisma.ResultUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutStudentInput | Prisma.ResultCreateOrConnectWithoutStudentInput[]
-  createMany?: Prisma.ResultCreateManyStudentInputEnvelope
+export type ResultCreateNestedManyWithoutAcademicYearInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutAcademicYearInput, Prisma.ResultUncheckedCreateWithoutAcademicYearInput> | Prisma.ResultCreateWithoutAcademicYearInput[] | Prisma.ResultUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAcademicYearInput | Prisma.ResultCreateOrConnectWithoutAcademicYearInput[]
+  createMany?: Prisma.ResultCreateManyAcademicYearInputEnvelope
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
 }
 
-export type ResultUncheckedCreateNestedManyWithoutStudentInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutStudentInput, Prisma.ResultUncheckedCreateWithoutStudentInput> | Prisma.ResultCreateWithoutStudentInput[] | Prisma.ResultUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutStudentInput | Prisma.ResultCreateOrConnectWithoutStudentInput[]
-  createMany?: Prisma.ResultCreateManyStudentInputEnvelope
+export type ResultUncheckedCreateNestedManyWithoutAcademicYearInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutAcademicYearInput, Prisma.ResultUncheckedCreateWithoutAcademicYearInput> | Prisma.ResultCreateWithoutAcademicYearInput[] | Prisma.ResultUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAcademicYearInput | Prisma.ResultCreateOrConnectWithoutAcademicYearInput[]
+  createMany?: Prisma.ResultCreateManyAcademicYearInputEnvelope
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
 }
 
-export type ResultUpdateManyWithoutStudentNestedInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutStudentInput, Prisma.ResultUncheckedCreateWithoutStudentInput> | Prisma.ResultCreateWithoutStudentInput[] | Prisma.ResultUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutStudentInput | Prisma.ResultCreateOrConnectWithoutStudentInput[]
-  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutStudentInput | Prisma.ResultUpsertWithWhereUniqueWithoutStudentInput[]
-  createMany?: Prisma.ResultCreateManyStudentInputEnvelope
+export type ResultUpdateManyWithoutAcademicYearNestedInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutAcademicYearInput, Prisma.ResultUncheckedCreateWithoutAcademicYearInput> | Prisma.ResultCreateWithoutAcademicYearInput[] | Prisma.ResultUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAcademicYearInput | Prisma.ResultCreateOrConnectWithoutAcademicYearInput[]
+  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutAcademicYearInput | Prisma.ResultUpsertWithWhereUniqueWithoutAcademicYearInput[]
+  createMany?: Prisma.ResultCreateManyAcademicYearInputEnvelope
   set?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   disconnect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   delete?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
-  update?: Prisma.ResultUpdateWithWhereUniqueWithoutStudentInput | Prisma.ResultUpdateWithWhereUniqueWithoutStudentInput[]
-  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutStudentInput | Prisma.ResultUpdateManyWithWhereWithoutStudentInput[]
+  update?: Prisma.ResultUpdateWithWhereUniqueWithoutAcademicYearInput | Prisma.ResultUpdateWithWhereUniqueWithoutAcademicYearInput[]
+  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutAcademicYearInput | Prisma.ResultUpdateManyWithWhereWithoutAcademicYearInput[]
   deleteMany?: Prisma.ResultScalarWhereInput | Prisma.ResultScalarWhereInput[]
 }
 
-export type ResultUncheckedUpdateManyWithoutStudentNestedInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutStudentInput, Prisma.ResultUncheckedCreateWithoutStudentInput> | Prisma.ResultCreateWithoutStudentInput[] | Prisma.ResultUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutStudentInput | Prisma.ResultCreateOrConnectWithoutStudentInput[]
-  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutStudentInput | Prisma.ResultUpsertWithWhereUniqueWithoutStudentInput[]
-  createMany?: Prisma.ResultCreateManyStudentInputEnvelope
+export type ResultUncheckedUpdateManyWithoutAcademicYearNestedInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutAcademicYearInput, Prisma.ResultUncheckedCreateWithoutAcademicYearInput> | Prisma.ResultCreateWithoutAcademicYearInput[] | Prisma.ResultUncheckedCreateWithoutAcademicYearInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAcademicYearInput | Prisma.ResultCreateOrConnectWithoutAcademicYearInput[]
+  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutAcademicYearInput | Prisma.ResultUpsertWithWhereUniqueWithoutAcademicYearInput[]
+  createMany?: Prisma.ResultCreateManyAcademicYearInputEnvelope
   set?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   disconnect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   delete?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
-  update?: Prisma.ResultUpdateWithWhereUniqueWithoutStudentInput | Prisma.ResultUpdateWithWhereUniqueWithoutStudentInput[]
-  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutStudentInput | Prisma.ResultUpdateManyWithWhereWithoutStudentInput[]
+  update?: Prisma.ResultUpdateWithWhereUniqueWithoutAcademicYearInput | Prisma.ResultUpdateWithWhereUniqueWithoutAcademicYearInput[]
+  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutAcademicYearInput | Prisma.ResultUpdateManyWithWhereWithoutAcademicYearInput[]
   deleteMany?: Prisma.ResultScalarWhereInput | Prisma.ResultScalarWhereInput[]
 }
 
-export type ResultCreateNestedManyWithoutAssignmentInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutAssignmentInput, Prisma.ResultUncheckedCreateWithoutAssignmentInput> | Prisma.ResultCreateWithoutAssignmentInput[] | Prisma.ResultUncheckedCreateWithoutAssignmentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAssignmentInput | Prisma.ResultCreateOrConnectWithoutAssignmentInput[]
-  createMany?: Prisma.ResultCreateManyAssignmentInputEnvelope
+export type ResultCreateNestedManyWithoutEnrollmentInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutEnrollmentInput, Prisma.ResultUncheckedCreateWithoutEnrollmentInput> | Prisma.ResultCreateWithoutEnrollmentInput[] | Prisma.ResultUncheckedCreateWithoutEnrollmentInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutEnrollmentInput | Prisma.ResultCreateOrConnectWithoutEnrollmentInput[]
+  createMany?: Prisma.ResultCreateManyEnrollmentInputEnvelope
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
 }
 
-export type ResultUncheckedCreateNestedManyWithoutAssignmentInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutAssignmentInput, Prisma.ResultUncheckedCreateWithoutAssignmentInput> | Prisma.ResultCreateWithoutAssignmentInput[] | Prisma.ResultUncheckedCreateWithoutAssignmentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAssignmentInput | Prisma.ResultCreateOrConnectWithoutAssignmentInput[]
-  createMany?: Prisma.ResultCreateManyAssignmentInputEnvelope
+export type ResultUncheckedCreateNestedManyWithoutEnrollmentInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutEnrollmentInput, Prisma.ResultUncheckedCreateWithoutEnrollmentInput> | Prisma.ResultCreateWithoutEnrollmentInput[] | Prisma.ResultUncheckedCreateWithoutEnrollmentInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutEnrollmentInput | Prisma.ResultCreateOrConnectWithoutEnrollmentInput[]
+  createMany?: Prisma.ResultCreateManyEnrollmentInputEnvelope
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
 }
 
-export type ResultUpdateManyWithoutAssignmentNestedInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutAssignmentInput, Prisma.ResultUncheckedCreateWithoutAssignmentInput> | Prisma.ResultCreateWithoutAssignmentInput[] | Prisma.ResultUncheckedCreateWithoutAssignmentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAssignmentInput | Prisma.ResultCreateOrConnectWithoutAssignmentInput[]
-  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutAssignmentInput | Prisma.ResultUpsertWithWhereUniqueWithoutAssignmentInput[]
-  createMany?: Prisma.ResultCreateManyAssignmentInputEnvelope
+export type ResultUpdateManyWithoutEnrollmentNestedInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutEnrollmentInput, Prisma.ResultUncheckedCreateWithoutEnrollmentInput> | Prisma.ResultCreateWithoutEnrollmentInput[] | Prisma.ResultUncheckedCreateWithoutEnrollmentInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutEnrollmentInput | Prisma.ResultCreateOrConnectWithoutEnrollmentInput[]
+  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutEnrollmentInput | Prisma.ResultUpsertWithWhereUniqueWithoutEnrollmentInput[]
+  createMany?: Prisma.ResultCreateManyEnrollmentInputEnvelope
   set?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   disconnect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   delete?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
-  update?: Prisma.ResultUpdateWithWhereUniqueWithoutAssignmentInput | Prisma.ResultUpdateWithWhereUniqueWithoutAssignmentInput[]
-  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutAssignmentInput | Prisma.ResultUpdateManyWithWhereWithoutAssignmentInput[]
+  update?: Prisma.ResultUpdateWithWhereUniqueWithoutEnrollmentInput | Prisma.ResultUpdateWithWhereUniqueWithoutEnrollmentInput[]
+  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutEnrollmentInput | Prisma.ResultUpdateManyWithWhereWithoutEnrollmentInput[]
   deleteMany?: Prisma.ResultScalarWhereInput | Prisma.ResultScalarWhereInput[]
 }
 
-export type ResultUncheckedUpdateManyWithoutAssignmentNestedInput = {
-  create?: Prisma.XOR<Prisma.ResultCreateWithoutAssignmentInput, Prisma.ResultUncheckedCreateWithoutAssignmentInput> | Prisma.ResultCreateWithoutAssignmentInput[] | Prisma.ResultUncheckedCreateWithoutAssignmentInput[]
-  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutAssignmentInput | Prisma.ResultCreateOrConnectWithoutAssignmentInput[]
-  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutAssignmentInput | Prisma.ResultUpsertWithWhereUniqueWithoutAssignmentInput[]
-  createMany?: Prisma.ResultCreateManyAssignmentInputEnvelope
+export type ResultUncheckedUpdateManyWithoutEnrollmentNestedInput = {
+  create?: Prisma.XOR<Prisma.ResultCreateWithoutEnrollmentInput, Prisma.ResultUncheckedCreateWithoutEnrollmentInput> | Prisma.ResultCreateWithoutEnrollmentInput[] | Prisma.ResultUncheckedCreateWithoutEnrollmentInput[]
+  connectOrCreate?: Prisma.ResultCreateOrConnectWithoutEnrollmentInput | Prisma.ResultCreateOrConnectWithoutEnrollmentInput[]
+  upsert?: Prisma.ResultUpsertWithWhereUniqueWithoutEnrollmentInput | Prisma.ResultUpsertWithWhereUniqueWithoutEnrollmentInput[]
+  createMany?: Prisma.ResultCreateManyEnrollmentInputEnvelope
   set?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   disconnect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   delete?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
   connect?: Prisma.ResultWhereUniqueInput | Prisma.ResultWhereUniqueInput[]
-  update?: Prisma.ResultUpdateWithWhereUniqueWithoutAssignmentInput | Prisma.ResultUpdateWithWhereUniqueWithoutAssignmentInput[]
-  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutAssignmentInput | Prisma.ResultUpdateManyWithWhereWithoutAssignmentInput[]
+  update?: Prisma.ResultUpdateWithWhereUniqueWithoutEnrollmentInput | Prisma.ResultUpdateWithWhereUniqueWithoutEnrollmentInput[]
+  updateMany?: Prisma.ResultUpdateManyWithWhereWithoutEnrollmentInput | Prisma.ResultUpdateManyWithWhereWithoutEnrollmentInput[]
   deleteMany?: Prisma.ResultScalarWhereInput | Prisma.ResultScalarWhereInput[]
 }
 
@@ -557,58 +541,48 @@ export type ResultUncheckedUpdateManyWithoutExamNestedInput = {
   deleteMany?: Prisma.ResultScalarWhereInput | Prisma.ResultScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type ResultCreateWithoutStudentInput = {
+export type ResultCreateWithoutAcademicYearInput = {
   id?: string
-  score: number
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
   comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  enrollment: Prisma.EnrollmentCreateNestedOneWithoutResultsInput
   exam?: Prisma.ExamCreateNestedOneWithoutResultsInput
-  assignment?: Prisma.AssignmentCreateNestedOneWithoutResultsInput
 }
 
-export type ResultUncheckedCreateWithoutStudentInput = {
+export type ResultUncheckedCreateWithoutAcademicYearInput = {
   id?: string
-  score: number
-  comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  enrollmentId: string
   examId?: string | null
-  assignmentId?: string | null
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
+  comment?: string | null
 }
 
-export type ResultCreateOrConnectWithoutStudentInput = {
+export type ResultCreateOrConnectWithoutAcademicYearInput = {
   where: Prisma.ResultWhereUniqueInput
-  create: Prisma.XOR<Prisma.ResultCreateWithoutStudentInput, Prisma.ResultUncheckedCreateWithoutStudentInput>
+  create: Prisma.XOR<Prisma.ResultCreateWithoutAcademicYearInput, Prisma.ResultUncheckedCreateWithoutAcademicYearInput>
 }
 
-export type ResultCreateManyStudentInputEnvelope = {
-  data: Prisma.ResultCreateManyStudentInput | Prisma.ResultCreateManyStudentInput[]
+export type ResultCreateManyAcademicYearInputEnvelope = {
+  data: Prisma.ResultCreateManyAcademicYearInput | Prisma.ResultCreateManyAcademicYearInput[]
   skipDuplicates?: boolean
 }
 
-export type ResultUpsertWithWhereUniqueWithoutStudentInput = {
+export type ResultUpsertWithWhereUniqueWithoutAcademicYearInput = {
   where: Prisma.ResultWhereUniqueInput
-  update: Prisma.XOR<Prisma.ResultUpdateWithoutStudentInput, Prisma.ResultUncheckedUpdateWithoutStudentInput>
-  create: Prisma.XOR<Prisma.ResultCreateWithoutStudentInput, Prisma.ResultUncheckedCreateWithoutStudentInput>
+  update: Prisma.XOR<Prisma.ResultUpdateWithoutAcademicYearInput, Prisma.ResultUncheckedUpdateWithoutAcademicYearInput>
+  create: Prisma.XOR<Prisma.ResultCreateWithoutAcademicYearInput, Prisma.ResultUncheckedCreateWithoutAcademicYearInput>
 }
 
-export type ResultUpdateWithWhereUniqueWithoutStudentInput = {
+export type ResultUpdateWithWhereUniqueWithoutAcademicYearInput = {
   where: Prisma.ResultWhereUniqueInput
-  data: Prisma.XOR<Prisma.ResultUpdateWithoutStudentInput, Prisma.ResultUncheckedUpdateWithoutStudentInput>
+  data: Prisma.XOR<Prisma.ResultUpdateWithoutAcademicYearInput, Prisma.ResultUncheckedUpdateWithoutAcademicYearInput>
 }
 
-export type ResultUpdateManyWithWhereWithoutStudentInput = {
+export type ResultUpdateManyWithWhereWithoutAcademicYearInput = {
   where: Prisma.ResultScalarWhereInput
-  data: Prisma.XOR<Prisma.ResultUpdateManyMutationInput, Prisma.ResultUncheckedUpdateManyWithoutStudentInput>
+  data: Prisma.XOR<Prisma.ResultUpdateManyMutationInput, Prisma.ResultUncheckedUpdateManyWithoutAcademicYearInput>
 }
 
 export type ResultScalarWhereInput = {
@@ -616,79 +590,74 @@ export type ResultScalarWhereInput = {
   OR?: Prisma.ResultScalarWhereInput[]
   NOT?: Prisma.ResultScalarWhereInput | Prisma.ResultScalarWhereInput[]
   id?: Prisma.StringFilter<"Result"> | string
-  score?: Prisma.IntFilter<"Result"> | number
-  comment?: Prisma.StringNullableFilter<"Result"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Result"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Result"> | Date | string
+  enrollmentId?: Prisma.StringFilter<"Result"> | string
+  academicYearId?: Prisma.StringFilter<"Result"> | string
   examId?: Prisma.StringNullableFilter<"Result"> | string | null
-  assignmentId?: Prisma.StringNullableFilter<"Result"> | string | null
-  studentId?: Prisma.StringFilter<"Result"> | string
+  score?: Prisma.DecimalFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.StringNullableFilter<"Result"> | string | null
+  comment?: Prisma.StringNullableFilter<"Result"> | string | null
 }
 
-export type ResultCreateWithoutAssignmentInput = {
+export type ResultCreateWithoutEnrollmentInput = {
   id?: string
-  score: number
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
   comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutResultsInput
   exam?: Prisma.ExamCreateNestedOneWithoutResultsInput
-  student: Prisma.StudentCreateNestedOneWithoutResultsInput
 }
 
-export type ResultUncheckedCreateWithoutAssignmentInput = {
+export type ResultUncheckedCreateWithoutEnrollmentInput = {
   id?: string
-  score: number
-  comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  academicYearId: string
   examId?: string | null
-  studentId: string
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
+  comment?: string | null
 }
 
-export type ResultCreateOrConnectWithoutAssignmentInput = {
+export type ResultCreateOrConnectWithoutEnrollmentInput = {
   where: Prisma.ResultWhereUniqueInput
-  create: Prisma.XOR<Prisma.ResultCreateWithoutAssignmentInput, Prisma.ResultUncheckedCreateWithoutAssignmentInput>
+  create: Prisma.XOR<Prisma.ResultCreateWithoutEnrollmentInput, Prisma.ResultUncheckedCreateWithoutEnrollmentInput>
 }
 
-export type ResultCreateManyAssignmentInputEnvelope = {
-  data: Prisma.ResultCreateManyAssignmentInput | Prisma.ResultCreateManyAssignmentInput[]
+export type ResultCreateManyEnrollmentInputEnvelope = {
+  data: Prisma.ResultCreateManyEnrollmentInput | Prisma.ResultCreateManyEnrollmentInput[]
   skipDuplicates?: boolean
 }
 
-export type ResultUpsertWithWhereUniqueWithoutAssignmentInput = {
+export type ResultUpsertWithWhereUniqueWithoutEnrollmentInput = {
   where: Prisma.ResultWhereUniqueInput
-  update: Prisma.XOR<Prisma.ResultUpdateWithoutAssignmentInput, Prisma.ResultUncheckedUpdateWithoutAssignmentInput>
-  create: Prisma.XOR<Prisma.ResultCreateWithoutAssignmentInput, Prisma.ResultUncheckedCreateWithoutAssignmentInput>
+  update: Prisma.XOR<Prisma.ResultUpdateWithoutEnrollmentInput, Prisma.ResultUncheckedUpdateWithoutEnrollmentInput>
+  create: Prisma.XOR<Prisma.ResultCreateWithoutEnrollmentInput, Prisma.ResultUncheckedCreateWithoutEnrollmentInput>
 }
 
-export type ResultUpdateWithWhereUniqueWithoutAssignmentInput = {
+export type ResultUpdateWithWhereUniqueWithoutEnrollmentInput = {
   where: Prisma.ResultWhereUniqueInput
-  data: Prisma.XOR<Prisma.ResultUpdateWithoutAssignmentInput, Prisma.ResultUncheckedUpdateWithoutAssignmentInput>
+  data: Prisma.XOR<Prisma.ResultUpdateWithoutEnrollmentInput, Prisma.ResultUncheckedUpdateWithoutEnrollmentInput>
 }
 
-export type ResultUpdateManyWithWhereWithoutAssignmentInput = {
+export type ResultUpdateManyWithWhereWithoutEnrollmentInput = {
   where: Prisma.ResultScalarWhereInput
-  data: Prisma.XOR<Prisma.ResultUpdateManyMutationInput, Prisma.ResultUncheckedUpdateManyWithoutAssignmentInput>
+  data: Prisma.XOR<Prisma.ResultUpdateManyMutationInput, Prisma.ResultUncheckedUpdateManyWithoutEnrollmentInput>
 }
 
 export type ResultCreateWithoutExamInput = {
   id?: string
-  score: number
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
   comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  assignment?: Prisma.AssignmentCreateNestedOneWithoutResultsInput
-  student: Prisma.StudentCreateNestedOneWithoutResultsInput
+  enrollment: Prisma.EnrollmentCreateNestedOneWithoutResultsInput
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutResultsInput
 }
 
 export type ResultUncheckedCreateWithoutExamInput = {
   id?: string
-  score: number
+  enrollmentId: string
+  academicYearId: string
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
   comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  assignmentId?: string | null
-  studentId: string
 }
 
 export type ResultCreateOrConnectWithoutExamInput = {
@@ -717,214 +686,197 @@ export type ResultUpdateManyWithWhereWithoutExamInput = {
   data: Prisma.XOR<Prisma.ResultUpdateManyMutationInput, Prisma.ResultUncheckedUpdateManyWithoutExamInput>
 }
 
-export type ResultCreateManyStudentInput = {
+export type ResultCreateManyAcademicYearInput = {
   id?: string
-  score: number
-  comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  enrollmentId: string
   examId?: string | null
-  assignmentId?: string | null
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
+  comment?: string | null
 }
 
-export type ResultUpdateWithoutStudentInput = {
+export type ResultUpdateWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollment?: Prisma.EnrollmentUpdateOneRequiredWithoutResultsNestedInput
   exam?: Prisma.ExamUpdateOneWithoutResultsNestedInput
-  assignment?: Prisma.AssignmentUpdateOneWithoutResultsNestedInput
 }
 
-export type ResultUncheckedUpdateWithoutStudentInput = {
+export type ResultUncheckedUpdateWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  assignmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type ResultUncheckedUpdateManyWithoutStudentInput = {
+export type ResultUncheckedUpdateManyWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  assignmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type ResultCreateManyAssignmentInput = {
+export type ResultCreateManyEnrollmentInput = {
   id?: string
-  score: number
-  comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  academicYearId: string
   examId?: string | null
-  studentId: string
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
+  comment?: string | null
 }
 
-export type ResultUpdateWithoutAssignmentInput = {
+export type ResultUpdateWithoutEnrollmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutResultsNestedInput
   exam?: Prisma.ExamUpdateOneWithoutResultsNestedInput
-  student?: Prisma.StudentUpdateOneRequiredWithoutResultsNestedInput
 }
 
-export type ResultUncheckedUpdateWithoutAssignmentInput = {
+export type ResultUncheckedUpdateWithoutEnrollmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type ResultUncheckedUpdateManyWithoutAssignmentInput = {
+export type ResultUncheckedUpdateManyWithoutEnrollmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ResultCreateManyExamInput = {
   id?: string
-  score: number
+  enrollmentId: string
+  academicYearId: string
+  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: string | null
   comment?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  assignmentId?: string | null
-  studentId: string
 }
 
 export type ResultUpdateWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  assignment?: Prisma.AssignmentUpdateOneWithoutResultsNestedInput
-  student?: Prisma.StudentUpdateOneRequiredWithoutResultsNestedInput
+  enrollment?: Prisma.EnrollmentUpdateOneRequiredWithoutResultsNestedInput
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutResultsNestedInput
 }
 
 export type ResultUncheckedUpdateWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
+  enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  assignmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ResultUncheckedUpdateManyWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.IntFieldUpdateOperationsInput | number
+  enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  assignmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
 
 export type ResultSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  score?: boolean
-  comment?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  enrollmentId?: boolean
+  academicYearId?: boolean
   examId?: boolean
-  assignmentId?: boolean
-  studentId?: boolean
+  score?: boolean
+  grade?: boolean
+  comment?: boolean
+  enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
-  assignment?: boolean | Prisma.Result$assignmentArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["result"]>
 
 export type ResultSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  score?: boolean
-  comment?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  enrollmentId?: boolean
+  academicYearId?: boolean
   examId?: boolean
-  assignmentId?: boolean
-  studentId?: boolean
+  score?: boolean
+  grade?: boolean
+  comment?: boolean
+  enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
-  assignment?: boolean | Prisma.Result$assignmentArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["result"]>
 
 export type ResultSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  score?: boolean
-  comment?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  enrollmentId?: boolean
+  academicYearId?: boolean
   examId?: boolean
-  assignmentId?: boolean
-  studentId?: boolean
+  score?: boolean
+  grade?: boolean
+  comment?: boolean
+  enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
-  assignment?: boolean | Prisma.Result$assignmentArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["result"]>
 
 export type ResultSelectScalar = {
   id?: boolean
-  score?: boolean
-  comment?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  enrollmentId?: boolean
+  academicYearId?: boolean
   examId?: boolean
-  assignmentId?: boolean
-  studentId?: boolean
+  score?: boolean
+  grade?: boolean
+  comment?: boolean
 }
 
-export type ResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "score" | "comment" | "createdAt" | "updatedAt" | "examId" | "assignmentId" | "studentId", ExtArgs["result"]["result"]>
+export type ResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "enrollmentId" | "academicYearId" | "examId" | "score" | "grade" | "comment", ExtArgs["result"]["result"]>
 export type ResultInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
-  assignment?: boolean | Prisma.Result$assignmentArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
 export type ResultIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
-  assignment?: boolean | Prisma.Result$assignmentArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
 export type ResultIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
+  academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
-  assignment?: boolean | Prisma.Result$assignmentArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
 
 export type $ResultPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Result"
   objects: {
+    enrollment: Prisma.$EnrollmentPayload<ExtArgs>
+    academicYear: Prisma.$AcademicYearPayload<ExtArgs>
     exam: Prisma.$ExamPayload<ExtArgs> | null
-    assignment: Prisma.$AssignmentPayload<ExtArgs> | null
-    student: Prisma.$StudentPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    score: number
-    comment: string | null
-    createdAt: Date
-    updatedAt: Date
+    enrollmentId: string
+    academicYearId: string
     examId: string | null
-    assignmentId: string | null
-    studentId: string
+    score: runtime.Decimal
+    grade: string | null
+    comment: string | null
   }, ExtArgs["result"]["result"]>
   composites: {}
 }
@@ -1319,9 +1271,9 @@ readonly fields: ResultFieldRefs;
  */
 export interface Prisma__ResultClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  enrollment<T extends Prisma.EnrollmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EnrollmentDefaultArgs<ExtArgs>>): Prisma.Prisma__EnrollmentClient<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  academicYear<T extends Prisma.AcademicYearDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicYearDefaultArgs<ExtArgs>>): Prisma.Prisma__AcademicYearClient<runtime.Types.Result.GetResult<Prisma.$AcademicYearPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   exam<T extends Prisma.Result$examArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Result$examArgs<ExtArgs>>): Prisma.Prisma__ExamClient<runtime.Types.Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  assignment<T extends Prisma.Result$assignmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Result$assignmentArgs<ExtArgs>>): Prisma.Prisma__AssignmentClient<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1352,13 +1304,12 @@ export interface Prisma__ResultClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface ResultFieldRefs {
   readonly id: Prisma.FieldRef<"Result", 'String'>
-  readonly score: Prisma.FieldRef<"Result", 'Int'>
-  readonly comment: Prisma.FieldRef<"Result", 'String'>
-  readonly createdAt: Prisma.FieldRef<"Result", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Result", 'DateTime'>
+  readonly enrollmentId: Prisma.FieldRef<"Result", 'String'>
+  readonly academicYearId: Prisma.FieldRef<"Result", 'String'>
   readonly examId: Prisma.FieldRef<"Result", 'String'>
-  readonly assignmentId: Prisma.FieldRef<"Result", 'String'>
-  readonly studentId: Prisma.FieldRef<"Result", 'String'>
+  readonly score: Prisma.FieldRef<"Result", 'Decimal'>
+  readonly grade: Prisma.FieldRef<"Result", 'String'>
+  readonly comment: Prisma.FieldRef<"Result", 'String'>
 }
     
 
@@ -1776,25 +1727,6 @@ export type Result$examArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.ExamInclude<ExtArgs> | null
   where?: Prisma.ExamWhereInput
-}
-
-/**
- * Result.assignment
- */
-export type Result$assignmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Assignment
-   */
-  select?: Prisma.AssignmentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Assignment
-   */
-  omit?: Prisma.AssignmentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AssignmentInclude<ExtArgs> | null
-  where?: Prisma.AssignmentWhereInput
 }
 
 /**

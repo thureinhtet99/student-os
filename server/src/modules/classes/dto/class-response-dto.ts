@@ -1,27 +1,29 @@
-import {
-  Announcement,
-  Event,
-  Student,
-  Subject,
-  Teacher,
-} from '../../../../prisma/generated/prisma/client';
+import { ApiProperty } from '@nestjs/swagger';
+import { AcademicYear } from '../../../../prisma/generated/prisma/client';
 
 export class ClassResponseDto {
+  @ApiProperty({ example: 'ckx123classid' })
   id!: string;
 
+  @ApiProperty({ example: 'Grade 10 A' })
   name!: string;
 
-  teacher!: Teacher | null;
+  @ApiProperty({
+    type: Object,
+    nullable: true,
+    description: 'Academic year record for this class',
+  })
+  academicYear!: AcademicYear | null;
 
-  students!: Omit<Student, 'password'>[] | null;
+  @ApiProperty({ example: 'ckx123academicyearid' })
+  academicYearId!: string;
 
-  subjects!: Subject[] | null;
+  @ApiProperty({ example: '2025-2026' })
+  academicYearName!: string | null;
 
-  events!: Event[] | null;
+  @ApiProperty({ example: '2025-07-03T00:00:00.000Z', nullable: true })
+  createdAt!: Date | null;
 
-  announcements!: Announcement[] | null;
-
-  createdAt!: Date;
-
-  updatedAt!: Date;
+  @ApiProperty({ example: '2025-07-03T00:00:00.000Z', nullable: true })
+  updatedAt!: Date | null;
 }

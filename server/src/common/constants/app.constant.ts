@@ -2,7 +2,7 @@ export const APP_CONSTANT = {
   APP_NAME: 'student-os',
   APP_DESCRIPTION: 'student-os',
   API_VERSION: '/api/v1',
-  // API_DOCS: '/api/docs',
+  API_DOCS: '/api/docs',
 } as const;
 
 export const END_POINTS = {
@@ -10,8 +10,8 @@ export const END_POINTS = {
   SIGN_IN: '/auth/sign-in/email',
   SIGN_OUT: '/auth/sign-out',
   GET_SESSION: '/auth/get-session',
-  SESSION: '/auth/session/me',
-  ACCOUNTS: '/auth/session/accounts',
+  LIST_SESSIONS: '/auth/list-sessions',
+  LIST_ACCOUNTS: '/auth/list-accounts',
 };
 
 export const CLOUDINARY_CONSTANT = {

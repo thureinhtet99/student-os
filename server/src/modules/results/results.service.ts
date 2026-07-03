@@ -1,11 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatResult } from '../../common/formatters/result.formatter.js';
+import { ResultWithRelations } from '../../common/types/result.type.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateResultDto } from './dto/create-result.dto.js';
 import { QueryResultDto } from './dto/query-result-dto.js';
@@ -18,27 +15,14 @@ export class ResultsService {
 
   async create(createResultDto: CreateResultDto): Promise<ResultResponseDto> {
     const examId = createResultDto.exam_id?.trim();
-    const assignmentId = createResultDto.assignment_id?.trim();
-
-    if (!examId) {
-      throw new BadRequestException('Exam id is required');
-    }
-    if (!assignmentId) {
-      throw new BadRequestException('Assignment id is required');
-    }
 
     const result = await this.prisma.result.create({
       data: {
         score: createResultDto.score,
         comment: createResultDto.comment?.trim() || null,
-        exam: { connect: { id: examId } },
-        assignment: { connect: { id: assignmentId } },
-        student: { connect: { id: createResultDto.student_id } },
-      },
-      include: {
-        exam: true,
-        assignment: true,
-        student: true,
+        examId,
+        academicYearId: createResultDto.academicYearId,
+        enrollmentId: createResultDto.enrollmentId,
       },
     });
 
@@ -48,11 +32,11 @@ export class ResultsService {
   async findAll(
     queryResultDto: QueryResultDto,
   ): Promise<PaginatedResponseDto<ResultResponseDto>> {
-    const { student_id, page = 1, limit = 10 } = queryResultDto;
+    const { enrollmentId, page = 1, limit = 10 } = queryResultDto;
 
     const where: Prisma.ResultWhereInput = {};
 
-    if (student_id) where.studentId = student_id;
+    if (enrollmentId) where.enrollmentId = enrollmentId;
 
     const total = await this.prisma.result.count({ where });
 
@@ -60,12 +44,7 @@ export class ResultsService {
       where,
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        exam: true,
-        assignment: true,
-        student: true,
-      },
+      orderBy: { id: 'desc' },
     });
 
     return {
@@ -82,11 +61,6 @@ export class ResultsService {
   async findOne(id: string): Promise<ResultResponseDto> {
     const result = await this.prisma.result.findUnique({
       where: { id },
-      include: {
-        exam: true,
-        assignment: true,
-        student: true,
-      },
     });
 
     if (!result) throw new NotFoundException('Result is not found');
@@ -117,24 +91,16 @@ export class ResultsService {
             : updateResultDto.exam_id
               ? { connect: { id: updateResultDto.exam_id } }
               : undefined,
-        assignment:
-          updateResultDto.assignment_id === undefined
-            ? undefined
-            : updateResultDto.assignment_id
-              ? { connect: { id: updateResultDto.assignment_id } }
-              : undefined,
-        student: updateResultDto.student_id
-          ? { connect: { id: updateResultDto.student_id } }
+        academicYear: updateResultDto.academicYearId
+          ? { connect: { id: updateResultDto.academicYearId } }
           : undefined,
-      },
-      include: {
-        exam: true,
-        assignment: true,
-        student: true,
+        enrollment: updateResultDto.enrollmentId
+          ? { connect: { id: updateResultDto.enrollmentId } }
+          : undefined,
       },
     });
 
-    return formatResult(result);
+    return formatResult(result as ResultWithRelations);
   }
 
   async remove(id: string): Promise<{ message: string }> {

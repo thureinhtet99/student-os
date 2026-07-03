@@ -1,38 +1,15 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateClassDto {
+  @ApiProperty({ example: 'Grade 10 A' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(200)
   name!: string;
 
+  @ApiProperty({ example: 'ckx123academicyearid' })
   @IsString()
-  @IsOptional()
-  teacherId!: string | null;
-
-  @IsArray()
-  @IsString({ each: true })
-  @IsOptional()
-  subjects!: string[] | null;
-
-  @IsArray()
-  @IsString({ each: true })
-  @IsOptional()
-  students!: string[] | null;
-
-  @IsArray()
-  @IsString({ each: true })
-  @IsOptional()
-  events!: string[] | null;
-
-  @IsArray()
-  @IsString({ each: true })
-  @IsOptional()
-  announcements!: string[] | null;
+  @IsNotEmpty()
+  academicYearId!: string;
 }

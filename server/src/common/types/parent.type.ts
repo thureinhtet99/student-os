@@ -1,5 +1,11 @@
-import { Parent, Student } from '../../../prisma/generated/prisma/client';
+import { Parent, ParentStudent, Student, User } from '../../../prisma/generated/prisma/client.js';
 
-export type ParentWithRelations = Omit<Parent, 'password'> & {
-  students: Student[] | null;
+export type ParentWithRelations = Parent & {
+  students:
+    | (ParentStudent & {
+        student: Student & {
+          user: User;
+        };
+      })[]
+    | null;
 };

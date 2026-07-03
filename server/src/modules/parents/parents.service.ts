@@ -38,7 +38,17 @@ export class ParentsService {
         phone: createParentDto.phone?.trim() || null,
         address: createParentDto.address?.trim() || null,
       },
-      include: { students: true },
+      include: {
+        students: {
+          include: {
+            student: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return formatParent(parent);
@@ -62,7 +72,17 @@ export class ParentsService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { name: 'asc' },
-      include: { students: true },
+      include: {
+        students: {
+          include: {
+            student: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return {
@@ -79,7 +99,17 @@ export class ParentsService {
   async findOne(id: string): Promise<ParentResponseDto> {
     const parent = await this.prisma.parent.findUnique({
       where: { id },
-      include: { students: true },
+      include: {
+        students: {
+          include: {
+            student: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!parent) throw new NotFoundException('Parent is not found');
@@ -134,7 +164,17 @@ export class ParentsService {
             ? undefined
             : updateParentDto.address?.trim() || null,
       },
-      include: { students: true },
+      include: {
+        students: {
+          include: {
+            student: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return formatParent(parent);

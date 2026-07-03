@@ -26,64 +26,64 @@ export type AggregateAnnouncement = {
 
 export type AnnouncementMinAggregateOutputType = {
   id: string | null
-  name: string | null
-  description: string | null
-  date: Date | null
+  title: string | null
+  content: string | null
+  classId: string | null
+  publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
-  classId: string | null
 }
 
 export type AnnouncementMaxAggregateOutputType = {
   id: string | null
-  name: string | null
-  description: string | null
-  date: Date | null
+  title: string | null
+  content: string | null
+  classId: string | null
+  publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
-  classId: string | null
 }
 
 export type AnnouncementCountAggregateOutputType = {
   id: number
-  name: number
-  description: number
-  date: number
+  title: number
+  content: number
+  classId: number
+  publishedAt: number
   createdAt: number
   updatedAt: number
-  classId: number
   _all: number
 }
 
 
 export type AnnouncementMinAggregateInputType = {
   id?: true
-  name?: true
-  description?: true
-  date?: true
+  title?: true
+  content?: true
+  classId?: true
+  publishedAt?: true
   createdAt?: true
   updatedAt?: true
-  classId?: true
 }
 
 export type AnnouncementMaxAggregateInputType = {
   id?: true
-  name?: true
-  description?: true
-  date?: true
+  title?: true
+  content?: true
+  classId?: true
+  publishedAt?: true
   createdAt?: true
   updatedAt?: true
-  classId?: true
 }
 
 export type AnnouncementCountAggregateInputType = {
   id?: true
-  name?: true
-  description?: true
-  date?: true
+  title?: true
+  content?: true
+  classId?: true
+  publishedAt?: true
   createdAt?: true
   updatedAt?: true
-  classId?: true
   _all?: true
 }
 
@@ -161,12 +161,12 @@ export type AnnouncementGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type AnnouncementGroupByOutputType = {
   id: string
-  name: string
-  description: string | null
-  date: Date
+  title: string
+  content: string
+  classId: string | null
+  publishedAt: Date
   createdAt: Date
   updatedAt: Date
-  classId: string | null
   _count: AnnouncementCountAggregateOutputType | null
   _min: AnnouncementMinAggregateOutputType | null
   _max: AnnouncementMaxAggregateOutputType | null
@@ -192,23 +192,23 @@ export type AnnouncementWhereInput = {
   OR?: Prisma.AnnouncementWhereInput[]
   NOT?: Prisma.AnnouncementWhereInput | Prisma.AnnouncementWhereInput[]
   id?: Prisma.StringFilter<"Announcement"> | string
-  name?: Prisma.StringFilter<"Announcement"> | string
-  description?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  date?: Prisma.DateTimeFilter<"Announcement"> | Date | string
+  title?: Prisma.StringFilter<"Announcement"> | string
+  content?: Prisma.StringFilter<"Announcement"> | string
+  classId?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  publishedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
-  classId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   class?: Prisma.XOR<Prisma.ClassNullableScalarRelationFilter, Prisma.ClassWhereInput> | null
 }
 
 export type AnnouncementOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
-  date?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  classId?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  classId?: Prisma.SortOrderInput | Prisma.SortOrder
   class?: Prisma.ClassOrderByWithRelationInput
 }
 
@@ -217,23 +217,23 @@ export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.AnnouncementWhereInput | Prisma.AnnouncementWhereInput[]
   OR?: Prisma.AnnouncementWhereInput[]
   NOT?: Prisma.AnnouncementWhereInput | Prisma.AnnouncementWhereInput[]
-  name?: Prisma.StringFilter<"Announcement"> | string
-  description?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  date?: Prisma.DateTimeFilter<"Announcement"> | Date | string
+  title?: Prisma.StringFilter<"Announcement"> | string
+  content?: Prisma.StringFilter<"Announcement"> | string
+  classId?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  publishedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
-  classId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   class?: Prisma.XOR<Prisma.ClassNullableScalarRelationFilter, Prisma.ClassWhereInput> | null
 }, "id">
 
 export type AnnouncementOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
-  date?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  classId?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  classId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AnnouncementCountOrderByAggregateInput
   _max?: Prisma.AnnouncementMaxOrderByAggregateInput
   _min?: Prisma.AnnouncementMinOrderByAggregateInput
@@ -244,19 +244,19 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
   OR?: Prisma.AnnouncementScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AnnouncementScalarWhereWithAggregatesInput | Prisma.AnnouncementScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
-  name?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
-  description?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
-  date?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
+  title?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
+  content?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
+  classId?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
+  publishedAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
-  classId?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
 }
 
 export type AnnouncementCreateInput = {
   id?: string
-  name: string
-  description?: string | null
-  date: Date | string
+  title: string
+  content: string
+  publishedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   class?: Prisma.ClassCreateNestedOneWithoutAnnouncementsInput
@@ -264,19 +264,19 @@ export type AnnouncementCreateInput = {
 
 export type AnnouncementUncheckedCreateInput = {
   id?: string
-  name: string
-  description?: string | null
-  date: Date | string
+  title: string
+  content: string
+  classId?: string | null
+  publishedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
-  classId?: string | null
 }
 
 export type AnnouncementUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   class?: Prisma.ClassUpdateOneWithoutAnnouncementsNestedInput
@@ -284,41 +284,41 @@ export type AnnouncementUpdateInput = {
 
 export type AnnouncementUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AnnouncementCreateManyInput = {
   id?: string
-  name: string
-  description?: string | null
-  date: Date | string
+  title: string
+  content: string
+  classId?: string | null
+  publishedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
-  classId?: string | null
 }
 
 export type AnnouncementUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AnnouncementUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AnnouncementListRelationFilter = {
@@ -333,32 +333,32 @@ export type AnnouncementOrderByRelationAggregateInput = {
 
 export type AnnouncementCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  description?: Prisma.SortOrder
-  date?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  classId?: Prisma.SortOrder
 }
 
 export type AnnouncementMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  description?: Prisma.SortOrder
-  date?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  classId?: Prisma.SortOrder
 }
 
 export type AnnouncementMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  description?: Prisma.SortOrder
-  date?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  classId?: Prisma.SortOrder
 }
 
 export type AnnouncementCreateNestedManyWithoutClassInput = {
@@ -405,18 +405,18 @@ export type AnnouncementUncheckedUpdateManyWithoutClassNestedInput = {
 
 export type AnnouncementCreateWithoutClassInput = {
   id?: string
-  name: string
-  description?: string | null
-  date: Date | string
+  title: string
+  content: string
+  publishedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type AnnouncementUncheckedCreateWithoutClassInput = {
   id?: string
-  name: string
-  description?: string | null
-  date: Date | string
+  title: string
+  content: string
+  publishedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -452,46 +452,46 @@ export type AnnouncementScalarWhereInput = {
   OR?: Prisma.AnnouncementScalarWhereInput[]
   NOT?: Prisma.AnnouncementScalarWhereInput | Prisma.AnnouncementScalarWhereInput[]
   id?: Prisma.StringFilter<"Announcement"> | string
-  name?: Prisma.StringFilter<"Announcement"> | string
-  description?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  date?: Prisma.DateTimeFilter<"Announcement"> | Date | string
+  title?: Prisma.StringFilter<"Announcement"> | string
+  content?: Prisma.StringFilter<"Announcement"> | string
+  classId?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  publishedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
-  classId?: Prisma.StringNullableFilter<"Announcement"> | string | null
 }
 
 export type AnnouncementCreateManyClassInput = {
   id?: string
-  name: string
-  description?: string | null
-  date: Date | string
+  title: string
+  content: string
+  publishedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type AnnouncementUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AnnouncementUncheckedUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AnnouncementUncheckedUpdateManyWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -500,48 +500,48 @@ export type AnnouncementUncheckedUpdateManyWithoutClassInput = {
 
 export type AnnouncementSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  description?: boolean
-  date?: boolean
+  title?: boolean
+  content?: boolean
+  classId?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  classId?: boolean
   class?: boolean | Prisma.Announcement$classArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
 export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  description?: boolean
-  date?: boolean
+  title?: boolean
+  content?: boolean
+  classId?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  classId?: boolean
   class?: boolean | Prisma.Announcement$classArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
 export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  description?: boolean
-  date?: boolean
+  title?: boolean
+  content?: boolean
+  classId?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  classId?: boolean
   class?: boolean | Prisma.Announcement$classArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
 export type AnnouncementSelectScalar = {
   id?: boolean
-  name?: boolean
-  description?: boolean
-  date?: boolean
+  title?: boolean
+  content?: boolean
+  classId?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  classId?: boolean
 }
 
-export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "date" | "createdAt" | "updatedAt" | "classId", ExtArgs["result"]["announcement"]>
+export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "content" | "classId" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
 export type AnnouncementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.Announcement$classArgs<ExtArgs>
 }
@@ -559,12 +559,12 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    name: string
-    description: string | null
-    date: Date
+    title: string
+    content: string
+    classId: string | null
+    publishedAt: Date
     createdAt: Date
     updatedAt: Date
-    classId: string | null
   }, ExtArgs["result"]["announcement"]>
   composites: {}
 }
@@ -990,12 +990,12 @@ export interface Prisma__AnnouncementClient<T, Null = never, ExtArgs extends run
  */
 export interface AnnouncementFieldRefs {
   readonly id: Prisma.FieldRef<"Announcement", 'String'>
-  readonly name: Prisma.FieldRef<"Announcement", 'String'>
-  readonly description: Prisma.FieldRef<"Announcement", 'String'>
-  readonly date: Prisma.FieldRef<"Announcement", 'DateTime'>
+  readonly title: Prisma.FieldRef<"Announcement", 'String'>
+  readonly content: Prisma.FieldRef<"Announcement", 'String'>
+  readonly classId: Prisma.FieldRef<"Announcement", 'String'>
+  readonly publishedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
-  readonly classId: Prisma.FieldRef<"Announcement", 'String'>
 }
     
 
