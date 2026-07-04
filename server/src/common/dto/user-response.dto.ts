@@ -3,43 +3,43 @@ import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 import { UserRole } from '../../../prisma/generated/prisma/client';
 
 export class UserResponseDto {
-  @ApiProperty()
+  @ApiProperty({ type: String })
   @IsString()
   name!: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: String })
   @IsEmail()
   email!: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: String, nullable: true })
   @IsOptional()
+  @IsString()
   image!: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ enum: UserRole })
   @IsEnum(UserRole)
   role!: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: String, nullable: true })
   @IsOptional()
-  setPasswordToken!: string;
+  setPasswordToken!: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ type: Date, nullable: true })
   @IsOptional()
-  setPasswordTokenExpires!: Date;
+  setPasswordTokenExpires!: Date | null;
 
-  @ApiProperty()
+  @ApiProperty({ type: String, nullable: true })
   @IsOptional()
-  resetPasswordToken!: string;
+  resetPasswordToken!: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ type: Date, nullable: true })
   @IsOptional()
-  resetPasswordTokenExpires!: Date;
+  resetPasswordTokenExpires!: Date | null;
 
-  @ApiProperty()
-  @IsOptional()
-  lastLoginAt!: Date;
+  @ApiProperty({ type: Date, nullable: true })
+  lastLoginAt!: Date | null;
 
-  @ApiProperty()
+  @ApiProperty({ type: String })
   @IsString()
   id!: string;
 }

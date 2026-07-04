@@ -13,11 +13,9 @@ export function formatStudent(
     parent: student.parents?.[0]?.parent ?? null,
     class: student.enrollments?.[0]?.class ?? null,
     setPasswordToken: student.user.setPasswordToken,
-    setPasswordTokenExpires:
-      student.user.setPasswordTokenExpires?.toISOString() ?? null,
+    setPasswordTokenExpires: student.user.setPasswordTokenExpires ?? null,
     resetPasswordToken: student.user.resetPasswordToken,
-    resetPasswordTokenExpires:
-      student.user.resetPasswordTokenExpires?.toISOString() ?? null,
+    resetPasswordTokenExpires: student.user.resetPasswordTokenExpires ?? null,
     lastLoginAt: student.user.lastLoginAt,
   };
 }

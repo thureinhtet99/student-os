@@ -1,48 +1,47 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsString } from 'class-validator';
-import { UserRole } from '../../../../prisma/generated/prisma/client.js';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { UserResponseDto } from '../../../common/dto/user-response.dto.js';
 
-class SessionUserDto {
-  @ApiProperty()
-  id!: string;
-
-  @ApiProperty()
-  email!: string;
-
-  @ApiProperty()
-  name!: string;
-
-  @ApiProperty({ enum: UserRole })
-  role!: UserRole;
-
-  @ApiProperty({ required: false, nullable: true })
-  image?: string | null;
-}
-
 class SessionDto {
-  @ApiProperty()
-  id!: string;
-
-  @ApiProperty()
-  token!: string;
-
-  @ApiProperty()
+  @ApiProperty({ type: Date })
   expiresAt!: Date;
 
-  @ApiProperty({ required: false, nullable: true })
-  ipAddress?: string | null;
+  @ApiProperty({ type: String })
+  token!: string;
 
-  @ApiProperty({ required: false, nullable: true })
-  userAgent?: string | null;
+  @ApiProperty({ type: Date })
+  createdAt!: Date;
+
+  @ApiProperty({ type: Date })
+  updatedAt!: Date;
+
+  @ApiProperty({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  ipAddress!: string;
+
+  @ApiProperty({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  userAgent!: string;
+
+  @ApiProperty({ type: String })
+  userId!: string;
+
+  @ApiProperty({ type: String })
+  @IsString()
+  id!: string;
 }
 
 export class SessionResponseDto {
-  @ApiProperty({ type: SessionUserDto })
-  user!: SessionUserDto;
-
   @ApiProperty({ type: SessionDto })
   session!: SessionDto;
+
+  @ApiProperty({ type: UserResponseDto })
+  user!: UserResponseDto;
+
+  @ApiProperty({ type: Boolean })
+  needsRefresh!: boolean;
 }
 
 class AccountDto {
@@ -65,8 +64,9 @@ export class AccountsResponseDto {
 }
 
 export class SignOutResponseDto {
-  @ApiProperty({ example: 'Signed out successfully' })
-  message!: string;
+  @ApiProperty()
+  @IsBoolean()
+  success!: boolean;
 }
 
 export class SignInResponseDto {

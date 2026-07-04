@@ -9,7 +9,7 @@ export function formatTeacher(
     teacherId: teacher.employeeCode,
     name: teacher.user.name,
     email: teacher.user.email,
-    image: teacher.user.image,
+    image: teacher.user.image ?? null,
     classes: Array.from(
       new Map(
         teacher.teachingAssignments.map((ta) => [ta.class.id, ta.class]),
@@ -21,11 +21,9 @@ export function formatTeacher(
       ).values(),
     ).map((s) => ({ id: s.id, name: s.name })),
     setPasswordToken: teacher.user.setPasswordToken,
-    setPasswordTokenExpires:
-      teacher.user.setPasswordTokenExpires?.toISOString() ?? null,
+    setPasswordTokenExpires: teacher.user.setPasswordTokenExpires ?? null,
     resetPasswordToken: teacher.user.resetPasswordToken,
-    resetPasswordTokenExpires:
-      teacher.user.resetPasswordTokenExpires?.toISOString() ?? null,
+    resetPasswordTokenExpires: teacher.user.resetPasswordTokenExpires ?? null,
     lastLoginAt: teacher.user.lastLoginAt,
   };
 }
