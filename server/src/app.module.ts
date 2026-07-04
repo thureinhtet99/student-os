@@ -23,20 +23,21 @@ import { SubjectsModule } from './modules/subjects/subjects.module';
 import { TeachersModule } from './modules/teachers/teachers.module';
 import { TeachingAssignmentsModule } from './modules/teaching-assignments/teaching-assignments.module.js';
 
+//  * better-auth's rateLimit: Protects your unauthenticated auth endpoints.
+//  * @nestjs/throttler: Protects your authenticated application endpoints.
+
 // Rate limiter for the better-auth HTTP handler at /api/v1/auth/*.
 // Nest guards and @Throttle() do not run on these routes (better-auth is
 // mounted at the Express middleware layer), so the only correct hook is
 // the `middleware` option on AuthModule.forRoot, which wraps the handler.
-const authRateLimiter = rateLimit({
+const rateLimiter = rateLimit({
   windowMs: 60_000, // 1 minute
-  max: 5, // 10 requests/minute per IP
+  max: 5, // 5 requests/minute per IP
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     statusCode: 429,
     error: 'Too Many Requests',
-    message: 'Too many auth attempts, please slow down.',
-    timestamp: new Date().toISOString(),
   },
 });
 
@@ -70,10 +71,10 @@ const authRateLimiter = rateLimit({
       auth,
       bodyParser: {
         json: { limit: '2mb' },
-        urlencoded: { limit: '2mb', extended: true },
+        urlencoded: { enabled: true, limit: '2mb', extended: true },
         rawBody: true,
       },
-      middleware: (req, res, next) => authRateLimiter(req, res, next),
+      middleware: (req, res, next) => rateLimiter(req, res, next),
     }),
     LocalAuthModule,
   ],
