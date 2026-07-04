@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
-import type { EnrollmentModel } from '../../../prisma/generated/prisma/models/Enrollment.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateEnrollmentDto } from './dto/create-enrollment.dto.js';
@@ -21,7 +20,7 @@ export class EnrollmentsService {
         class: { connect: { id: createEnrollmentDto.classId } },
         academicYear: { connect: { id: createEnrollmentDto.academicYearId } },
       },
-    }) as Promise<EnrollmentModel>;
+    });
   }
 
   async findAll(
@@ -49,7 +48,7 @@ export class EnrollmentsService {
     });
 
     return {
-      data: enrollments as EnrollmentModel[],
+      data: enrollments,
       meta: {
         total,
         page,
@@ -64,7 +63,7 @@ export class EnrollmentsService {
       where: { id },
     });
     if (!enrollment) throw new NotFoundException('Enrollment is not found');
-    return enrollment as EnrollmentModel;
+    return enrollment;
   }
 
   async update(
@@ -77,7 +76,7 @@ export class EnrollmentsService {
     if (!existingEnrollment)
       throw new NotFoundException('Enrollment is not found');
 
-    return (await this.prisma.enrollment.update({
+    return await this.prisma.enrollment.update({
       where: { id },
       data: {
         student: updateEnrollmentDto.studentId
@@ -90,7 +89,7 @@ export class EnrollmentsService {
           ? { connect: { id: updateEnrollmentDto.academicYearId } }
           : undefined,
       },
-    })) as EnrollmentModel;
+    });
   }
 
   async remove(id: string): Promise<{ message: string }> {

@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatResult } from '../../common/formatters/result.formatter.js';
-import { ResultWithRelations } from '../../common/types/result.type.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateResultDto } from './dto/create-result.dto.js';
 import { QueryResultDto } from './dto/query-result-dto.js';
@@ -100,7 +99,7 @@ export class ResultsService {
       },
     });
 
-    return formatResult(result as ResultWithRelations);
+    return formatResult(result);
   }
 
   async remove(id: string): Promise<{ message: string }> {

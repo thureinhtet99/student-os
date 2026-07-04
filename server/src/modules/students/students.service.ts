@@ -5,7 +5,6 @@ import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatStudent } from '../../common/formatters/student.formatter.js';
-import { StudentWithRelations } from '../../common/types/student.type.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
 import { resolveImageUrl } from '../../common/utils/image.util.js';
@@ -34,7 +33,7 @@ export class StudentsService {
       name,
       phone,
       address,
-      image,
+      // image,
       gender,
       dateOfBirth,
     } = createStudentDto;
@@ -65,7 +64,7 @@ export class StudentsService {
       );
     }
 
-    const imageUrl = resolveImageUrl(image, this.cloudinary);
+    // const imageUrl = resolveImageUrl(image, this.cloudinary);
     const hashedPwd = await hashPassword(password);
     const userId = randomUUID();
 
@@ -92,7 +91,8 @@ export class StudentsService {
       const currentYear = await tx.academicYear.findFirst({
         where: { isCurrent: true },
       });
-      const academicYearId = currentYear?.id || (await tx.academicYear.findFirst())?.id;
+      const academicYearId =
+        currentYear?.id || (await tx.academicYear.findFirst())?.id;
 
       return tx.student.create({
         data: {
@@ -102,14 +102,15 @@ export class StudentsService {
           address,
           gender,
           dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-          ...(createStudentDto.classId && academicYearId && {
-            enrollments: {
-              create: {
-                classId: createStudentDto.classId,
-                academicYearId,
+          ...(createStudentDto.classId &&
+            academicYearId && {
+              enrollments: {
+                create: {
+                  classId: createStudentDto.classId,
+                  academicYearId,
+                },
               },
-            },
-          }),
+            }),
           ...(createStudentDto.parentId && {
             parents: {
               create: {
@@ -135,7 +136,7 @@ export class StudentsService {
       });
     });
 
-    return formatStudent(student as StudentWithRelations);
+    return formatStudent(student);
   }
 
   async findAll(
@@ -202,7 +203,7 @@ export class StudentsService {
     });
 
     return {
-      data: students.map((student) => formatStudent(student as StudentWithRelations)),
+      data: students.map((student) => formatStudent(student)),
       meta: {
         total,
         page,
@@ -232,7 +233,7 @@ export class StudentsService {
 
     if (!student) throw new NotFoundException('Student is not found');
 
-    return formatStudent(student as StudentWithRelations);
+    return formatStudent(student);
   }
 
   async update(
@@ -288,7 +289,8 @@ export class StudentsService {
     const currentYear = await this.prisma.academicYear.findFirst({
       where: { isCurrent: true },
     });
-    const academicYearId = currentYear?.id || (await this.prisma.academicYear.findFirst())?.id;
+    const academicYearId =
+      currentYear?.id || (await this.prisma.academicYear.findFirst())?.id;
 
     const student = await this.prisma.student.update({
       where: { id },
@@ -318,19 +320,20 @@ export class StudentsService {
         gender: updateStudentDto.gender
           ? formatGender(updateStudentDto.gender)
           : undefined,
-        ...(updateStudentDto.classId !== undefined && academicYearId && {
-          enrollments: updateStudentDto.classId
-            ? {
-                deleteMany: {},
-                create: {
-                  classId: updateStudentDto.classId,
-                  academicYearId,
+        ...(updateStudentDto.classId !== undefined &&
+          academicYearId && {
+            enrollments: updateStudentDto.classId
+              ? {
+                  deleteMany: {},
+                  create: {
+                    classId: updateStudentDto.classId,
+                    academicYearId,
+                  },
+                }
+              : {
+                  deleteMany: {},
                 },
-              }
-            : {
-                deleteMany: {},
-              },
-        }),
+          }),
         ...(updateStudentDto.parentId !== undefined && {
           parents: updateStudentDto.parentId
             ? {
@@ -360,7 +363,7 @@ export class StudentsService {
       },
     });
 
-    return formatStudent(student as StudentWithRelations);
+    return formatStudent(student);
   }
 
   async remove(id: string): Promise<{ message: string }> {
