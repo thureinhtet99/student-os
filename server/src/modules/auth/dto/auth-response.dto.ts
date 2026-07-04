@@ -1,28 +1,88 @@
-import { UserRole } from '../../../../prisma/generated/prisma/client.js';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { UserResponseDto } from '../../../common/dto/user-response.dto.js';
 
-export class SessionResponseDto {
-  user!: {
-    id: string;
-    email: string;
-    name: string;
-    role: UserRole;
-    image?: string | null;
-  };
+export class SessionDto {
+  @ApiProperty({ type: Date })
+  expiresAt!: Date;
 
-  session!: {
-    id: string;
-    token: string;
-    expiresAt: Date;
-    ipAddress?: string | null;
-    userAgent?: string | null;
-  };
+  @ApiProperty({ type: String })
+  token!: string;
+
+  @ApiProperty({ type: Date })
+  createdAt!: Date;
+
+  @ApiProperty({ type: Date })
+  updatedAt!: Date;
+
+  @ApiProperty({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  ipAddress!: string;
+
+  @ApiProperty({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  userAgent!: string;
+
+  @ApiProperty({ type: String })
+  userId!: string;
+
+  @ApiProperty({ type: String })
+  @IsString()
+  id!: string;
 }
 
-export class AccountsResponseDto {
-  accounts!: Array<{
-    id: string;
-    providerId: string;
-    accountId: string;
-    createdAt: Date;
-  }>;
+export class SessionResponseDto {
+  @ApiProperty({ type: SessionDto })
+  session!: SessionDto;
+
+  @ApiProperty({ type: UserResponseDto })
+  user!: UserResponseDto;
+
+  @ApiProperty({ type: Boolean })
+  needsRefresh!: boolean;
+}
+
+export class SessionListResponseDto {
+  @ApiProperty({ type: [SessionDto] })
+  sessions!: SessionDto;
+}
+
+class AccountDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty()
+  providerId!: string;
+
+  @ApiProperty()
+  accountId!: string;
+
+  @ApiProperty()
+  createdAt!: Date;
+}
+
+export class AccountListResponseDto {
+  @ApiProperty({ type: [AccountDto] })
+  accounts!: AccountDto[];
+}
+
+export class SignOutResponseDto {
+  @ApiProperty()
+  @IsBoolean()
+  success!: boolean;
+}
+
+export class SignInResponseDto {
+  @ApiProperty()
+  @IsBoolean()
+  redirect!: boolean;
+
+  @ApiProperty()
+  @IsString()
+  token!: string;
+
+  @ApiProperty()
+  user!: UserResponseDto;
 }

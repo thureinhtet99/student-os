@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
-import type { TeachingAssignmentModel } from '../../../prisma/generated/prisma/models/TeachingAssignment.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateTeachingAssignmentDto } from './dto/create-teaching-assignment.dto.js';
@@ -24,7 +23,7 @@ export class TeachingAssignmentsService {
           connect: { id: createTeachingAssignmentDto.academicYearId },
         },
       },
-    }) as Promise<TeachingAssignmentModel>;
+    });
   }
 
   async findAll(
@@ -54,7 +53,7 @@ export class TeachingAssignmentsService {
     });
 
     return {
-      data: teachingAssignments as TeachingAssignmentModel[],
+      data: teachingAssignments,
       meta: {
         total,
         page,
@@ -70,7 +69,7 @@ export class TeachingAssignmentsService {
     });
     if (!teachingAssignment)
       throw new NotFoundException('Teaching assignment is not found');
-    return teachingAssignment as TeachingAssignmentModel;
+    return teachingAssignment;
   }
 
   async update(
@@ -82,7 +81,7 @@ export class TeachingAssignmentsService {
     if (!existingTeachingAssignment)
       throw new NotFoundException('Teaching assignment is not found');
 
-    return (await this.prisma.teachingAssignment.update({
+    return await this.prisma.teachingAssignment.update({
       where: { id },
       data: {
         teacher: updateTeachingAssignmentDto.teacherId
@@ -98,7 +97,7 @@ export class TeachingAssignmentsService {
           ? { connect: { id: updateTeachingAssignmentDto.academicYearId } }
           : undefined,
       },
-    })) as TeachingAssignmentModel;
+    });
   }
 
   async remove(id: string): Promise<{ message: string }> {

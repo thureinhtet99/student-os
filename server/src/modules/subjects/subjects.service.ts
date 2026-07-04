@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatSubject } from '../../common/formatters/subject.formatter.js';
-import { SubjectWithRelations } from '../../common/types/subject.type.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CreateSubjectDto } from './dto/create-subject.dto.js';
@@ -35,7 +34,7 @@ export class SubjectsService {
       },
     });
 
-    return formatSubject(subject as SubjectWithRelations);
+    return formatSubject(subject);
   }
 
   async findAll(
@@ -65,7 +64,7 @@ export class SubjectsService {
     });
 
     return {
-      data: subjects.map((subject) => formatSubject(subject as SubjectWithRelations)),
+      data: subjects.map((subject) => formatSubject(subject)),
       meta: {
         total,
         page,
@@ -85,7 +84,7 @@ export class SubjectsService {
 
     if (!subject) throw new NotFoundException('Subject is not found');
 
-    return formatSubject(subject as SubjectWithRelations);
+    return formatSubject(subject);
   }
 
   async update(
@@ -125,7 +124,7 @@ export class SubjectsService {
       },
     });
 
-    return formatSubject(subject as SubjectWithRelations);
+    return formatSubject(subject);
   }
 
   async remove(id: string): Promise<{ message: string }> {

@@ -5,7 +5,6 @@ import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
 import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatTeacher } from '../../common/formatters/teacher.formatter.js';
-import { TeacherWithRelations } from '../../common/types/teacher.type.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
 import { resolveImageUrl } from '../../common/utils/image.util.js';
@@ -99,7 +98,7 @@ export class TeachersService {
       });
     });
 
-    return formatTeacher(teacher as TeacherWithRelations);
+    return formatTeacher(teacher);
   }
 
   async findAll(
@@ -138,7 +137,7 @@ export class TeachersService {
     });
 
     return {
-      data: teachers.map((teacher) => formatTeacher(teacher as TeacherWithRelations)),
+      data: teachers.map((teacher) => formatTeacher(teacher)),
       meta: {
         total,
         page,
@@ -164,7 +163,7 @@ export class TeachersService {
 
     if (!teacher) throw new NotFoundException('Teacher is not found');
 
-    return formatTeacher(teacher as TeacherWithRelations);
+    return formatTeacher(teacher);
   }
 
   async update(
@@ -256,7 +255,7 @@ export class TeachersService {
       },
     });
 
-    return formatTeacher(teacher as TeacherWithRelations);
+    return formatTeacher(teacher);
   }
 
   async remove(id: string): Promise<{ message: string }> {

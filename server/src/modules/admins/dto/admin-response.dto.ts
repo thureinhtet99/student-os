@@ -3,12 +3,9 @@ import { UserResponseDto } from '../../../common/dto/user-response.dto';
 
 export class AdminResponseDto extends PickType(UserResponseDto, [
   'id',
-  'userId',
   'email',
   'name',
   'role',
-  'createdAt',
-  'updatedAt',
 ]) {
   adminId!: string;
 }

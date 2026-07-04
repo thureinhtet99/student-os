@@ -5,19 +5,17 @@ export function formatStudent(
   student: StudentWithRelations,
 ): StudentResponseDto {
   return {
-    id: student.id,
+    id: student.user.id,
     name: student.user.name,
     email: student.user.email,
-    userId: student.user.id,
     studentId: student.studentNumber,
-    phone: student.phone,
-    address: student.address,
-    gender: student.gender,
-    dateOfBirth: student.dateOfBirth,
     image: student.user.image,
     parent: student.parents?.[0]?.parent ?? null,
     class: student.enrollments?.[0]?.class ?? null,
-    createdAt: student.user.createdAt,
-    updatedAt: student.user.updatedAt,
+    setPasswordToken: student.user.setPasswordToken,
+    setPasswordTokenExpires: student.user.setPasswordTokenExpires ?? null,
+    resetPasswordToken: student.user.resetPasswordToken,
+    resetPasswordTokenExpires: student.user.resetPasswordTokenExpires ?? null,
+    lastLoginAt: student.user.lastLoginAt,
   };
 }
