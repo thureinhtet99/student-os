@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
-import type { AcademicYearModel } from '../../../prisma/generated/prisma/models/AcademicYear.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { AcademicYearResponseDto } from './dto/academic-year-response.dto.js';
@@ -24,7 +23,7 @@ export class AcademicYearsService {
       },
     });
 
-    return academicYear as AcademicYearModel;
+    return academicYear;
   }
 
   async findAll(
@@ -48,7 +47,7 @@ export class AcademicYearsService {
     });
 
     return {
-      data: academicYears as AcademicYearModel[],
+      data: academicYears,
       meta: {
         total,
         page,
@@ -66,7 +65,7 @@ export class AcademicYearsService {
     if (!academicYear)
       throw new NotFoundException('Academic year is not found');
 
-    return academicYear as AcademicYearModel;
+    return academicYear;
   }
 
   async update(
@@ -81,7 +80,7 @@ export class AcademicYearsService {
       throw new NotFoundException('Academic year is not found');
     }
 
-    return (await this.prisma.academicYear.update({
+    return await this.prisma.academicYear.update({
       where: { id },
       data: {
         name: updateAcademicYearDto.name?.trim(),
@@ -93,7 +92,7 @@ export class AcademicYearsService {
           : undefined,
         isCurrent: updateAcademicYearDto.isCurrent,
       },
-    })) as AcademicYearModel;
+    });
   }
 
   async remove(id: string): Promise<{ message: string }> {

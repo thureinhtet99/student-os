@@ -2,6 +2,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
+import { APP_CONSTANT } from '../constants/app.constant';
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
@@ -22,6 +23,15 @@ export const auth = betterAuth({
     disableSignUp: true,
     minPasswordLength: 8,
     autoSignIn: false,
+  },
+  advanced: {
+    cookiePrefix: APP_CONSTANT.APP_NAME,
+  },
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
+
+    deferSessionRefresh: true,
   },
   user: {
     additionalFields: {

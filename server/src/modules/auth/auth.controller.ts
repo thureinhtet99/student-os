@@ -1,24 +1,28 @@
 import { Controller, Get, Req } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 import { AuthService } from './auth.service.js';
 import { AccountsResponseDto } from './dto/auth-response.dto.js';
 
-// Note: sign-in, sign-up, sign-out, and get-session are handled directly by
-// better-auth's HTTP handler mounted at /api/v1/auth (see common/utils/auth.ts
-// and the AuthModule.forRoot registration in app.module.ts). This controller
-// only exposes app-specific session helpers that don't have a better-auth
-// equivalent.
-
-@Controller('session')
+@ApiTags('auth')
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @Get('me')
-  // me(@Session() session: SessionUser) {
-  //   return session;
+  // @Post('signin')
+  // @ApiOperation({
+  //   summary:
+  //     'Sign in with email and password. This will invalidate all other active sessions for the user.',
+  // })
+  // @ApiBody({ type: SignInDto })
+  // @ApiResponse({ status: 200, type: SessionResponseDto })
+  // async signIn(@Body() signInDto: SignInDto) {
+  //   return this.authService.signIn(signInDto);
   // }
 
   @Get('accounts')
+  @ApiOperation({ summary: 'List accounts linked to the current user' })
+  @ApiResponse({ status: 200, type: AccountsResponseDto })
   async accounts(@Req() req: Request): Promise<AccountsResponseDto> {
     const accounts = await this.authService.listAccounts(req.headers);
     return { accounts: accounts };

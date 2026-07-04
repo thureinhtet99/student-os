@@ -1,8 +1,8 @@
 export const APP_CONSTANT = {
   APP_NAME: 'student-os',
   APP_DESCRIPTION: 'student-os',
-  API_VERSION: '/api/v1',
-  API_DOCS: '/api/docs',
+  API_VERSION: 'api/v1',
+  API_DOCS: 'api/docs',
 } as const;
 
 export const END_POINTS = {

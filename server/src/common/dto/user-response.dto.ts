@@ -1,27 +1,45 @@
-import { UserGender } from '../../../prisma/generated/prisma/client';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { UserRole } from '../../../prisma/generated/prisma/client';
 
 export class UserResponseDto {
-  id!: string;
-
-  userId!: string;
-
+  @ApiProperty()
+  @IsString()
   name!: string;
 
+  @ApiProperty()
+  @IsEmail()
   email!: string;
 
-  phone!: string | null;
-
-  address!: string | null;
-
-  gender!: UserGender;
-
-  role!: string;
-
-  dateOfBirth!: Date | null;
-
+  @ApiProperty()
+  @IsOptional()
   image!: string | null;
 
-  createdAt!: Date;
+  @ApiProperty()
+  @IsEnum(UserRole)
+  role!: string;
 
-  updatedAt!: Date;
+  @ApiProperty()
+  @IsOptional()
+  setPasswordToken!: string;
+
+  @ApiProperty()
+  @IsOptional()
+  setPasswordTokenExpires!: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  resetPasswordToken!: string;
+
+  @ApiProperty()
+  @IsOptional()
+  resetPasswordTokenExpires!: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  lastLoginAt!: Date;
+
+  @ApiProperty()
+  @IsString()
+  id!: string;
 }

@@ -29,7 +29,7 @@ import { TeachingAssignmentsModule } from './modules/teaching-assignments/teachi
 // the `middleware` option on AuthModule.forRoot, which wraps the handler.
 const authRateLimiter = rateLimit({
   windowMs: 60_000, // 1 minute
-  max: 10, // 10 requests/minute per IP
+  max: 5, // 10 requests/minute per IP
   standardHeaders: true,
   legacyHeaders: false,
   message: {
