@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { UserResponseDto } from '../../../common/dto/user-response.dto.js';
 
-class SessionDto {
+export class SessionDto {
   @ApiProperty({ type: Date })
   expiresAt!: Date;
 
@@ -44,6 +44,11 @@ export class SessionResponseDto {
   needsRefresh!: boolean;
 }
 
+export class SessionListResponseDto {
+  @ApiProperty({ type: [SessionDto] })
+  sessions!: SessionDto;
+}
+
 class AccountDto {
   @ApiProperty()
   id!: string;
@@ -58,7 +63,7 @@ class AccountDto {
   createdAt!: Date;
 }
 
-export class AccountsResponseDto {
+export class AccountListResponseDto {
   @ApiProperty({ type: [AccountDto] })
   accounts!: AccountDto[];
 }

@@ -1,10 +1,8 @@
-import { Controller, Get, Req } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import type { Request } from 'express';
+import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service.js';
-import { AccountsResponseDto } from './dto/auth-response.dto.js';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -20,11 +18,21 @@ export class AuthController {
   //   return this.authService.signIn(signInDto);
   // }
 
-  @Get('accounts')
-  @ApiOperation({ summary: 'List accounts linked to the current user' })
-  @ApiResponse({ status: 200, type: AccountsResponseDto })
-  async accounts(@Req() req: Request): Promise<AccountsResponseDto> {
-    const accounts = await this.authService.listAccounts(req.headers);
-    return { accounts: accounts };
-  }
+  // @Get('list-sessions')
+  // @ApiOkResponse({
+  //   description: 'List of active sessions for the current user',
+  //   type: SessionDto,
+  //   isArray: true,
+  // })
+  // async sessions(@Req() req: Request): Promise<SessionDto[]> {
+  //   return this.authService.listSessions(req.headers);
+  // }
+
+  // @Get('list-accounts')
+  // @ApiOperation({ summary: 'List accounts linked to the current user' })
+  // @ApiOkResponse({ type: AccountsResponseDto })
+  // async accounts(@Req() req: Request): Promise<AccountsResponseDto> {
+  //   const accounts = await this.authService.listAccounts(req.headers);
+  //   return { accounts };
+  // }
 }

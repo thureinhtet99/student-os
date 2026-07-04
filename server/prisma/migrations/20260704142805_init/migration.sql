@@ -24,6 +24,7 @@ CREATE TABLE "users" (
     "resetPasswordToken" TEXT,
     "resetPasswordTokenExpires" TIMESTAMP(3),
     "lastLoginAt" TIMESTAMP(3),
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );

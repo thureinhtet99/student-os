@@ -126,6 +126,24 @@ async function bootstrap() {
       },
     },
   };
+  // document.paths[`/${APP_CONSTANT.API_VERSION}/auth/list-sessions`] = {
+  //   get: {
+  //     tags: ['Auth'],
+  //     summary: 'Session list',
+  //     responses: {
+  //       '200': {
+  //         description: 'Session list',
+  //         content: {
+  //           'application/json': {
+  //             schema: {
+  //               $ref: `#/components/schemas/SessionListResponseDto`,
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // };
 
   SwaggerModule.setup(APP_CONSTANT.API_DOCS, app, document, {
     explorer: true,
