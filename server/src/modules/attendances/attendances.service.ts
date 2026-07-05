@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
-import { formatAttendance } from '../../common/formatters/attendance.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { AttendanceResponseDto } from './dto/attendance-response.dto.js';
 import { CreateAttendanceDto } from './dto/create-attendance.dto.js';
@@ -24,7 +23,7 @@ export class AttendancesService {
       },
     });
 
-    return formatAttendance(attendance);
+    return attendance;
   }
 
   async findAll(
@@ -54,7 +53,7 @@ export class AttendancesService {
     });
 
     return {
-      data: attendances.map((att) => formatAttendance(att)),
+      data: attendances,
       meta: {
         total,
         page,
@@ -71,7 +70,7 @@ export class AttendancesService {
 
     if (!attendance) throw new NotFoundException('Attendance is not found');
 
-    return formatAttendance(attendance);
+    return attendance;
   }
 
   async update(
@@ -84,7 +83,7 @@ export class AttendancesService {
     if (!existingAttendance)
       throw new NotFoundException('Attendance is not found');
 
-    const attendance = await this.prisma.attendance.update({
+    return await this.prisma.attendance.update({
       where: { id },
       data: {
         present: updateAttendanceDto.present,
@@ -95,8 +94,6 @@ export class AttendancesService {
         academicYearId: updateAttendanceDto.academicYearId,
       },
     });
-
-    return formatAttendance(attendance);
   }
 
   async remove(id: string): Promise<{ message: string }> {

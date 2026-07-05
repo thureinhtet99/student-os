@@ -10,8 +10,18 @@ export function formatStudent(
     email: student.user.email,
     studentId: student.studentNumber,
     image: student.user.image,
-    parent: student.parents?.[0]?.parent ?? null,
-    class: student.enrollments?.[0]?.class ?? null,
+    parent: student.parents?.[0]?.parent
+      ? {
+          id: student.parents[0].parent.id,
+          name: student.parents[0].parent.name,
+        }
+      : null,
+    class: student.enrollments?.[0]?.class
+      ? {
+          id: student.enrollments[0].class.id,
+          name: student.enrollments[0].class.name,
+        }
+      : null,
     setPasswordToken: student.user.setPasswordToken,
     setPasswordTokenExpires: student.user.setPasswordTokenExpires ?? null,
     resetPasswordToken: student.user.resetPasswordToken,

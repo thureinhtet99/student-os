@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
-import { ResultsService } from './results.service';
+import { EnrollmentsService } from './enrollments.service';
 
-describe('ResultsService', () => {
-  let service: ResultsService;
+describe('EnrollmentsService', () => {
+  let service: EnrollmentsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ResultsService,
+        EnrollmentsService,
         {
           provide: PrismaService,
           useValue: {
-            result: {
+            enrollment: {
               findUnique: jest.fn(),
               findMany: jest.fn(),
               create: jest.fn(),
@@ -25,7 +25,7 @@ describe('ResultsService', () => {
       ],
     }).compile();
 
-    service = module.get<ResultsService>(ResultsService);
+    service = module.get<EnrollmentsService>(EnrollmentsService);
   });
   it('should be defined', () => {
     expect(service).toBeDefined();

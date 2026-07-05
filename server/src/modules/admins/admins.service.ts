@@ -95,37 +95,31 @@ export class AdminsService {
     const where: Prisma.AdminWhereInput = {};
 
     if (search) {
-      where.OR = [
-        {
-          user: {
-            name: { contains: search, mode: 'insensitive' },
-          },
-        },
-        {
-          user: {
-            email: { contains: search, mode: 'insensitive' },
-          },
-        },
-      ];
+      where.user = {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+        ],
+      };
     }
 
     const total = await this.prisma.admin.count({ where });
 
     const admins = await this.prisma.admin.findMany({
       where,
-      skip: (page - 1) * (limit || 10),
-      take: limit || 10,
+      skip: (page - 1) * limit,
+      take: limit,
       orderBy: { user: { name: 'asc' } },
       include: { user: true },
     });
 
     return {
-      data: admins.map((admin) => formatAdmin(admin)),
+      data: admins.map(formatAdmin),
       meta: {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / (limit || 10)),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }
@@ -202,7 +196,6 @@ export class AdminsService {
     });
     if (!existingAdmin) throw new NotFoundException('Admin is not found');
 
-    // Delete user which will cascade delete the admin
     await this.prisma.user.delete({ where: { id: existingAdmin.userId } });
 
     return { message: 'Admin deleted successfully' };

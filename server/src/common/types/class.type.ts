@@ -1,6 +1,5 @@
-import type { AcademicYearModel } from '../../../prisma/generated/prisma/models/AcademicYear.js';
-import type { ClassModel } from '../../../prisma/generated/prisma/models/Class.js';
+import { Prisma } from '../../../prisma/generated/prisma/client';
 
-export type ClassWithRelations = ClassModel & {
-  academicYear?: AcademicYearModel | null;
-};
+export type ClassWithAcademicYear = Prisma.ClassGetPayload<{
+  include: { academicYear: true };
+}>;

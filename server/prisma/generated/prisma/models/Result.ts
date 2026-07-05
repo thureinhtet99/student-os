@@ -42,6 +42,8 @@ export type ResultMinAggregateOutputType = {
   score: runtime.Decimal | null
   grade: string | null
   comment: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ResultMaxAggregateOutputType = {
@@ -52,6 +54,8 @@ export type ResultMaxAggregateOutputType = {
   score: runtime.Decimal | null
   grade: string | null
   comment: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ResultCountAggregateOutputType = {
@@ -62,6 +66,8 @@ export type ResultCountAggregateOutputType = {
   score: number
   grade: number
   comment: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -82,6 +88,8 @@ export type ResultMinAggregateInputType = {
   score?: true
   grade?: true
   comment?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ResultMaxAggregateInputType = {
@@ -92,6 +100,8 @@ export type ResultMaxAggregateInputType = {
   score?: true
   grade?: true
   comment?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ResultCountAggregateInputType = {
@@ -102,6 +112,8 @@ export type ResultCountAggregateInputType = {
   score?: true
   grade?: true
   comment?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -196,9 +208,11 @@ export type ResultGroupByOutputType = {
   enrollmentId: string
   academicYearId: string
   examId: string | null
-  score: runtime.Decimal
+  score: runtime.Decimal | null
   grade: string | null
   comment: string | null
+  createdAt: Date
+  updatedAt: Date
   _count: ResultCountAggregateOutputType | null
   _avg: ResultAvgAggregateOutputType | null
   _sum: ResultSumAggregateOutputType | null
@@ -229,9 +243,11 @@ export type ResultWhereInput = {
   enrollmentId?: Prisma.StringFilter<"Result"> | string
   academicYearId?: Prisma.StringFilter<"Result"> | string
   examId?: Prisma.StringNullableFilter<"Result"> | string | null
-  score?: Prisma.DecimalFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.DecimalNullableFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.StringNullableFilter<"Result"> | string | null
   comment?: Prisma.StringNullableFilter<"Result"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Result"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Result"> | Date | string
   enrollment?: Prisma.XOR<Prisma.EnrollmentScalarRelationFilter, Prisma.EnrollmentWhereInput>
   academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   exam?: Prisma.XOR<Prisma.ExamNullableScalarRelationFilter, Prisma.ExamWhereInput> | null
@@ -242,9 +258,11 @@ export type ResultOrderByWithRelationInput = {
   enrollmentId?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
   examId?: Prisma.SortOrderInput | Prisma.SortOrder
-  score?: Prisma.SortOrder
+  score?: Prisma.SortOrderInput | Prisma.SortOrder
   grade?: Prisma.SortOrderInput | Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   enrollment?: Prisma.EnrollmentOrderByWithRelationInput
   academicYear?: Prisma.AcademicYearOrderByWithRelationInput
   exam?: Prisma.ExamOrderByWithRelationInput
@@ -259,9 +277,11 @@ export type ResultWhereUniqueInput = Prisma.AtLeast<{
   enrollmentId?: Prisma.StringFilter<"Result"> | string
   academicYearId?: Prisma.StringFilter<"Result"> | string
   examId?: Prisma.StringNullableFilter<"Result"> | string | null
-  score?: Prisma.DecimalFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.DecimalNullableFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.StringNullableFilter<"Result"> | string | null
   comment?: Prisma.StringNullableFilter<"Result"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Result"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Result"> | Date | string
   enrollment?: Prisma.XOR<Prisma.EnrollmentScalarRelationFilter, Prisma.EnrollmentWhereInput>
   academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   exam?: Prisma.XOR<Prisma.ExamNullableScalarRelationFilter, Prisma.ExamWhereInput> | null
@@ -272,9 +292,11 @@ export type ResultOrderByWithAggregationInput = {
   enrollmentId?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
   examId?: Prisma.SortOrderInput | Prisma.SortOrder
-  score?: Prisma.SortOrder
+  score?: Prisma.SortOrderInput | Prisma.SortOrder
   grade?: Prisma.SortOrderInput | Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ResultCountOrderByAggregateInput
   _avg?: Prisma.ResultAvgOrderByAggregateInput
   _max?: Prisma.ResultMaxOrderByAggregateInput
@@ -290,16 +312,20 @@ export type ResultScalarWhereWithAggregatesInput = {
   enrollmentId?: Prisma.StringWithAggregatesFilter<"Result"> | string
   academicYearId?: Prisma.StringWithAggregatesFilter<"Result"> | string
   examId?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
-  score?: Prisma.DecimalWithAggregatesFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.DecimalNullableWithAggregatesFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
   comment?: Prisma.StringNullableWithAggregatesFilter<"Result"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Result"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Result"> | Date | string
 }
 
 export type ResultCreateInput = {
   id?: string
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   enrollment: Prisma.EnrollmentCreateNestedOneWithoutResultsInput
   academicYear: Prisma.AcademicYearCreateNestedOneWithoutResultsInput
   exam?: Prisma.ExamCreateNestedOneWithoutResultsInput
@@ -310,16 +336,20 @@ export type ResultUncheckedCreateInput = {
   enrollmentId: string
   academicYearId: string
   examId?: string | null
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   enrollment?: Prisma.EnrollmentUpdateOneRequiredWithoutResultsNestedInput
   academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutResultsNestedInput
   exam?: Prisma.ExamUpdateOneWithoutResultsNestedInput
@@ -330,9 +360,11 @@ export type ResultUncheckedUpdateInput = {
   enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultCreateManyInput = {
@@ -340,16 +372,20 @@ export type ResultCreateManyInput = {
   enrollmentId: string
   academicYearId: string
   examId?: string | null
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultUncheckedUpdateManyInput = {
@@ -357,9 +393,11 @@ export type ResultUncheckedUpdateManyInput = {
   enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultListRelationFilter = {
@@ -385,6 +423,8 @@ export type ResultCountOrderByAggregateInput = {
   score?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ResultAvgOrderByAggregateInput = {
@@ -399,6 +439,8 @@ export type ResultMaxOrderByAggregateInput = {
   score?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ResultMinOrderByAggregateInput = {
@@ -409,6 +451,8 @@ export type ResultMinOrderByAggregateInput = {
   score?: Prisma.SortOrder
   grade?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ResultSumOrderByAggregateInput = {
@@ -541,11 +585,21 @@ export type ResultUncheckedUpdateManyWithoutExamNestedInput = {
   deleteMany?: Prisma.ResultScalarWhereInput | Prisma.ResultScalarWhereInput[]
 }
 
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type ResultCreateWithoutAcademicYearInput = {
   id?: string
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   enrollment: Prisma.EnrollmentCreateNestedOneWithoutResultsInput
   exam?: Prisma.ExamCreateNestedOneWithoutResultsInput
 }
@@ -554,9 +608,11 @@ export type ResultUncheckedCreateWithoutAcademicYearInput = {
   id?: string
   enrollmentId: string
   examId?: string | null
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultCreateOrConnectWithoutAcademicYearInput = {
@@ -593,16 +649,20 @@ export type ResultScalarWhereInput = {
   enrollmentId?: Prisma.StringFilter<"Result"> | string
   academicYearId?: Prisma.StringFilter<"Result"> | string
   examId?: Prisma.StringNullableFilter<"Result"> | string | null
-  score?: Prisma.DecimalFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.DecimalNullableFilter<"Result"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.StringNullableFilter<"Result"> | string | null
   comment?: Prisma.StringNullableFilter<"Result"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Result"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Result"> | Date | string
 }
 
 export type ResultCreateWithoutEnrollmentInput = {
   id?: string
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   academicYear: Prisma.AcademicYearCreateNestedOneWithoutResultsInput
   exam?: Prisma.ExamCreateNestedOneWithoutResultsInput
 }
@@ -611,9 +671,11 @@ export type ResultUncheckedCreateWithoutEnrollmentInput = {
   id?: string
   academicYearId: string
   examId?: string | null
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultCreateOrConnectWithoutEnrollmentInput = {
@@ -644,9 +706,11 @@ export type ResultUpdateManyWithWhereWithoutEnrollmentInput = {
 
 export type ResultCreateWithoutExamInput = {
   id?: string
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   enrollment: Prisma.EnrollmentCreateNestedOneWithoutResultsInput
   academicYear: Prisma.AcademicYearCreateNestedOneWithoutResultsInput
 }
@@ -655,9 +719,11 @@ export type ResultUncheckedCreateWithoutExamInput = {
   id?: string
   enrollmentId: string
   academicYearId: string
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultCreateOrConnectWithoutExamInput = {
@@ -690,16 +756,20 @@ export type ResultCreateManyAcademicYearInput = {
   id?: string
   enrollmentId: string
   examId?: string | null
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultUpdateWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   enrollment?: Prisma.EnrollmentUpdateOneRequiredWithoutResultsNestedInput
   exam?: Prisma.ExamUpdateOneWithoutResultsNestedInput
 }
@@ -708,34 +778,42 @@ export type ResultUncheckedUpdateWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultUncheckedUpdateManyWithoutAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultCreateManyEnrollmentInput = {
   id?: string
   academicYearId: string
   examId?: string | null
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultUpdateWithoutEnrollmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutResultsNestedInput
   exam?: Prisma.ExamUpdateOneWithoutResultsNestedInput
 }
@@ -744,34 +822,42 @@ export type ResultUncheckedUpdateWithoutEnrollmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultUncheckedUpdateManyWithoutEnrollmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
   examId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultCreateManyExamInput = {
   id?: string
   enrollmentId: string
   academicYearId: string
-  score: runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ResultUpdateWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   enrollment?: Prisma.EnrollmentUpdateOneRequiredWithoutResultsNestedInput
   academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutResultsNestedInput
 }
@@ -780,18 +866,22 @@ export type ResultUncheckedUpdateWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ResultUncheckedUpdateManyWithoutExamInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   enrollmentId?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
-  score?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  score?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   grade?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -804,6 +894,8 @@ export type ResultSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   score?: boolean
   grade?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
@@ -817,6 +909,8 @@ export type ResultSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   score?: boolean
   grade?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
@@ -830,6 +924,8 @@ export type ResultSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   score?: boolean
   grade?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   exam?: boolean | Prisma.Result$examArgs<ExtArgs>
@@ -843,9 +939,11 @@ export type ResultSelectScalar = {
   score?: boolean
   grade?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type ResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "enrollmentId" | "academicYearId" | "examId" | "score" | "grade" | "comment", ExtArgs["result"]["result"]>
+export type ResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "enrollmentId" | "academicYearId" | "examId" | "score" | "grade" | "comment" | "createdAt" | "updatedAt", ExtArgs["result"]["result"]>
 export type ResultInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   enrollment?: boolean | Prisma.EnrollmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
@@ -874,9 +972,11 @@ export type $ResultPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     enrollmentId: string
     academicYearId: string
     examId: string | null
-    score: runtime.Decimal
+    score: runtime.Decimal | null
     grade: string | null
     comment: string | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["result"]>
   composites: {}
 }
@@ -1310,6 +1410,8 @@ export interface ResultFieldRefs {
   readonly score: Prisma.FieldRef<"Result", 'Decimal'>
   readonly grade: Prisma.FieldRef<"Result", 'String'>
   readonly comment: Prisma.FieldRef<"Result", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Result", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Result", 'DateTime'>
 }
     
 

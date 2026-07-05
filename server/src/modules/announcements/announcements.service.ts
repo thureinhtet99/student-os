@@ -18,15 +18,13 @@ export class AnnouncementsService {
     const announcement = await this.prisma.announcement.create({
       data: {
         title: createAnnouncementDto.title.trim(),
-        content: createAnnouncementDto.content?.trim(),
+        content: createAnnouncementDto.content?.trim() ?? null,
         publishedAt: new Date(createAnnouncementDto.date),
         class: createAnnouncementDto.classId
           ? { connect: { id: createAnnouncementDto.classId } }
           : undefined,
       },
-      include: {
-        class: true,
-      },
+      include: { class: true },
     });
 
     return formatAnnouncement(announcement);
@@ -52,15 +50,11 @@ export class AnnouncementsService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { publishedAt: 'desc' },
-      include: {
-        class: true,
-      },
+      include: { class: true },
     });
 
     return {
-      data: announcements.map((announcement) =>
-        formatAnnouncement(announcement),
-      ),
+      data: announcements.map(formatAnnouncement),
       meta: {
         total,
         page,
@@ -73,9 +67,7 @@ export class AnnouncementsService {
   async findOne(id: string): Promise<AnnouncementResponseDto> {
     const announcement = await this.prisma.announcement.findUnique({
       where: { id },
-      include: {
-        class: true,
-      },
+      include: { class: true },
     });
 
     if (!announcement) throw new NotFoundException('Announcement is not found');
@@ -93,24 +85,24 @@ export class AnnouncementsService {
     if (!existingAnnouncement)
       throw new NotFoundException('Announcement is not found');
 
+    const data: Prisma.AnnouncementUpdateInput = {};
+
+    if (updateAnnouncementDto.title !== undefined)
+      data.title = updateAnnouncementDto.title.trim();
+    if (updateAnnouncementDto.content !== undefined)
+      data.content = updateAnnouncementDto.content?.trim() ?? null;
+    if (updateAnnouncementDto.date !== undefined)
+      data.publishedAt = new Date(updateAnnouncementDto.date);
+    if (updateAnnouncementDto.classId !== undefined) {
+      data.class = updateAnnouncementDto.classId
+        ? { connect: { id: updateAnnouncementDto.classId } }
+        : { disconnect: true };
+    }
+
     const announcement = await this.prisma.announcement.update({
       where: { id },
-      data: {
-        title: updateAnnouncementDto.title?.trim(),
-        content: updateAnnouncementDto.content?.trim(),
-        publishedAt: updateAnnouncementDto.date
-          ? new Date(updateAnnouncementDto.date)
-          : undefined,
-        class:
-          updateAnnouncementDto.classId === undefined
-            ? undefined
-            : updateAnnouncementDto.classId
-              ? { connect: { id: updateAnnouncementDto.classId } }
-              : { disconnect: true },
-      },
-      include: {
-        class: true,
-      },
+      data,
+      include: { class: true },
     });
 
     return formatAnnouncement(announcement);

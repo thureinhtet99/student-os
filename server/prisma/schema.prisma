@@ -411,11 +411,14 @@ model Result {
 
   exam Exam? @relation(fields: [examId], references: [id])
 
-  score Decimal
+  score Decimal?
 
   grade String?
 
   comment String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([enrollmentId, examId])
   @@map("results")

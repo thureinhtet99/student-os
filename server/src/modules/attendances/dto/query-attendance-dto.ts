@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsBoolean, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class QueryAttendanceDto {
   @ApiPropertyOptional({ example: 'ckx123enrollmentid' })
@@ -18,10 +19,16 @@ export class QueryAttendanceDto {
   present?: boolean;
 
   @ApiPropertyOptional({ example: 1, default: 1 })
+  @Type(() => Number)
+  @IsNumber()
   @IsOptional()
-  page?: number;
+  @Min(1)
+  page?: number = 1;
 
   @ApiPropertyOptional({ example: 10, default: 10 })
+  @Type(() => Number)
+  @IsNumber()
   @IsOptional()
-  limit?: number;
+  @Min(1)
+  limit?: number = 10;
 }

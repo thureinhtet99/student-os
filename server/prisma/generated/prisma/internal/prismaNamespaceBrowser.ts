@@ -100,7 +100,8 @@ export const UserScalarFieldEnum = {
   setPasswordTokenExpires: 'setPasswordTokenExpires',
   resetPasswordToken: 'resetPasswordToken',
   resetPasswordTokenExpires: 'resetPasswordTokenExpires',
-  lastLoginAt: 'lastLoginAt'
+  lastLoginAt: 'lastLoginAt',
+  emailVerified: 'emailVerified'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -317,7 +318,9 @@ export const ResultScalarFieldEnum = {
   examId: 'examId',
   score: 'score',
   grade: 'grade',
-  comment: 'comment'
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ResultScalarFieldEnum = (typeof ResultScalarFieldEnum)[keyof typeof ResultScalarFieldEnum]

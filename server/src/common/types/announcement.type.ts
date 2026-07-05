@@ -1,8 +1,5 @@
-import {
-  Announcement,
-  Class,
-} from '../../../prisma/generated/prisma/client.js';
+import { Prisma } from '../../../prisma/generated/prisma/client';
 
-export type AnnouncementWithRelations = Announcement & {
-  class: Class | null;
-};
+export type AnnouncementWithClass = Prisma.AnnouncementGetPayload<{
+  include: { class: true };
+}>;

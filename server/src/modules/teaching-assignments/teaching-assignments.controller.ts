@@ -27,7 +27,7 @@ export class TeachingAssignmentsController {
   ) {}
 
   @ApiOperation({ summary: 'Create teaching assignment' })
-  @ApiResponse({ status: 201, type: TeachingAssignmentResponseDto })
+  @ApiOkResponse({ type: TeachingAssignmentResponseDto })
   @Post()
   create(
     @Body() createTeachingAssignmentDto: CreateTeachingAssignmentDto,
@@ -36,7 +36,7 @@ export class TeachingAssignmentsController {
   }
 
   @ApiOperation({ summary: 'List teaching assignments' })
-  @ApiResponse({ status: 200, type: PaginatedResponseDto })
+  @ApiPaginatedResponse(TeachingAssignmentResponseDto)
   @Get()
   findAll(
     @Query() queryTeachingAssignmentDto: QueryTeachingAssignmentDto,
@@ -45,14 +45,14 @@ export class TeachingAssignmentsController {
   }
 
   @ApiOperation({ summary: 'Get teaching assignment by id' })
-  @ApiResponse({ status: 200, type: TeachingAssignmentResponseDto })
+  @ApiOkResponse({ type: TeachingAssignmentResponseDto })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<TeachingAssignmentResponseDto> {
     return this.teachingAssignmentsService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update teaching assignment' })
-  @ApiResponse({ status: 200, type: TeachingAssignmentResponseDto })
+  @ApiOkResponse({ type: TeachingAssignmentResponseDto })
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -65,8 +65,7 @@ export class TeachingAssignmentsController {
   }
 
   @ApiOperation({ summary: 'Delete teaching assignment' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     schema: {
       example: { message: 'Teaching assignment deleted successfully' },
     },

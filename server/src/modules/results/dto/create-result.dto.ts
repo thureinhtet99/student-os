@@ -24,7 +24,7 @@ export class CreateResultDto {
   @ApiProperty({ example: 'ckx123examid', required: false })
   @IsString()
   @IsOptional()
-  exam_id!: string | null;
+  examId!: string | null;
 
   @ApiProperty({ example: 'ckx123academicyearid' })
   @IsString()

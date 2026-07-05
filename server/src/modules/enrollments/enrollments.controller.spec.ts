@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TeachersController } from './teachers.controller';
-import { TeachersService } from './teachers.service';
+import { EnrollmentsController } from './enrollments.controller';
+import { EnrollmentsService } from './enrollments.service';
 
-describe('TeachersController', () => {
-  let controller: TeachersController;
+describe('EnrollmentsController', () => {
+  let controller: EnrollmentsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [TeachersController],
+      controllers: [EnrollmentsController],
       providers: [
         {
-          provide: TeachersService,
+          provide: EnrollmentsService,
           useValue: {
             create: jest.fn(),
             findAll: jest.fn(),
@@ -22,7 +22,7 @@ describe('TeachersController', () => {
       ],
     }).compile();
 
-    controller = module.get<TeachersController>(TeachersController);
+    controller = module.get<EnrollmentsController>(EnrollmentsController);
   });
   it('should be defined', () => {
     expect(controller).toBeDefined();
