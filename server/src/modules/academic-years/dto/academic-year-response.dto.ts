@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AcademicYearResponseDto {
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty({ example: 'academicyearid123' })
   id!: string;
 
   @ApiProperty({ example: '2025-2026' })
@@ -13,7 +13,7 @@ export class AcademicYearResponseDto {
   @ApiProperty({ example: '2026-05-31T23:59:59.000Z' })
   endDate!: Date;
 
-  @ApiProperty({ example: true })
+  @ApiProperty({ example: false })
   isCurrent!: boolean;
 
   @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })

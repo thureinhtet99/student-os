@@ -1,24 +1,12 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
+import { QueryDto } from '../../../common/dto/query.dto';
 
-export class QueryAcademicYearDto {
+export class QueryAcademicYearDto extends OmitType(QueryDto, [
+  'search',
+] as const) {
   @ApiPropertyOptional({ example: '2025-2026' })
   @IsString()
   @IsOptional()
-  search?: string;
-
-  @ApiPropertyOptional({ example: 1, default: 1 })
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  @Min(1)
-  page?: number = 1;
-
-  @ApiPropertyOptional({ example: 10, default: 10 })
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  @Min(1)
-  limit?: number = 10;
+  year?: string;
 }
