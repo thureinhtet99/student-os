@@ -29,13 +29,11 @@ export class AcademicYearsService {
   async findAll(
     queryAcademicYearDto: QueryAcademicYearDto,
   ): Promise<PaginatedResponseDto<AcademicYearResponseDto>> {
-    const { search, page = 1, limit = 10 } = queryAcademicYearDto;
+    const { year, page = 1, limit = 10 } = queryAcademicYearDto;
 
     const where: Prisma.AcademicYearWhereInput = {};
 
-    if (search) {
-      where.name = { contains: search, mode: 'insensitive' };
-    }
+    if (year) where.name = year;
 
     const total = await this.prisma.academicYear.count({ where });
 
@@ -76,14 +74,12 @@ export class AcademicYearsService {
       where: { id },
     });
 
-    if (!existingAcademicYear) {
+    if (!existingAcademicYear)
       throw new NotFoundException('Academic year is not found');
-    }
 
     return await this.prisma.academicYear.update({
       where: { id },
       data: {
-        name: updateAcademicYearDto.name?.trim(),
         startDate: updateAcademicYearDto.startDate
           ? new Date(updateAcademicYearDto.startDate)
           : undefined,
@@ -100,9 +96,8 @@ export class AcademicYearsService {
       where: { id },
     });
 
-    if (!existingAcademicYear) {
+    if (!existingAcademicYear)
       throw new NotFoundException('Academic year is not found');
-    }
 
     await this.prisma.academicYear.delete({ where: { id } });
 
