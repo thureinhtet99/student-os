@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm add *)",
+      "Bash(npx *)",
+      "Bash(mv *)",
+      "Bash(find *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(./node_modules/.bin/tsc *)",
+      "Bash(./node_modules/.bin/eslint *)"
+    ]
+  },
+  "$version": 4
+}
