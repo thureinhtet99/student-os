@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatClass } from '../../common/formatters/class.formatter.js';
@@ -13,20 +17,23 @@ export class ClassesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createClassDto: CreateClassDto): Promise<ClassResponseDto> {
+    const className = createClassDto.name.trim();
+
     const existingClass = await this.prisma.class.findFirst({
       where: {
-        name: createClassDto.name.trim(),
+        name: className,
         academicYearId: createClassDto.academicYearId,
       },
     });
 
-    if (existingClass) {
-      throw new ConflictException('Class with this name already exists');
-    }
+    if (existingClass)
+      throw new ConflictException(
+        'Class with this name already exists for this year',
+      );
 
     const classItem = await this.prisma.class.create({
       data: {
-        name: createClassDto.name.trim(),
+        name: className,
         academicYear: {
           connect: { id: createClassDto.academicYearId },
         },
@@ -48,9 +55,7 @@ export class ClassesService {
 
     if (academicYearId) where.academicYearId = academicYearId;
 
-    if (search) {
-      where.name = { contains: search, mode: 'insensitive' };
-    }
+    if (search) where.name = { contains: search, mode: 'insensitive' };
 
     const total = await this.prisma.class.count({ where });
 
@@ -110,9 +115,8 @@ export class ClassesService {
         },
       });
 
-      if (duplicateClass) {
+      if (duplicateClass)
         throw new ConflictException('Class with this name already exists');
-      }
     }
 
     const data: Prisma.ClassUpdateInput = {};

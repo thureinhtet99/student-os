@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateClassDto {
-  @ApiProperty({ example: 'Grade 10 A' })
+  @ApiProperty({ example: 'Grade 10' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(200)

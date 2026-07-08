@@ -1,10 +1,9 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { QueryDto } from '../../../common/dto/query.dto.js';
 
 export class QueryClassDto extends QueryDto {
-  @ApiPropertyOptional({ example: 'ckx123academicyearid' })
+  @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   academicYearId?: string;

@@ -4,14 +4,14 @@ export class ClassResponseDto {
   @ApiProperty({ example: 'ckx123classid' })
   id!: string;
 
-  @ApiProperty({ example: 'Grade 10 A' })
+  @ApiProperty({ example: 'Grade 10' })
   name!: string;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty()
   academicYearId!: string;
 
-  @ApiProperty({ example: '2025-2026', nullable: true })
-  academicYearName!: string | null;
+  // @ApiProperty({ example: '2025-2026', nullable: true })
+  // academicYearName!: string | null;
 
   // @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
   // createdAt!: Date;
