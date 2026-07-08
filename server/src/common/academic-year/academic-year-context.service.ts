@@ -1,13 +1,12 @@
 import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import type { Request } from 'express';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 
 export const ACADEMIC_YEAR_HEADER = 'x-academic-year-id';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AcademicYearContextService {
-  private cachedId?: string;
+  private activeAcademicYearId: string | null = null;
 
   constructor(
     @Inject(REQUEST) private readonly request: Request,
@@ -15,10 +14,9 @@ export class AcademicYearContextService {
   ) {}
 
   async getActiveId(): Promise<string> {
-    if (this.cachedId !== undefined) return this.cachedId;
+    if (this.activeAcademicYearId) return this.activeAcademicYearId;
 
-    const headerValue = this.request.headers[ACADEMIC_YEAR_HEADER];
-    const headerId = Array.isArray(headerValue) ? headerValue[0] : headerValue;
+    const headerId = this.request.headers[ACADEMIC_YEAR_HEADER] as string;
 
     if (headerId) {
       const academicYear = await this.prisma.academicYear.findUnique({
@@ -27,12 +25,11 @@ export class AcademicYearContextService {
 
       if (!academicYear) {
         throw new NotFoundException(
-          `Academic year with id "${headerId}" from header "${ACADEMIC_YEAR_HEADER}" is not found`,
+          `Academic year with ID specified in ${ACADEMIC_YEAR_HEADER} header not found.`,
         );
       }
-
-      this.cachedId = academicYear.id;
-      return this.cachedId;
+      this.activeAcademicYearId = academicYear.id;
+      return this.activeAcademicYearId;
     }
 
     const currentAcademicYear = await this.prisma.academicYear.findFirst({
@@ -41,11 +38,11 @@ export class AcademicYearContextService {
 
     if (!currentAcademicYear) {
       throw new NotFoundException(
-        `No academic year is marked as current and no "${ACADEMIC_YEAR_HEADER}" header was provided`,
+        'No active academic year found. Set one or pass it via header.',
       );
     }
 
-    this.cachedId = currentAcademicYear.id;
-    return this.cachedId;
+    this.activeAcademicYearId = currentAcademicYear.id;
+    return this.activeAcademicYearId;
   }
 }

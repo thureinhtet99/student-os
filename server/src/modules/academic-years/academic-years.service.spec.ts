@@ -79,7 +79,10 @@ describe('AcademicYearsService', () => {
       prisma.academicYear.findUnique.mockResolvedValue(existing);
       prisma.academicYear.updateMany.mockResolvedValue({ count: 1 });
       prisma.academicYear.update.mockResolvedValue(updated);
-      prisma.$transaction.mockImplementation(async (work) => work(prisma));
+
+      prisma.$transaction.mockImplementation((work: any): unknown =>
+        work(prisma),
+      );
 
       const result = await service.setCurrent('ay-1');
 

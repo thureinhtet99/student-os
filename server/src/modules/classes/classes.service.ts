@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
+import { AcademicYearContextService } from '../../common/academic-year/academic-year-context.service.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatClass } from '../../common/formatters/class.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
@@ -14,15 +15,22 @@ import { UpdateClassDto } from './dto/update-class.dto.js';
 
 @Injectable()
 export class ClassesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly academicYearContext: AcademicYearContextService,
+  ) {}
 
   async create(createClassDto: CreateClassDto): Promise<ClassResponseDto> {
     const className = createClassDto.name.trim();
 
+    const academicYearId =
+      createClassDto.academicYearId ??
+      (await this.academicYearContext.getActiveId());
+
     const existingClass = await this.prisma.class.findFirst({
       where: {
         name: className,
-        academicYearId: createClassDto.academicYearId,
+        academicYearId,
       },
     });
 
@@ -35,7 +43,7 @@ export class ClassesService {
       data: {
         name: className,
         academicYear: {
-          connect: { id: createClassDto.academicYearId },
+          connect: { id: academicYearId },
         },
       },
       include: {
@@ -51,9 +59,12 @@ export class ClassesService {
   ): Promise<PaginatedResponseDto<ClassResponseDto>> {
     const { limit = 10, page = 1, academicYearId, search } = queryClassDto;
 
+    const effectiveAcademicYearId =
+      academicYearId ?? (await this.academicYearContext.getActiveId());
+
     const where: Prisma.ClassWhereInput = {};
 
-    if (academicYearId) where.academicYearId = academicYearId;
+    if (effectiveAcademicYearId) where.academicYearId = effectiveAcademicYearId;
 
     if (search) where.name = { contains: search, mode: 'insensitive' };
 

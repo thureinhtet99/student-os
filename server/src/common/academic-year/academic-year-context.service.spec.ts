@@ -1,135 +1,151 @@
 import { NotFoundException } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Request } from 'express';
+import { Request } from 'express';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import {
   ACADEMIC_YEAR_HEADER,
   AcademicYearContextService,
-} from './academic-year-context.service.js';
+} from './academic-year-context.service';
+
+const mockPrismaService = {
+  academicYear: {
+    findUnique: jest.fn(),
+    findFirst: jest.fn(),
+  },
+};
+
+const mockRequest = {
+  headers: {},
+} as unknown as Request;
 
 describe('AcademicYearContextService', () => {
   let service: AcademicYearContextService;
-  let prisma: {
-    academicYear: {
-      findUnique: jest.Mock;
-      findFirst: jest.Mock;
-    };
-  };
-
-  const buildRequest = (headers: Record<string, string> = {}) =>
-    ({ headers }) as unknown as Request;
+  let module: TestingModule;
+  let prisma: typeof mockPrismaService;
 
   beforeEach(async () => {
-    prisma = {
-      academicYear: {
-        findUnique: jest.fn(),
-        findFirst: jest.fn(),
-      },
-    };
-
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         AcademicYearContextService,
         {
           provide: PrismaService,
-          useValue: prisma,
+          useValue: mockPrismaService,
         },
         {
-          provide: 'REQUEST' as never,
-          useValue: buildRequest(),
+          provide: REQUEST,
+          useValue: mockRequest,
         },
       ],
     }).compile();
 
-    service = module.get<AcademicYearContextService>(
+    service = await module.resolve<AcademicYearContextService>(
       AcademicYearContextService,
     );
+    prisma = module.get(PrismaService);
+
+    // Reset mocks and request object before each test
+    jest.clearAllMocks();
+    mockRequest.headers = {};
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('resolves from header when present and valid', async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        AcademicYearContextService,
-        {
-          provide: PrismaService,
-          useValue: prisma,
-        },
-        {
-          provide: 'REQUEST' as never,
-          useValue: buildRequest({ [ACADEMIC_YEAR_HEADER]: 'ay-123' }),
-        },
-      ],
-    }).compile();
+  describe('getActiveId', () => {
+    it('should resolve from header when present and valid', async () => {
+      const academicYear = {
+        id: 'test-id',
+        name: '2025-2026',
+        isCurrent: false,
+        startDate: new Date(),
+        endDate: new Date(),
+      };
+      mockRequest.headers[ACADEMIC_YEAR_HEADER] = 'test-id';
+      prisma.academicYear.findUnique.mockResolvedValue(academicYear);
 
-    const scoped = module.get<AcademicYearContextService>(
-      AcademicYearContextService,
-    );
-    prisma.academicYear.findUnique.mockResolvedValue({ id: 'ay-123' });
-
-    const result = await scoped.getActiveId();
-
-    expect(result).toBe('ay-123');
-    expect(prisma.academicYear.findUnique).toHaveBeenCalledWith({
-      where: { id: 'ay-123' },
+      const result = await service.getActiveId();
+      expect(result).toBe('test-id');
+      expect(prisma.academicYear.findUnique).toHaveBeenCalledWith({
+        where: { id: 'test-id' },
+      });
+      expect(prisma.academicYear.findFirst).not.toHaveBeenCalled();
     });
-    expect(prisma.academicYear.findFirst).not.toHaveBeenCalled();
-  });
 
-  it('throws NotFoundException when header id does not exist', async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        AcademicYearContextService,
-        {
-          provide: PrismaService,
-          useValue: prisma,
-        },
-        {
-          provide: 'REQUEST' as never,
-          useValue: buildRequest({ [ACADEMIC_YEAR_HEADER]: 'missing-id' }),
-        },
-      ],
-    }).compile();
+    it('should throw NotFoundException when header id does not exist', async () => {
+      mockRequest.headers[ACADEMIC_YEAR_HEADER] = 'non-existent-id';
+      prisma.academicYear.findUnique.mockResolvedValue(null);
 
-    const scoped = module.get<AcademicYearContextService>(
-      AcademicYearContextService,
-    );
-    prisma.academicYear.findUnique.mockResolvedValue(null);
-
-    await expect(scoped.getActiveId()).rejects.toThrow(NotFoundException);
-    await expect(scoped.getActiveId()).rejects.toThrow(/missing-id/);
-  });
-
-  it('falls back to isCurrent: true row when no header is provided', async () => {
-    prisma.academicYear.findFirst.mockResolvedValue({ id: 'current-1' });
-
-    const result = await service.getActiveId();
-
-    expect(result).toBe('current-1');
-    expect(prisma.academicYear.findFirst).toHaveBeenCalledWith({
-      where: { isCurrent: true },
+      await expect(service.getActiveId()).rejects.toThrow(NotFoundException);
+      await expect(service.getActiveId()).rejects.toThrow(
+        `Academic year with ID specified in ${ACADEMIC_YEAR_HEADER} header not found.`,
+      );
     });
-    expect(prisma.academicYear.findUnique).not.toHaveBeenCalled();
-  });
 
-  it('throws NotFoundException when no header and no current year exists', async () => {
-    prisma.academicYear.findFirst.mockResolvedValue(null);
+    it('should fall back to isCurrent: true row when no header', async () => {
+      const academicYear = {
+        id: 'current-id',
+        name: '2025-2026',
+        isCurrent: true,
+        startDate: new Date(),
+        endDate: new Date(),
+      };
+      prisma.academicYear.findFirst.mockResolvedValue(academicYear);
 
-    await expect(service.getActiveId()).rejects.toThrow(NotFoundException);
-    await expect(service.getActiveId()).rejects.toThrow(/is marked as current/);
-  });
+      const result = await service.getActiveId();
+      expect(result).toBe('current-id');
+      expect(prisma.academicYear.findFirst).toHaveBeenCalledWith({
+        where: { isCurrent: true },
+      });
+      expect(prisma.academicYear.findUnique).not.toHaveBeenCalled();
+    });
 
-  it('caches the result so Prisma is only queried once per request', async () => {
-    prisma.academicYear.findFirst.mockResolvedValue({ id: 'current-1' });
+    it('should throw NotFoundException when no header and no current year exists', async () => {
+      prisma.academicYear.findFirst.mockResolvedValue(null);
 
-    const first = await service.getActiveId();
-    const second = await service.getActiveId();
+      await expect(service.getActiveId()).rejects.toThrow(NotFoundException);
+      await expect(service.getActiveId()).rejects.toThrow(
+        'No active academic year found. Set one or pass it via header.',
+      );
+    });
 
-    expect(first).toBe('current-1');
-    expect(second).toBe('current-1');
-    expect(prisma.academicYear.findFirst).toHaveBeenCalledTimes(1);
+    it('should cache the result within the same request', async () => {
+      const academicYear = {
+        id: 'cached-id',
+        name: '2025-2026',
+        isCurrent: true,
+        startDate: new Date(),
+        endDate: new Date(),
+      };
+      prisma.academicYear.findFirst.mockResolvedValue(academicYear);
+
+      const result1 = await service.getActiveId();
+      const result2 = await service.getActiveId();
+
+      expect(result1).toBe('cached-id');
+      expect(result2).toBe('cached-id');
+      expect(prisma.academicYear.findFirst).toHaveBeenCalledTimes(1);
+    });
+
+    it('should cache the result from header within the same request', async () => {
+      const academicYear = {
+        id: 'header-cached-id',
+        name: '2025-2026',
+        isCurrent: false,
+        startDate: new Date(),
+        endDate: new Date(),
+      };
+      mockRequest.headers[ACADEMIC_YEAR_HEADER] = 'header-cached-id';
+      prisma.academicYear.findUnique.mockResolvedValue(academicYear);
+
+      const result1 = await service.getActiveId();
+      const result2 = await service.getActiveId();
+
+      expect(result1).toBe('header-cached-id');
+      expect(result2).toBe('header-cached-id');
+      expect(prisma.academicYear.findUnique).toHaveBeenCalledTimes(1);
+      expect(prisma.academicYear.findFirst).not.toHaveBeenCalled();
+    });
   });
 });

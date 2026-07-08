@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AcademicYearContextService } from '../../common/academic-year/academic-year-context.service.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { ClassesService } from './classes.service';
 
@@ -20,6 +21,12 @@ describe('ClassesService', () => {
               delete: jest.fn(),
               count: jest.fn(),
             },
+          },
+        },
+        {
+          provide: AcademicYearContextService,
+          useValue: {
+            getActiveId: jest.fn().mockResolvedValue('academic-year-id'),
           },
         },
       ],
