@@ -70,7 +70,7 @@ export class TeachersService {
           accounts: {
             create: {
               id: randomUUID(),
-              accountId: `${APP_CONSTANT.APP_NAME}-${userId.slice(-12)}`,
+              accountId: `${APP_CONSTANT.APP_NAME}-${userId}`,
               providerId: 'credential',
               password: hashedPwd,
             },

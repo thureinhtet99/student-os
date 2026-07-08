@@ -1,7 +1,11 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { hashPassword } from 'better-auth/crypto';
 import { randomUUID } from 'node:crypto';
-import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
+import {
+  ParentRelationship,
+  Prisma,
+  UserRole,
+} from '../../../prisma/generated/prisma/client.js';
 import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatStudent } from '../../common/formatters/student.formatter.js';
@@ -36,6 +40,7 @@ export class StudentsService {
       image,
       gender,
       dateOfBirth,
+      classId,
       newParentName,
       newParentPhone,
       newParentAddress,
@@ -82,7 +87,7 @@ export class StudentsService {
           accounts: {
             create: {
               id: randomUUID(),
-              accountId: `${APP_CONSTANT.APP_NAME}-${userId.slice(-12)}`,
+              accountId: `${APP_CONSTANT.APP_NAME}-${userId}`,
               providerId: 'credential',
               password: hashedPwd,
             },
@@ -118,11 +123,11 @@ export class StudentsService {
           address,
           gender,
           dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-          ...(createStudentDto.classId &&
+          ...(classId &&
             academicYearId && {
               enrollments: {
                 create: {
-                  classId: createStudentDto.classId,
+                  classId,
                   academicYearId,
                 },
               },
@@ -131,7 +136,7 @@ export class StudentsService {
             parents: {
               create: {
                 parentId: parentIdToUse,
-                relationship: 'GUARDIAN', // Default to GUARDIAN, can be made dynamic if needed
+                relationship: ParentRelationship.GUARDIAN,
               },
             },
           }),
@@ -307,76 +312,100 @@ export class StudentsService {
     });
     const academicYearId =
       currentYear?.id || (await this.prisma.academicYear.findFirst())?.id;
+    const classId =
+      updateStudentDto.classId === undefined
+        ? undefined
+        : updateStudentDto.classId?.trim() || null;
 
-    const student = await this.prisma.student.update({
-      where: { id },
-      data: {
-        user: {
-          update: {
-            email: updateStudentDto.email?.trim(),
-            role: updateStudentDto.role,
-            name: updateStudentDto.name?.trim(),
-            image:
-              updateStudentDto.image === undefined
-                ? undefined
-                : resolveImageUrl(updateStudentDto.image, this.cloudinary),
+    const student = await this.prisma.$transaction(async (tx) => {
+      await tx.student.update({
+        where: { id },
+        data: {
+          user: {
+            update: {
+              email: updateStudentDto.email?.trim(),
+              role: updateStudentDto.role,
+              name: updateStudentDto.name?.trim(),
+              image:
+                updateStudentDto.image === undefined
+                  ? undefined
+                  : resolveImageUrl(updateStudentDto.image, this.cloudinary),
+            },
           },
-        },
-        phone: updateStudentDto.phone?.trim(),
-        address:
-          updateStudentDto.address === undefined
-            ? undefined
-            : updateStudentDto.address?.trim() || null,
-        dateOfBirth:
-          updateStudentDto.dateOfBirth === undefined
-            ? undefined
-            : updateStudentDto.dateOfBirth
-              ? new Date(updateStudentDto.dateOfBirth)
-              : null,
-        gender: updateStudentDto.gender
-          ? formatGender(updateStudentDto.gender)
-          : undefined,
-        ...(updateStudentDto.classId !== undefined &&
-          academicYearId && {
-            enrollments: updateStudentDto.classId
+          phone: updateStudentDto.phone?.trim(),
+          address:
+            updateStudentDto.address === undefined
+              ? undefined
+              : updateStudentDto.address?.trim() || null,
+          dateOfBirth:
+            updateStudentDto.dateOfBirth === undefined
+              ? undefined
+              : updateStudentDto.dateOfBirth
+                ? new Date(updateStudentDto.dateOfBirth)
+                : null,
+          gender: updateStudentDto.gender
+            ? formatGender(updateStudentDto.gender)
+            : undefined,
+          ...(updateStudentDto.parentId !== undefined && {
+            parents: updateStudentDto.parentId
               ? {
                   deleteMany: {},
                   create: {
-                    classId: updateStudentDto.classId,
-                    academicYearId,
+                    parentId: updateStudentDto.parentId,
+                    relationship: 'GUARDIAN',
                   },
                 }
               : {
                   deleteMany: {},
                 },
           }),
-        ...(updateStudentDto.parentId !== undefined && {
-          parents: updateStudentDto.parentId
-            ? {
-                deleteMany: {},
-                create: {
-                  parentId: updateStudentDto.parentId,
-                  relationship: 'GUARDIAN',
-                },
-              }
-            : {
-                deleteMany: {},
+        },
+      });
+
+      if (classId !== undefined && academicYearId) {
+        if (classId) {
+          await tx.enrollment.upsert({
+            where: {
+              studentId_academicYearId: {
+                studentId: id,
+                academicYearId,
               },
-        }),
-      },
-      include: {
-        user: true,
-        parents: {
-          include: {
-            parent: true,
+            },
+            update: {
+              classId,
+            },
+            create: {
+              studentId: id,
+              classId,
+              academicYearId,
+            },
+          });
+        } else {
+          await tx.enrollment.deleteMany({
+            where: {
+              studentId: id,
+              academicYearId,
+            },
+          });
+        }
+      }
+
+      return tx.student.findUniqueOrThrow({
+        where: { id },
+        include: {
+          user: true,
+          parents: {
+            include: {
+              parent: true,
+            },
+          },
+          enrollments: {
+            include: {
+              class: true,
+            },
           },
         },
-        enrollments: {
-          include: {
-            class: true,
-          },
-        },
-      },
+      });
     });
 
     return formatStudent(student);

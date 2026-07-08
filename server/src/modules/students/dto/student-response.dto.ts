@@ -7,11 +7,9 @@ class ParentDto {
   name!: string;
 }
 
-class ClassDto {
-  @ApiProperty({ example: 'ckx123classid' })
+class EnrollmentDto {
+  @ApiProperty({ example: 'ckx123enrollmentid' })
   id!: string;
-  @ApiProperty({ example: 'Grade 10 A' })
-  name!: string;
 }
 
 export class StudentResponseDto {
@@ -33,8 +31,8 @@ export class StudentResponseDto {
   @ApiProperty({ type: ParentDto, nullable: true })
   parent!: ParentDto | null;
 
-  @ApiProperty({ type: ClassDto, nullable: true })
-  class!: ClassDto | null;
+  @ApiProperty({ type: EnrollmentDto, nullable: true })
+  enrollment!: EnrollmentDto | null;
 
   @ApiProperty({ nullable: true })
   setPasswordToken!: string | null;

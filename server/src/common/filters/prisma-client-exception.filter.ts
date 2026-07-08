@@ -86,7 +86,6 @@ export class PrismaClientExceptionFilter implements ExceptionFilter {
       statusCode: status,
       message,
       error: errorType,
-      timestamp: new Date().toISOString(),
       path: request.url,
     });
   }
