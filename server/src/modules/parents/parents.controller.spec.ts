@@ -1,22 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ParentsController } from './parents.controller';
+import { ParentsService } from './parents.service';
 
 describe('ParentsController', () => {
-  let service: ParentsController;
+  let controller: ParentsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [ParentsController],
       providers: [
         {
-          provide: ParentsController,
-          useValue: {},
+          provide: ParentsService,
+          useValue: {
+            create: jest.fn(),
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            update: jest.fn(),
+            remove: jest.fn(),
+          },
         },
       ],
     }).compile();
 
-    service = module.get<ParentsController>(ParentsController);
+    controller = module.get<ParentsController>(ParentsController);
   });
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(controller).toBeDefined();
   });
 });

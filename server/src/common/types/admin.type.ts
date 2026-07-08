@@ -1,5 +1,5 @@
-import { Admin, User } from '../../../prisma/generated/prisma/client.js';
+import { Prisma } from '../../../prisma/generated/prisma/client';
 
-export type AdminWithRelations = Admin & {
-  user: User;
-};
+export type AdminWithUser = Prisma.AdminGetPayload<{
+  include: { user: true };
+}>;

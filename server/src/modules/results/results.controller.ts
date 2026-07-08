@@ -8,10 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
-import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import {
+  ApiPaginatedResponse,
+  PaginatedResponseDto,
+} from '../../common/dto/paginated-response.dto.js';
 import { CreateResultDto } from './dto/create-result.dto.js';
 import { QueryResultDto } from './dto/query-result-dto.js';
 import { ResultResponseDto } from './dto/result-response.dto.js';
@@ -25,7 +28,7 @@ export class ResultsController {
   constructor(private readonly resultsService: ResultsService) {}
 
   @ApiOperation({ summary: 'Create result' })
-  @ApiResponse({ status: 201, type: ResultResponseDto })
+  @ApiOkResponse({ type: ResultResponseDto })
   @Post()
   async create(
     @Body() createResultDto: CreateResultDto,
@@ -34,7 +37,7 @@ export class ResultsController {
   }
 
   @ApiOperation({ summary: 'List results' })
-  @ApiResponse({ status: 200, type: PaginatedResponseDto })
+  @ApiPaginatedResponse(ResultResponseDto)
   @Get()
   async findAll(
     @Query() queryResultDto: QueryResultDto,
@@ -43,14 +46,14 @@ export class ResultsController {
   }
 
   @ApiOperation({ summary: 'Get result by id' })
-  @ApiResponse({ status: 200, type: ResultResponseDto })
+  @ApiOkResponse({ type: ResultResponseDto })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ResultResponseDto> {
     return this.resultsService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update result' })
-  @ApiResponse({ status: 200, type: ResultResponseDto })
+  @ApiOkResponse({ type: ResultResponseDto })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -60,8 +63,7 @@ export class ResultsController {
   }
 
   @ApiOperation({ summary: 'Delete result' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     schema: { example: { message: 'Result deleted successfully' } },
   })
   @Delete(':id')

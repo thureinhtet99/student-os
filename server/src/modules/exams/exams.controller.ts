@@ -8,10 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
-import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import {
+  ApiPaginatedResponse,
+  PaginatedResponseDto,
+} from '../../common/dto/paginated-response.dto.js';
 import { CreateExamDto } from './dto/create-exam.dto.js';
 import { ExamResponseDto } from './dto/exam-response.dto.js';
 import { QueryExamDto } from './dto/query-exam-dto.js';
@@ -25,14 +28,14 @@ export class ExamsController {
   constructor(private readonly examsService: ExamsService) {}
 
   @ApiOperation({ summary: 'Create exam' })
-  @ApiResponse({ status: 201, type: ExamResponseDto })
+  @ApiOkResponse({ type: ExamResponseDto })
   @Post()
   async create(@Body() createExamDto: CreateExamDto): Promise<ExamResponseDto> {
     return this.examsService.create(createExamDto);
   }
 
   @ApiOperation({ summary: 'List exams' })
-  @ApiResponse({ status: 200, type: PaginatedResponseDto })
+  @ApiPaginatedResponse(ExamResponseDto)
   @Get()
   async findAll(
     @Query() queryExamDto: QueryExamDto,
@@ -41,14 +44,14 @@ export class ExamsController {
   }
 
   @ApiOperation({ summary: 'Get exam by id' })
-  @ApiResponse({ status: 200, type: ExamResponseDto })
+  @ApiOkResponse({ type: ExamResponseDto })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ExamResponseDto> {
     return this.examsService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update exam' })
-  @ApiResponse({ status: 200, type: ExamResponseDto })
+  @ApiOkResponse({ type: ExamResponseDto })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -58,8 +61,7 @@ export class ExamsController {
   }
 
   @ApiOperation({ summary: 'Delete exam' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     schema: { example: { message: 'Exam deleted successfully' } },
   })
   @Delete(':id')

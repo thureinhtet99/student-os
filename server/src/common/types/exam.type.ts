@@ -1,6 +1,9 @@
-import type { ExamModel } from '../../../prisma/generated/prisma/models/Exam.js';
-import type { TeachingAssignmentModel } from '../../../prisma/generated/prisma/models/TeachingAssignment.js';
+import { Prisma } from '../../../prisma/generated/prisma/client';
 
-export type ExamWithRelations = ExamModel & {
-  teachingAssignment?: TeachingAssignmentModel | null;
-};
+export type Exam = Prisma.ExamGetPayload<{
+  include: {
+    teachingAssignment: false;
+    academicYear: false;
+    results: false;
+  };
+}>;

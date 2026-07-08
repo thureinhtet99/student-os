@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
@@ -14,13 +18,29 @@ export class TeachingAssignmentsService {
   async create(
     createTeachingAssignmentDto: CreateTeachingAssignmentDto,
   ): Promise<TeachingAssignmentResponseDto> {
+    const { teacherId, subjectId, classId, academicYearId } =
+      createTeachingAssignmentDto;
+
+    const existing = await this.prisma.teachingAssignment.findFirst({
+      where: {
+        teacherId,
+        subjectId,
+        classId,
+        academicYearId,
+      },
+    });
+
+    if (existing) {
+      throw new ConflictException('This teaching assignment already exists');
+    }
+
     return this.prisma.teachingAssignment.create({
       data: {
-        teacher: { connect: { id: createTeachingAssignmentDto.teacherId } },
-        subject: { connect: { id: createTeachingAssignmentDto.subjectId } },
-        class: { connect: { id: createTeachingAssignmentDto.classId } },
+        teacher: { connect: { id: teacherId } },
+        subject: { connect: { id: subjectId } },
+        class: { connect: { id: classId } },
         academicYear: {
-          connect: { id: createTeachingAssignmentDto.academicYearId },
+          connect: { id: academicYearId },
         },
       },
     });

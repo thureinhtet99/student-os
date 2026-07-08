@@ -38,17 +38,17 @@ export class ParentsService {
         phone: createParentDto.phone?.trim() || null,
         address: createParentDto.address?.trim() || null,
       },
-      include: {
-        students: {
-          include: {
-            student: {
-              include: {
-                user: true,
-              },
-            },
-          },
-        },
-      },
+      // include: {
+      //   students: {
+      //     include: {
+      //       student: {
+      //         include: {
+      //           user: true,
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
     });
 
     return formatParent(parent);

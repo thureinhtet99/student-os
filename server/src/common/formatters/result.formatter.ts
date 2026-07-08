@@ -1,14 +1,15 @@
+import { Result } from '../../../prisma/generated/prisma/client.js';
 import { ResultResponseDto } from '../../modules/results/dto/result-response.dto.js';
-import { ResultWithRelations } from '../types/result.type.js';
 
-export function formatResult(result: ResultWithRelations): ResultResponseDto {
+export function formatResult(result: Result): ResultResponseDto {
   return {
     id: result.id,
-    score: Number(result.score),
+    score: result.score?.toNumber() ?? null,
     comment: result.comment,
-    exam: result.exam ?? null,
-    examId: result.examId ?? null,
+    examId: result.examId,
     academicYearId: result.academicYearId,
     enrollmentId: result.enrollmentId,
+    createdAt: result.createdAt,
+    updatedAt: result.updatedAt,
   };
 }

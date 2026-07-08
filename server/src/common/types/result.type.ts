@@ -1,10 +1,9 @@
-import type { AcademicYearModel } from '../../../prisma/generated/prisma/models/AcademicYear.js';
-import type { EnrollmentModel } from '../../../prisma/generated/prisma/models/Enrollment.js';
-import type { ExamModel } from '../../../prisma/generated/prisma/models/Exam.js';
-import type { ResultModel } from '../../../prisma/generated/prisma/models/Result.js';
+import { Prisma } from '../../../prisma/generated/prisma/client';
 
-export type ResultWithRelations = ResultModel & {
-  exam?: ExamModel | null;
-  enrollment?: EnrollmentModel | null;
-  academicYear?: AcademicYearModel | null;
-};
+export type Result = Prisma.ResultGetPayload<{
+  include: {
+    enrollment: false;
+    academicYear: false;
+    exam: false;
+  };
+}>;

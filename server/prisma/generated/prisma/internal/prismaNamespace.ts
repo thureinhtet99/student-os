@@ -1879,7 +1879,8 @@ export const UserScalarFieldEnum = {
   setPasswordTokenExpires: 'setPasswordTokenExpires',
   resetPasswordToken: 'resetPasswordToken',
   resetPasswordTokenExpires: 'resetPasswordTokenExpires',
-  lastLoginAt: 'lastLoginAt'
+  lastLoginAt: 'lastLoginAt',
+  emailVerified: 'emailVerified'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2083,7 +2084,9 @@ export const ExamScalarFieldEnum = {
   startTime: 'startTime',
   endTime: 'endTime',
   teachingAssignmentId: 'teachingAssignmentId',
-  academicYearId: 'academicYearId'
+  academicYearId: 'academicYearId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]
@@ -2096,7 +2099,9 @@ export const ResultScalarFieldEnum = {
   examId: 'examId',
   score: 'score',
   grade: 'grade',
-  comment: 'comment'
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ResultScalarFieldEnum = (typeof ResultScalarFieldEnum)[keyof typeof ResultScalarFieldEnum]
@@ -2174,6 +2179,13 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'UserGender'
  */
 export type EnumUserGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserGender'>
@@ -2198,13 +2210,6 @@ export type EnumParentRelationshipFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'ParentRelationship[]'
  */
 export type ListEnumParentRelationshipFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParentRelationship[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

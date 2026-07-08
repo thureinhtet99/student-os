@@ -8,15 +8,18 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
-import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto';
-import { ClassesService } from './classes.service';
-import { ClassResponseDto } from './dto/class-response-dto';
-import { CreateClassDto } from './dto/create-class.dto';
-import { QueryClassDto } from './dto/query-class-dto';
-import { UpdateClassDto } from './dto/update-class.dto';
+import {
+  ApiPaginatedResponse,
+  PaginatedResponseDto,
+} from '../../common/dto/paginated-response.dto.js';
+import { ClassesService } from './classes.service.js';
+import { ClassResponseDto } from './dto/class-response-dto.js';
+import { CreateClassDto } from './dto/create-class.dto.js';
+import { QueryClassDto } from './dto/query-class-dto.js';
+import { UpdateClassDto } from './dto/update-class.dto.js';
 
 @ApiTags('Classes')
 @Roles(TEACHING_ROLES)
@@ -25,7 +28,7 @@ export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
   @ApiOperation({ summary: 'Create a class for an academic year' })
-  @ApiResponse({ status: 201, type: ClassResponseDto })
+  @ApiOkResponse({ type: ClassResponseDto })
   @Post()
   async create(
     @Body() createClassDto: CreateClassDto,
@@ -34,7 +37,7 @@ export class ClassesController {
   }
 
   @ApiOperation({ summary: 'List classes' })
-  @ApiResponse({ status: 200, type: PaginatedResponseDto<ClassResponseDto> })
+  @ApiPaginatedResponse(ClassResponseDto)
   @Get()
   async findAll(
     @Query() queryClassDto: QueryClassDto,
@@ -43,14 +46,14 @@ export class ClassesController {
   }
 
   @ApiOperation({ summary: 'Get a class by id' })
-  @ApiResponse({ status: 200, type: ClassResponseDto })
+  @ApiOkResponse({ type: ClassResponseDto })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ClassResponseDto> {
     return this.classesService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update a class' })
-  @ApiResponse({ status: 200, type: ClassResponseDto })
+  @ApiOkResponse({ type: ClassResponseDto })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -60,8 +63,7 @@ export class ClassesController {
   }
 
   @ApiOperation({ summary: 'Delete a class' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     schema: { example: { message: 'Class deleted successfully' } },
   })
   @Delete(':id')

@@ -9,4 +9,20 @@ export class CreateStudentDto extends CreateUserDto {
   @IsString()
   @IsOptional()
   classId!: string | null;
+
+  // @IsString()
+  // @IsOptional()
+  // academicYearId!: string;
+
+  @IsString()
+  @IsOptional()
+  newParentName!: string | null;
+
+  @IsString()
+  @IsOptional()
+  newParentPhone!: string | null;
+
+  @IsString()
+  @IsOptional()
+  newParentAddress!: string | null;
 }

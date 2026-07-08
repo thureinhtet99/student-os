@@ -1,14 +1,15 @@
 import { ClassResponseDto } from '../../modules/classes/dto/class-response-dto.js';
-import { ClassWithRelations } from '../types/class.type';
+import { ClassWithAcademicYear } from '../types/class.type.js';
 
-export function formatClass(classEntity: ClassWithRelations): ClassResponseDto {
+export function formatClass(
+  classItem: ClassWithAcademicYear,
+): ClassResponseDto {
   return {
-    id: classEntity.id,
-    name: classEntity.name,
-    academicYear: classEntity.academicYear ?? null,
-    academicYearId: classEntity.academicYearId,
-    academicYearName: classEntity.academicYear?.name ?? null,
-    createdAt: null,
-    updatedAt: null,
+    id: classItem.id,
+    name: classItem.name,
+    academicYearId: classItem.academicYearId,
+    academicYearName: classItem.academicYear?.name ?? null,
+    // createdAt: classItem.createdAt,
+    // updatedAt: classItem.updatedAt,
   };
 }

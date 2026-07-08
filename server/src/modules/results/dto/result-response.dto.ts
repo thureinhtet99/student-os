@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exam } from '../../../../prisma/generated/prisma/client';
 
 export class ResultResponseDto {
   @ApiProperty({ example: 'ckx123resultid' })
   id!: string;
 
   @ApiProperty({ example: 88 })
-  score!: number;
+  score!: number | null;
 
   @ApiProperty({ example: 'Solid performance', nullable: true })
   comment!: string | null;
@@ -20,6 +19,9 @@ export class ResultResponseDto {
   @ApiProperty({ example: 'ckx123enrollmentid' })
   enrollmentId!: string;
 
-  @ApiProperty({ type: Object, nullable: true })
-  exam!: Exam | null;
+  @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
+  createdAt!: Date;
+
+  @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
+  updatedAt!: Date;
 }

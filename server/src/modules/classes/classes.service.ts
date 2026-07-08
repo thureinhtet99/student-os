@@ -1,12 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '../../../prisma/generated/prisma/client';
-import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto';
-import { formatClass } from '../../common/formatters/class.formatter';
-import { PrismaService } from '../../database/prisma/prisma.service';
-import { ClassResponseDto } from './dto/class-response-dto';
-import { CreateClassDto } from './dto/create-class.dto';
-import { QueryClassDto } from './dto/query-class-dto';
-import { UpdateClassDto } from './dto/update-class.dto';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '../../../prisma/generated/prisma/client.js';
+import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import { formatClass } from '../../common/formatters/class.formatter.js';
+import { PrismaService } from '../../database/prisma/prisma.service.js';
+import { ClassResponseDto } from './dto/class-response-dto.js';
+import { CreateClassDto } from './dto/create-class.dto.js';
+import { QueryClassDto } from './dto/query-class-dto.js';
+import { UpdateClassDto } from './dto/update-class.dto.js';
 
 @Injectable()
 export class ClassesService {
@@ -21,7 +21,7 @@ export class ClassesService {
     });
 
     if (existingClass) {
-      throw new NotFoundException('Class with this name already exists');
+      throw new ConflictException('Class with this name already exists');
     }
 
     const classItem = await this.prisma.class.create({
@@ -49,11 +49,7 @@ export class ClassesService {
     if (academicYearId) where.academicYearId = academicYearId;
 
     if (search) {
-      where.OR = [
-        {
-          name: { contains: search, mode: 'insensitive' },
-        },
-      ];
+      where.name = { contains: search, mode: 'insensitive' };
     }
 
     const total = await this.prisma.class.count({ where });
@@ -69,7 +65,7 @@ export class ClassesService {
     });
 
     return {
-      data: classItems.map((item) => formatClass(item)),
+      data: classItems.map(formatClass),
       meta: {
         total,
         page,
@@ -79,7 +75,7 @@ export class ClassesService {
     };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<ClassResponseDto> {
     const classById = await this.prisma.class.findUnique({
       where: { id },
       include: {
@@ -115,21 +111,21 @@ export class ClassesService {
       });
 
       if (duplicateClass) {
-        throw new NotFoundException('Class with this name already exists');
+        throw new ConflictException('Class with this name already exists');
       }
     }
 
+    const data: Prisma.ClassUpdateInput = {};
+
+    if (updateClassDto.name !== undefined)
+      data.name = updateClassDto.name.trim();
+    if (updateClassDto.academicYearId !== undefined)
+      data.academicYear = { connect: { id: updateClassDto.academicYearId } };
+
     const classItem = await this.prisma.class.update({
       where: { id },
-      data: {
-        name: updateClassDto.name?.trim(),
-        academicYear: updateClassDto.academicYearId
-          ? { connect: { id: updateClassDto.academicYearId } }
-          : undefined,
-      },
-      include: {
-        academicYear: true,
-      },
+      data,
+      include: { academicYear: true },
     });
 
     return formatClass(classItem);
@@ -141,9 +137,7 @@ export class ClassesService {
     });
     if (!existingClass) throw new NotFoundException('Class is not found');
 
-    await this.prisma.class.delete({
-      where: { id },
-    });
+    await this.prisma.class.delete({ where: { id } });
 
     return { message: 'Class deleted successfully' };
   }

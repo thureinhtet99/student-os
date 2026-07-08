@@ -13,13 +13,11 @@ export class ResultsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createResultDto: CreateResultDto): Promise<ResultResponseDto> {
-    const examId = createResultDto.exam_id?.trim();
-
     const result = await this.prisma.result.create({
       data: {
         score: createResultDto.score,
         comment: createResultDto.comment?.trim() || null,
-        examId,
+        examId: createResultDto.examId,
         academicYearId: createResultDto.academicYearId,
         enrollmentId: createResultDto.enrollmentId,
       },
@@ -47,7 +45,7 @@ export class ResultsService {
     });
 
     return {
-      data: results.map((result) => formatResult(result)),
+      data: results.map(formatResult),
       meta: {
         total,
         page,
@@ -84,18 +82,12 @@ export class ResultsService {
           updateResultDto.comment === undefined
             ? undefined
             : updateResultDto.comment?.trim() || null,
-        exam:
-          updateResultDto.exam_id === undefined
+        examId:
+          updateResultDto.examId === undefined
             ? undefined
-            : updateResultDto.exam_id
-              ? { connect: { id: updateResultDto.exam_id } }
-              : undefined,
-        academicYear: updateResultDto.academicYearId
-          ? { connect: { id: updateResultDto.academicYearId } }
-          : undefined,
-        enrollment: updateResultDto.enrollmentId
-          ? { connect: { id: updateResultDto.enrollmentId } }
-          : undefined,
+            : updateResultDto.examId,
+        academicYearId: updateResultDto.academicYearId,
+        enrollmentId: updateResultDto.enrollmentId,
       },
     });
 

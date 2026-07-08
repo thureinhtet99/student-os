@@ -396,10 +396,6 @@ export type AcademicYearScalarRelationFilter = {
   isNot?: Prisma.AcademicYearWhereInput
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type AcademicYearCreateNestedOneWithoutClassesInput = {
   create?: Prisma.XOR<Prisma.AcademicYearCreateWithoutClassesInput, Prisma.AcademicYearUncheckedCreateWithoutClassesInput>
   connectOrCreate?: Prisma.AcademicYearCreateOrConnectWithoutClassesInput

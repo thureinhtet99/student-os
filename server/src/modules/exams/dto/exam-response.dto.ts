@@ -24,4 +24,10 @@ export class ExamResponseDto {
 
   @ApiProperty({ example: 'ckx123teachingassignmentid' })
   teachingAssignmentId!: string;
+
+  @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
+  createdAt!: Date;
+
+  @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
+  updatedAt!: Date;
 }
