@@ -33,9 +33,12 @@ export class StudentsService {
       name,
       phone,
       address,
-      // image,
+      image,
       gender,
       dateOfBirth,
+      newParentName,
+      newParentPhone,
+      newParentAddress,
     } = createStudentDto;
 
     await checkDuplicate(
@@ -64,7 +67,7 @@ export class StudentsService {
       );
     }
 
-    // const imageUrl = resolveImageUrl(image, this.cloudinary);
+    const imageUrl = resolveImageUrl(image, this.cloudinary);
     const hashedPwd = await hashPassword(password);
     const userId = randomUUID();
 
@@ -75,6 +78,7 @@ export class StudentsService {
           email: email.trim(),
           name: name.trim(),
           role: UserRole.STUDENT,
+          image: imageUrl,
           accounts: {
             create: {
               id: randomUUID(),
@@ -85,6 +89,18 @@ export class StudentsService {
           },
         },
       });
+
+      let parentIdToUse = createStudentDto.parentId;
+      if (newParentName) {
+        const newParent = await tx.parent.create({
+          data: {
+            name: newParentName,
+            phone: newParentPhone || null,
+            address: newParentAddress || null,
+          },
+        });
+        parentIdToUse = newParent.id;
+      }
 
       const studentId = `STU-${createdUser.id.slice(-12)}`;
 
@@ -111,11 +127,11 @@ export class StudentsService {
                 },
               },
             }),
-          ...(createStudentDto.parentId && {
+          ...(parentIdToUse && {
             parents: {
               create: {
-                parentId: createStudentDto.parentId,
-                relationship: 'GUARDIAN',
+                parentId: parentIdToUse,
+                relationship: 'GUARDIAN', // Default to GUARDIAN, can be made dynamic if needed
               },
             },
           }),

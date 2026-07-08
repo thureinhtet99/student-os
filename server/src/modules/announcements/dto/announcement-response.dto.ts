@@ -7,8 +7,8 @@ export class AnnouncementResponseDto {
   @ApiProperty({ example: 'School closed Friday' })
   title!: string;
 
-  @ApiProperty({ example: 'Reminder that school is closed...', nullable: true })
-  content!: string | null;
+  @ApiProperty({ example: 'Reminder that school is closed...' })
+  content!: string;
 
   @ApiProperty({ example: '2026-07-10T09:00:00.000Z' })
   publishedAt!: Date;

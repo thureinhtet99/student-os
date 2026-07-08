@@ -1,10 +1,9 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../../app.module.js';
+import { INestApplicationContext } from '@nestjs/common';
 import { UserRole } from '../../common/constants/role.constant.js';
 import { AdminsService } from '../../modules/admins/admins.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 
-async function run() {
+export async function seedAdmin(appContext: INestApplicationContext) {
   const email = process.env.INIT_SUPER_ADMIN_EMAIL;
   const password = process.env.INIT_SUPER_ADMIN_PASSWORD;
 
@@ -15,8 +14,6 @@ async function run() {
     return;
   }
 
-  // Bootstrap the application context to get access to services
-  const appContext = await NestFactory.createApplicationContext(AppModule);
   const prismaService = appContext.get(PrismaService);
   const adminsService = appContext.get(AdminsService);
 
@@ -43,12 +40,5 @@ async function run() {
   } catch (error) {
     console.error('Failed to seed super admin:', error);
     process.exit(1);
-  } finally {
-    await appContext.close();
   }
 }
-
-run().catch((error: unknown) => {
-  console.error('Unhandled error during seeding:', error);
-  process.exit(1);
-});

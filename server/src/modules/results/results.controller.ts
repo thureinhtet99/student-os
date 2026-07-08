@@ -8,10 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
-import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
+import {
+  ApiPaginatedResponse,
+  PaginatedResponseDto,
+} from '../../common/dto/paginated-response.dto.js';
 import { CreateResultDto } from './dto/create-result.dto.js';
 import { QueryResultDto } from './dto/query-result-dto.js';
 import { ResultResponseDto } from './dto/result-response.dto.js';

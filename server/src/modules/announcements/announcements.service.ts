@@ -18,7 +18,7 @@ export class AnnouncementsService {
     const announcement = await this.prisma.announcement.create({
       data: {
         title: createAnnouncementDto.title.trim(),
-        content: createAnnouncementDto.content?.trim() ?? null,
+        content: createAnnouncementDto.content.trim(),
         publishedAt: new Date(createAnnouncementDto.date),
         class: createAnnouncementDto.classId
           ? { connect: { id: createAnnouncementDto.classId } }

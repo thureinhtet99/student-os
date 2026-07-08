@@ -22,7 +22,7 @@
     "db:generate": "pnpm dlx prisma generate",
     "db:migrate": "pnpm dlx prisma migrate dev --name init",
     "db:reset": "pnpm dlx prisma migrate reset",
-    "db:seed": "node dist/src/database/seeders/seed-admin.js"
+    "db:seed": "ts-node src/database/seeders/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

@@ -2084,7 +2084,9 @@ export const ExamScalarFieldEnum = {
   startTime: 'startTime',
   endTime: 'endTime',
   teachingAssignmentId: 'teachingAssignmentId',
-  academicYearId: 'academicYearId'
+  academicYearId: 'academicYearId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]

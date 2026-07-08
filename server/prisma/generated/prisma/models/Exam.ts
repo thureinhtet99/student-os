@@ -46,6 +46,8 @@ export type ExamMinAggregateOutputType = {
   endTime: Date | null
   teachingAssignmentId: string | null
   academicYearId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ExamMaxAggregateOutputType = {
@@ -58,6 +60,8 @@ export type ExamMaxAggregateOutputType = {
   endTime: Date | null
   teachingAssignmentId: string | null
   academicYearId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ExamCountAggregateOutputType = {
@@ -70,6 +74,8 @@ export type ExamCountAggregateOutputType = {
   endTime: number
   teachingAssignmentId: number
   academicYearId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -94,6 +100,8 @@ export type ExamMinAggregateInputType = {
   endTime?: true
   teachingAssignmentId?: true
   academicYearId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ExamMaxAggregateInputType = {
@@ -106,6 +114,8 @@ export type ExamMaxAggregateInputType = {
   endTime?: true
   teachingAssignmentId?: true
   academicYearId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ExamCountAggregateInputType = {
@@ -118,6 +128,8 @@ export type ExamCountAggregateInputType = {
   endTime?: true
   teachingAssignmentId?: true
   academicYearId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -217,6 +229,8 @@ export type ExamGroupByOutputType = {
   endTime: Date
   teachingAssignmentId: string
   academicYearId: string
+  createdAt: Date
+  updatedAt: Date
   _count: ExamCountAggregateOutputType | null
   _avg: ExamAvgAggregateOutputType | null
   _sum: ExamSumAggregateOutputType | null
@@ -252,6 +266,8 @@ export type ExamWhereInput = {
   endTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
   teachingAssignmentId?: Prisma.StringFilter<"Exam"> | string
   academicYearId?: Prisma.StringFilter<"Exam"> | string
+  createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
   teachingAssignment?: Prisma.XOR<Prisma.TeachingAssignmentScalarRelationFilter, Prisma.TeachingAssignmentWhereInput>
   academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   results?: Prisma.ResultListRelationFilter
@@ -267,6 +283,8 @@ export type ExamOrderByWithRelationInput = {
   endTime?: Prisma.SortOrder
   teachingAssignmentId?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   teachingAssignment?: Prisma.TeachingAssignmentOrderByWithRelationInput
   academicYear?: Prisma.AcademicYearOrderByWithRelationInput
   results?: Prisma.ResultOrderByRelationAggregateInput
@@ -285,6 +303,8 @@ export type ExamWhereUniqueInput = Prisma.AtLeast<{
   endTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
   teachingAssignmentId?: Prisma.StringFilter<"Exam"> | string
   academicYearId?: Prisma.StringFilter<"Exam"> | string
+  createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
   teachingAssignment?: Prisma.XOR<Prisma.TeachingAssignmentScalarRelationFilter, Prisma.TeachingAssignmentWhereInput>
   academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   results?: Prisma.ResultListRelationFilter
@@ -300,6 +320,8 @@ export type ExamOrderByWithAggregationInput = {
   endTime?: Prisma.SortOrder
   teachingAssignmentId?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ExamCountOrderByAggregateInput
   _avg?: Prisma.ExamAvgOrderByAggregateInput
   _max?: Prisma.ExamMaxOrderByAggregateInput
@@ -320,6 +342,8 @@ export type ExamScalarWhereWithAggregatesInput = {
   endTime?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
   teachingAssignmentId?: Prisma.StringWithAggregatesFilter<"Exam"> | string
   academicYearId?: Prisma.StringWithAggregatesFilter<"Exam"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Exam"> | Date | string
 }
 
 export type ExamCreateInput = {
@@ -330,6 +354,8 @@ export type ExamCreateInput = {
   passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   teachingAssignment: Prisma.TeachingAssignmentCreateNestedOneWithoutExamsInput
   academicYear: Prisma.AcademicYearCreateNestedOneWithoutExamsInput
   results?: Prisma.ResultCreateNestedManyWithoutExamInput
@@ -345,6 +371,8 @@ export type ExamUncheckedCreateInput = {
   endTime: Date | string
   teachingAssignmentId: string
   academicYearId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutExamInput
 }
 
@@ -356,6 +384,8 @@ export type ExamUpdateInput = {
   passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignment?: Prisma.TeachingAssignmentUpdateOneRequiredWithoutExamsNestedInput
   academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutExamsNestedInput
   results?: Prisma.ResultUpdateManyWithoutExamNestedInput
@@ -371,6 +401,8 @@ export type ExamUncheckedUpdateInput = {
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   results?: Prisma.ResultUncheckedUpdateManyWithoutExamNestedInput
 }
 
@@ -384,6 +416,8 @@ export type ExamCreateManyInput = {
   endTime: Date | string
   teachingAssignmentId: string
   academicYearId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExamUpdateManyMutationInput = {
@@ -394,6 +428,8 @@ export type ExamUpdateManyMutationInput = {
   passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamUncheckedUpdateManyInput = {
@@ -406,6 +442,8 @@ export type ExamUncheckedUpdateManyInput = {
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamListRelationFilter = {
@@ -428,6 +466,8 @@ export type ExamCountOrderByAggregateInput = {
   endTime?: Prisma.SortOrder
   teachingAssignmentId?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExamAvgOrderByAggregateInput = {
@@ -445,6 +485,8 @@ export type ExamMaxOrderByAggregateInput = {
   endTime?: Prisma.SortOrder
   teachingAssignmentId?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExamMinOrderByAggregateInput = {
@@ -457,6 +499,8 @@ export type ExamMinOrderByAggregateInput = {
   endTime?: Prisma.SortOrder
   teachingAssignmentId?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExamSumOrderByAggregateInput = {
@@ -585,6 +629,8 @@ export type ExamCreateWithoutAcademicYearInput = {
   passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   teachingAssignment: Prisma.TeachingAssignmentCreateNestedOneWithoutExamsInput
   results?: Prisma.ResultCreateNestedManyWithoutExamInput
 }
@@ -598,6 +644,8 @@ export type ExamUncheckedCreateWithoutAcademicYearInput = {
   startTime: Date | string
   endTime: Date | string
   teachingAssignmentId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutExamInput
 }
 
@@ -640,6 +688,8 @@ export type ExamScalarWhereInput = {
   endTime?: Prisma.DateTimeFilter<"Exam"> | Date | string
   teachingAssignmentId?: Prisma.StringFilter<"Exam"> | string
   academicYearId?: Prisma.StringFilter<"Exam"> | string
+  createdAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Exam"> | Date | string
 }
 
 export type ExamCreateWithoutTeachingAssignmentInput = {
@@ -650,6 +700,8 @@ export type ExamCreateWithoutTeachingAssignmentInput = {
   passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   academicYear: Prisma.AcademicYearCreateNestedOneWithoutExamsInput
   results?: Prisma.ResultCreateNestedManyWithoutExamInput
 }
@@ -663,6 +715,8 @@ export type ExamUncheckedCreateWithoutTeachingAssignmentInput = {
   startTime: Date | string
   endTime: Date | string
   academicYearId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   results?: Prisma.ResultUncheckedCreateNestedManyWithoutExamInput
 }
 
@@ -700,6 +754,8 @@ export type ExamCreateWithoutResultsInput = {
   passMarks: runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime: Date | string
   endTime: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   teachingAssignment: Prisma.TeachingAssignmentCreateNestedOneWithoutExamsInput
   academicYear: Prisma.AcademicYearCreateNestedOneWithoutExamsInput
 }
@@ -714,6 +770,8 @@ export type ExamUncheckedCreateWithoutResultsInput = {
   endTime: Date | string
   teachingAssignmentId: string
   academicYearId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExamCreateOrConnectWithoutResultsInput = {
@@ -740,6 +798,8 @@ export type ExamUpdateWithoutResultsInput = {
   passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignment?: Prisma.TeachingAssignmentUpdateOneRequiredWithoutExamsNestedInput
   academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutExamsNestedInput
 }
@@ -754,6 +814,8 @@ export type ExamUncheckedUpdateWithoutResultsInput = {
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamCreateManyAcademicYearInput = {
@@ -765,6 +827,8 @@ export type ExamCreateManyAcademicYearInput = {
   startTime: Date | string
   endTime: Date | string
   teachingAssignmentId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExamUpdateWithoutAcademicYearInput = {
@@ -775,6 +839,8 @@ export type ExamUpdateWithoutAcademicYearInput = {
   passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignment?: Prisma.TeachingAssignmentUpdateOneRequiredWithoutExamsNestedInput
   results?: Prisma.ResultUpdateManyWithoutExamNestedInput
 }
@@ -788,6 +854,8 @@ export type ExamUncheckedUpdateWithoutAcademicYearInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   results?: Prisma.ResultUncheckedUpdateManyWithoutExamNestedInput
 }
 
@@ -800,6 +868,8 @@ export type ExamUncheckedUpdateManyWithoutAcademicYearInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExamCreateManyTeachingAssignmentInput = {
@@ -811,6 +881,8 @@ export type ExamCreateManyTeachingAssignmentInput = {
   startTime: Date | string
   endTime: Date | string
   academicYearId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExamUpdateWithoutTeachingAssignmentInput = {
@@ -821,6 +893,8 @@ export type ExamUpdateWithoutTeachingAssignmentInput = {
   passMarks?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutExamsNestedInput
   results?: Prisma.ResultUpdateManyWithoutExamNestedInput
 }
@@ -834,6 +908,8 @@ export type ExamUncheckedUpdateWithoutTeachingAssignmentInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   results?: Prisma.ResultUncheckedUpdateManyWithoutExamNestedInput
 }
 
@@ -846,6 +922,8 @@ export type ExamUncheckedUpdateManyWithoutTeachingAssignmentInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -889,6 +967,8 @@ export type ExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   endTime?: boolean
   teachingAssignmentId?: boolean
   academicYearId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
   results?: boolean | Prisma.Exam$resultsArgs<ExtArgs>
@@ -905,6 +985,8 @@ export type ExamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   endTime?: boolean
   teachingAssignmentId?: boolean
   academicYearId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
@@ -919,6 +1001,8 @@ export type ExamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   endTime?: boolean
   teachingAssignmentId?: boolean
   academicYearId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
@@ -933,9 +1017,11 @@ export type ExamSelectScalar = {
   endTime?: boolean
   teachingAssignmentId?: boolean
   academicYearId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "totalMarks" | "passMarks" | "startTime" | "endTime" | "teachingAssignmentId" | "academicYearId", ExtArgs["result"]["exam"]>
+export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "totalMarks" | "passMarks" | "startTime" | "endTime" | "teachingAssignmentId" | "academicYearId" | "createdAt" | "updatedAt", ExtArgs["result"]["exam"]>
 export type ExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
   academicYear?: boolean | Prisma.AcademicYearDefaultArgs<ExtArgs>
@@ -968,6 +1054,8 @@ export type $ExamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     endTime: Date
     teachingAssignmentId: string
     academicYearId: string
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["exam"]>
   composites: {}
 }
@@ -1403,6 +1491,8 @@ export interface ExamFieldRefs {
   readonly endTime: Prisma.FieldRef<"Exam", 'DateTime'>
   readonly teachingAssignmentId: Prisma.FieldRef<"Exam", 'String'>
   readonly academicYearId: Prisma.FieldRef<"Exam", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Exam", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Exam", 'DateTime'>
 }
     
 

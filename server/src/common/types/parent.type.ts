@@ -1,4 +1,9 @@
-import { Parent, ParentStudent, Student, User } from '../../../prisma/generated/prisma/client.js';
+import {
+  Parent,
+  ParentStudent,
+  Student,
+  User,
+} from '../../../prisma/generated/prisma/client.js';
 
 export type ParentWithRelations = Parent & {
   students:
