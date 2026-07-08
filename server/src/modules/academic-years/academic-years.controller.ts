@@ -45,11 +45,25 @@ export class AcademicYearsController {
     return this.academicYearsService.findAll(queryAcademicYearDto);
   }
 
+  @ApiOperation({ summary: 'Get current academic year' })
+  @ApiOkResponse({ type: AcademicYearResponseDto })
+  @Get('current')
+  async getCurrent(): Promise<AcademicYearResponseDto> {
+    return this.academicYearsService.getCurrent();
+  }
+
   @ApiOperation({ summary: 'Get academic year by id' })
   @ApiOkResponse({ type: AcademicYearResponseDto })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<AcademicYearResponseDto> {
     return this.academicYearsService.findOne(id);
+  }
+
+  @ApiOperation({ summary: 'Mark an academic year as the current one' })
+  @ApiOkResponse({ type: AcademicYearResponseDto })
+  @Patch(':id/set-current')
+  async setCurrent(@Param('id') id: string): Promise<AcademicYearResponseDto> {
+    return this.academicYearsService.setCurrent(id);
   }
 
   @ApiOperation({ summary: 'Update academic year' })
