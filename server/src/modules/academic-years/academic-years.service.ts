@@ -66,6 +66,38 @@ export class AcademicYearsService {
     return academicYear;
   }
 
+  async getCurrent(): Promise<AcademicYearResponseDto> {
+    const academicYear = await this.prisma.academicYear.findFirst({
+      where: { isCurrent: true },
+    });
+
+    if (!academicYear)
+      throw new NotFoundException('Academic year is not found');
+
+    return academicYear;
+  }
+
+  async setCurrent(id: string): Promise<AcademicYearResponseDto> {
+    const existingAcademicYear = await this.prisma.academicYear.findUnique({
+      where: { id },
+    });
+
+    if (!existingAcademicYear)
+      throw new NotFoundException('Academic year is not found');
+
+    return this.prisma.$transaction(async (tx) => {
+      await tx.academicYear.updateMany({
+        where: { isCurrent: true },
+        data: { isCurrent: false },
+      });
+
+      return tx.academicYear.update({
+        where: { id },
+        data: { isCurrent: true },
+      });
+    });
+  }
+
   async update(
     id: string,
     updateAcademicYearDto: UpdateAcademicYearDto,

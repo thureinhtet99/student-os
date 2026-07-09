@@ -8,11 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import {
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import {

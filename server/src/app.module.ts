@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { auth } from './common/utils/auth';
+import { AcademicYearContextModule } from './common/academic-year/academic-year-context.module.js';
 import { PrismaModule } from './database/prisma/prisma.module';
 import { AcademicYearsModule } from './modules/academic-years/academic-years.module.js';
 import { AdminsModule } from './modules/admins/admins.module';
@@ -54,6 +55,7 @@ const rateLimiter = rateLimit({
       },
     ]),
     PrismaModule,
+    AcademicYearContextModule,
     StudentsModule,
     AcademicYearsModule,
     ClassesModule,

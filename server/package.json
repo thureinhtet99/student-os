@@ -89,6 +89,14 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      "<rootDir>/../node_modules/(?!(@thallesp/nestjs-better-auth|better-auth))"
+    ],
+    "moduleNameMapper": {
+      "^(./.*)\\.js$": "$1",
+      "^(../.*)\\.js$": "$1",
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }

@@ -1,15 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateClassDto {
-  @ApiProperty({ example: 'Grade 10 A' })
+  @ApiProperty({ example: 'Grade 10' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(200)
   name!: string;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiPropertyOptional({
+    example: 'ckx123academicyearid',
+    description:
+      'Defaults to the active academic year (from x-academic-year-id header or isCurrent = true) when omitted.',
+  })
   @IsString()
-  @IsNotEmpty()
-  academicYearId!: string;
+  @IsOptional()
+  academicYearId?: string;
 }

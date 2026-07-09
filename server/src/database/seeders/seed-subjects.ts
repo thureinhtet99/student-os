@@ -13,11 +13,25 @@ export async function seedSubjects(appContext: INestApplicationContext) {
     }
 
     const subjectsToCreate = [
-      { name: 'Mathematics', description: 'Study of numbers, quantity, structure, and space.' },
-      { name: 'Science', description: 'Systematic enterprise that builds and organizes knowledge.' },
+      {
+        name: 'Mathematics',
+        description: 'Study of numbers, quantity, structure, and space.',
+      },
+      {
+        name: 'Science',
+        description:
+          'Systematic enterprise that builds and organizes knowledge.',
+      },
       { name: 'History', description: 'Study of the past.' },
-      { name: 'English', description: 'Study of English language and literature.' },
-      { name: 'Art', description: 'Expression or application of human creative skill and imagination.' },
+      {
+        name: 'English',
+        description: 'Study of English language and literature.',
+      },
+      {
+        name: 'Art',
+        description:
+          'Expression or application of human creative skill and imagination.',
+      },
     ];
 
     await prismaService.subject.createMany({

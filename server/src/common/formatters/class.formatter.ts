@@ -8,7 +8,7 @@ export function formatClass(
     id: classItem.id,
     name: classItem.name,
     academicYearId: classItem.academicYearId,
-    academicYearName: classItem.academicYear?.name ?? null,
+    // academicYearName: classItem.academicYear.name,
     // createdAt: classItem.createdAt,
     // updatedAt: classItem.updatedAt,
   };

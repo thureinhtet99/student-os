@@ -9,31 +9,24 @@ datasource db {
 }
 
 model User {
-  id    String  @id
-  email String
-  name  String
-  image String?
-  role  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  setPasswordToken        String?
-  setPasswordTokenExpires DateTime?
-
+  id                        String    @id
+  email                     String
+  name                      String
+  image                     String?
+  role                      String
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+  setPasswordToken          String?
+  setPasswordTokenExpires   DateTime?
   resetPasswordToken        String?
   resetPasswordTokenExpires DateTime?
-
-  lastLoginAt DateTime?
-
-  sessions Session[]
-  accounts Account[]
-
-  student Student?
-  teacher Teacher?
-  admin   Admin?
-
-  emailVerified Boolean @default(false)
+  lastLoginAt               DateTime?
+  sessions                  Session[]
+  accounts                  Account[]
+  student                   Student?
+  teacher                   Teacher?
+  admin                     Admin?
+  emailVerified             Boolean   @default(false)
 
   @@unique([email])
   @@map("users")
@@ -43,15 +36,12 @@ model Session {
   id        String   @id
   expiresAt DateTime
   token     String
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   ipAddress String?
   userAgent String?
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@index([userId])
@@ -59,25 +49,20 @@ model Session {
 }
 
 model Account {
-  id         String @id
-  accountId  String
-  providerId String
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  accessToken  String?
-  refreshToken String?
-  idToken      String?
-
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
-
-  scope    String?
-  password String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   @@index([userId])
   @@index([providerId, accountId])
@@ -89,133 +74,98 @@ model Verification {
   identifier String
   value      String
   expiresAt  DateTime
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([identifier])
   @@map("verifications")
 }
 
 model Admin {
-  id String @id @default(cuid())
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  employeeCode String @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeCode String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("admins")
 }
 
 model Teacher {
-  id String @id @default(cuid())
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  employeeCode String @unique
-
-  phone   String?
-  address String?
-  gender  UserGender
-
-  dateOfBirth DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  teachingAssignments TeachingAssignment[]
+  id                  String               @id @default(cuid())
+  userId              String               @unique
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeCode        String               @unique
+  phone               String?
+  address             String?
+  gender              UserGender
+  dateOfBirth         DateTime?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  teachingAllocations TeachingAllocation[]
 
   @@index([phone])
   @@map("teachers")
 }
 
 model Student {
-  id String @id @default(cuid())
-
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  studentNumber String @unique
-
-  phone      String?
-  address    String?
-  bloodGroup String?
-
-  gender      UserGender
-  dateOfBirth DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  enrollments Enrollment[]
-  parents     ParentStudent[]
+  id            String          @id @default(cuid())
+  userId        String          @unique
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studentNumber String          @unique
+  phone         String?
+  address       String?
+  bloodGroup    String?
+  gender        UserGender
+  dateOfBirth   DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  enrollments   Enrollment[]
+  parents       ParentStudent[]
 
   @@index([phone])
   @@map("students")
 }
 
 model Parent {
-  id String @id @default(cuid())
-
-  name String
-
-  phone String?
-
-  address String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  students ParentStudent[]
+  id        String          @id @default(cuid())
+  name      String
+  phone     String?
+  address   String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  students  ParentStudent[]
 
   @@map("parents")
 }
 
 model ParentStudent {
-  id String @id @default(cuid())
-
-  parentId  String
-  studentId String
-
+  id           String             @id @default(cuid())
   relationship ParentRelationship
-
-  parent  Parent  @relation(fields: [parentId], references: [id])
-  student Student @relation(fields: [studentId], references: [id])
+  parentId     String
+  parent       Parent             @relation(fields: [parentId], references: [id])
+  studentId    String
+  student      Student            @relation(fields: [studentId], references: [id])
 
   @@unique([parentId, studentId])
   @@map("parent_students")
 }
 
 model AcademicYear {
-  id String @id @default(cuid())
-
-  name String @unique
-
-  startDate DateTime
-
-  endDate DateTime
-
-  isCurrent Boolean @default(false)
-
-  classes Class[]
-
-  enrollments Enrollment[]
-
-  teachingAssignments TeachingAssignment[]
-
-  attendances Attendance[]
-
-  exams Exam[]
-
-  results Result[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String               @id @default(cuid())
+  name                String               @unique
+  startDate           DateTime
+  endDate             DateTime
+  isCurrent           Boolean              @default(false)
+  enrollments         Enrollment[]
+  teachingAllocations TeachingAllocation[]
+  results             Result[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  // classes Class[]
+  // attendances Attendance[]
+  // exams Exam[]
 
   @@map("academic_years")
 }
@@ -232,216 +182,141 @@ model AcademicYear {
 // }
 
 model Class {
-  id String @id @default(cuid())
-
-  name String
-
-  academicYearId String
-
-  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-
+  id                  String               @id @default(cuid())
+  name                String
+  enrollments         Enrollment[]
+  teachingAllocations TeachingAllocation[]
+  announcements       Announcement[]
+  // academicYearId String
+  // academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
   // gradeId String
-
   // grade Grade @relation(fields: [gradeId], references: [id])
-
-  enrollments Enrollment[]
-
-  teachingAssignments TeachingAssignment[]
-
-  announcements Announcement[]
-
   // @@unique([gradeId, name])
-  @@unique([name, academicYearId])
+  // @@unique([name, academicYearId])
+
+  @@unique([name])
   @@map("classes")
 }
 
 model Enrollment {
-  id String @id @default(cuid())
-
-  studentId String
-
-  classId String
-
+  id             String       @id @default(cuid())
+  studentId      String
+  student        Student      @relation(fields: [studentId], references: [id])
+  classId        String
+  class          Class        @relation(fields: [classId], references: [id])
   academicYearId String
-
-  student Student @relation(fields: [studentId], references: [id])
-
-  class Class @relation(fields: [classId], references: [id])
-
-  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-
-  attendances Attendance[]
-
-  results Result[]
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  attendances    Attendance[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  // results Result[]
 
   @@unique([studentId, academicYearId])
   @@map("enrollments")
 }
 
 model Subject {
-  id String @id @default(cuid())
-
-  name String
-
-  description String?
-
-  teachingAssignments TeachingAssignment[]
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  id                  String               @id @default(cuid())
+  name                String
+  description         String?
+  teachingAllocations TeachingAllocation[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
 
   @@map("subjects")
 }
 
-model TeachingAssignment {
-  id String @id @default(cuid())
-
-  teacherId String
-
-  subjectId String
-
-  classId String
-
-  academicYearId String
-
-  teacher Teacher @relation(fields: [teacherId], references: [id])
-
-  subject Subject @relation(fields: [subjectId], references: [id])
-
-  class Class @relation(fields: [classId], references: [id])
-
-  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-
+model TeachingAllocation {
+  id               String       @id @default(cuid())
+  teacherId        String
+  teacher          Teacher      @relation(fields: [teacherId], references: [id])
+  subjectId        String
+  subject          Subject      @relation(fields: [subjectId], references: [id])
+  classId          String
+  class            Class        @relation(fields: [classId], references: [id])
+  academicYearId   String
+  academicYear     AcademicYear @relation(fields: [academicYearId], references: [id])
   timetableEntries Timetable[]
-
+  exams            Exam[]
   // assignments Assignment[]
-
-  exams Exam[]
 
   @@unique([teacherId, subjectId, classId, academicYearId])
   @@map("teaching_assignments")
 }
 
 model Timetable {
-  id String @id @default(cuid())
-
-  teachingAssignmentId String
-
-  day Day
-
-  startTime DateTime
-
-  endTime DateTime
-
-  room String?
-
-  teachingAssignment TeachingAssignment @relation(fields: [teachingAssignmentId], references: [id])
+  id                   String             @id @default(cuid())
+  teachingAllocationId String
+  day                  Day
+  startTime            DateTime
+  endTime              DateTime
+  room                 String?
+  teachingAllocation   TeachingAllocation @relation(fields: [teachingAllocationId], references: [id])
 
   @@index([day])
   @@map("time_tables")
 }
 
 model Attendance {
-  id String @id @default(cuid())
-
+  id           String     @id @default(cuid())
   enrollmentId String
-
-  academicYearId String
-
-  enrollment Enrollment @relation(fields: [enrollmentId], references: [id])
-
-  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-
-  date DateTime
-
-  present Boolean
-
-  createdAt DateTime @default(now())
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  // academicYearId String
+  // academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+  date         DateTime
+  present      Boolean
+  createdAt    DateTime   @default(now())
 
   @@unique([enrollmentId, date])
   @@map("attendances")
 }
 
 model Exam {
-  id String @id @default(cuid())
-
-  title String
-
-  description String?
-
-  totalMarks Decimal
-
-  passMarks Decimal
-
-  startTime DateTime
-
-  endTime DateTime
-
-  teachingAssignmentId String
-
-  academicYearId String
-
-  teachingAssignment TeachingAssignment @relation(fields: [teachingAssignmentId], references: [id])
-
-  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-
-  results Result[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   String             @id @default(cuid())
+  title                String
+  description          String?
+  totalMarks           Decimal
+  passMarks            Decimal
+  startTime            DateTime
+  endTime              DateTime
+  teachingAllocationId String
+  teachingAllocation   TeachingAllocation @relation(fields: [teachingAllocationId], references: [id])
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  // results              Result[]
+  // academicYearId String
+  // academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
 
   @@map("exams")
 }
 
 model Result {
-  id String @id @default(cuid())
-
-  enrollmentId String
-
+  id             String       @id @default(cuid())
   academicYearId String
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  score          Decimal?
+  grade          String?
+  comment        String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  // enrollmentId String
+  // enrollment Enrollment @relation(fields: [enrollmentId], references: [id])
+  // examId String?
+  // exam Exam? @relation(fields: [examId], references: [id])
+  // @@unique([enrollmentId, examId])
 
-  enrollment Enrollment @relation(fields: [enrollmentId], references: [id])
-
-  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-
-  examId String?
-
-  exam Exam? @relation(fields: [examId], references: [id])
-
-  score Decimal?
-
-  grade String?
-
-  comment String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([enrollmentId, examId])
   @@map("results")
 }
 
 model Announcement {
-  id String @id @default(cuid())
-
-  title String
-
-  content String
-
-  classId String?
-
-  class Class? @relation(fields: [classId], references: [id])
-
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  classId     String?
+  class       Class?   @relation(fields: [classId], references: [id])
   publishedAt DateTime @default(now())
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("announcements")
 }

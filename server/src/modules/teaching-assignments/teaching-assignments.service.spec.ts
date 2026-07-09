@@ -26,7 +26,9 @@ describe('TeachingAssignmentsService', () => {
       ],
     }).compile();
 
-    service = module.get<TeachingAssignmentsService>(TeachingAssignmentsService);
+    service = module.get<TeachingAssignmentsService>(
+      TeachingAssignmentsService,
+    );
   });
   it('should be defined', () => {
     expect(service).toBeDefined();
