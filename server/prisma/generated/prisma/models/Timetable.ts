@@ -26,7 +26,7 @@ export type AggregateTimetable = {
 
 export type TimetableMinAggregateOutputType = {
   id: string | null
-  teachingAssignmentId: string | null
+  teachingAllocationId: string | null
   day: $Enums.Day | null
   startTime: Date | null
   endTime: Date | null
@@ -35,7 +35,7 @@ export type TimetableMinAggregateOutputType = {
 
 export type TimetableMaxAggregateOutputType = {
   id: string | null
-  teachingAssignmentId: string | null
+  teachingAllocationId: string | null
   day: $Enums.Day | null
   startTime: Date | null
   endTime: Date | null
@@ -44,7 +44,7 @@ export type TimetableMaxAggregateOutputType = {
 
 export type TimetableCountAggregateOutputType = {
   id: number
-  teachingAssignmentId: number
+  teachingAllocationId: number
   day: number
   startTime: number
   endTime: number
@@ -55,7 +55,7 @@ export type TimetableCountAggregateOutputType = {
 
 export type TimetableMinAggregateInputType = {
   id?: true
-  teachingAssignmentId?: true
+  teachingAllocationId?: true
   day?: true
   startTime?: true
   endTime?: true
@@ -64,7 +64,7 @@ export type TimetableMinAggregateInputType = {
 
 export type TimetableMaxAggregateInputType = {
   id?: true
-  teachingAssignmentId?: true
+  teachingAllocationId?: true
   day?: true
   startTime?: true
   endTime?: true
@@ -73,7 +73,7 @@ export type TimetableMaxAggregateInputType = {
 
 export type TimetableCountAggregateInputType = {
   id?: true
-  teachingAssignmentId?: true
+  teachingAllocationId?: true
   day?: true
   startTime?: true
   endTime?: true
@@ -155,7 +155,7 @@ export type TimetableGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type TimetableGroupByOutputType = {
   id: string
-  teachingAssignmentId: string
+  teachingAllocationId: string
   day: $Enums.Day
   startTime: Date
   endTime: Date
@@ -185,22 +185,22 @@ export type TimetableWhereInput = {
   OR?: Prisma.TimetableWhereInput[]
   NOT?: Prisma.TimetableWhereInput | Prisma.TimetableWhereInput[]
   id?: Prisma.StringFilter<"Timetable"> | string
-  teachingAssignmentId?: Prisma.StringFilter<"Timetable"> | string
+  teachingAllocationId?: Prisma.StringFilter<"Timetable"> | string
   day?: Prisma.EnumDayFilter<"Timetable"> | $Enums.Day
   startTime?: Prisma.DateTimeFilter<"Timetable"> | Date | string
   endTime?: Prisma.DateTimeFilter<"Timetable"> | Date | string
   room?: Prisma.StringNullableFilter<"Timetable"> | string | null
-  teachingAssignment?: Prisma.XOR<Prisma.TeachingAssignmentScalarRelationFilter, Prisma.TeachingAssignmentWhereInput>
+  teachingAllocation?: Prisma.XOR<Prisma.TeachingAllocationScalarRelationFilter, Prisma.TeachingAllocationWhereInput>
 }
 
 export type TimetableOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  teachingAssignmentId?: Prisma.SortOrder
+  teachingAllocationId?: Prisma.SortOrder
   day?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   room?: Prisma.SortOrderInput | Prisma.SortOrder
-  teachingAssignment?: Prisma.TeachingAssignmentOrderByWithRelationInput
+  teachingAllocation?: Prisma.TeachingAllocationOrderByWithRelationInput
 }
 
 export type TimetableWhereUniqueInput = Prisma.AtLeast<{
@@ -208,17 +208,17 @@ export type TimetableWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TimetableWhereInput | Prisma.TimetableWhereInput[]
   OR?: Prisma.TimetableWhereInput[]
   NOT?: Prisma.TimetableWhereInput | Prisma.TimetableWhereInput[]
-  teachingAssignmentId?: Prisma.StringFilter<"Timetable"> | string
+  teachingAllocationId?: Prisma.StringFilter<"Timetable"> | string
   day?: Prisma.EnumDayFilter<"Timetable"> | $Enums.Day
   startTime?: Prisma.DateTimeFilter<"Timetable"> | Date | string
   endTime?: Prisma.DateTimeFilter<"Timetable"> | Date | string
   room?: Prisma.StringNullableFilter<"Timetable"> | string | null
-  teachingAssignment?: Prisma.XOR<Prisma.TeachingAssignmentScalarRelationFilter, Prisma.TeachingAssignmentWhereInput>
+  teachingAllocation?: Prisma.XOR<Prisma.TeachingAllocationScalarRelationFilter, Prisma.TeachingAllocationWhereInput>
 }, "id">
 
 export type TimetableOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  teachingAssignmentId?: Prisma.SortOrder
+  teachingAllocationId?: Prisma.SortOrder
   day?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -233,7 +233,7 @@ export type TimetableScalarWhereWithAggregatesInput = {
   OR?: Prisma.TimetableScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TimetableScalarWhereWithAggregatesInput | Prisma.TimetableScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Timetable"> | string
-  teachingAssignmentId?: Prisma.StringWithAggregatesFilter<"Timetable"> | string
+  teachingAllocationId?: Prisma.StringWithAggregatesFilter<"Timetable"> | string
   day?: Prisma.EnumDayWithAggregatesFilter<"Timetable"> | $Enums.Day
   startTime?: Prisma.DateTimeWithAggregatesFilter<"Timetable"> | Date | string
   endTime?: Prisma.DateTimeWithAggregatesFilter<"Timetable"> | Date | string
@@ -246,12 +246,12 @@ export type TimetableCreateInput = {
   startTime: Date | string
   endTime: Date | string
   room?: string | null
-  teachingAssignment: Prisma.TeachingAssignmentCreateNestedOneWithoutTimetableEntriesInput
+  teachingAllocation: Prisma.TeachingAllocationCreateNestedOneWithoutTimetableEntriesInput
 }
 
 export type TimetableUncheckedCreateInput = {
   id?: string
-  teachingAssignmentId: string
+  teachingAllocationId: string
   day: $Enums.Day
   startTime: Date | string
   endTime: Date | string
@@ -264,12 +264,12 @@ export type TimetableUpdateInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   room?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  teachingAssignment?: Prisma.TeachingAssignmentUpdateOneRequiredWithoutTimetableEntriesNestedInput
+  teachingAllocation?: Prisma.TeachingAllocationUpdateOneRequiredWithoutTimetableEntriesNestedInput
 }
 
 export type TimetableUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  teachingAllocationId?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayFieldUpdateOperationsInput | $Enums.Day
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -278,7 +278,7 @@ export type TimetableUncheckedUpdateInput = {
 
 export type TimetableCreateManyInput = {
   id?: string
-  teachingAssignmentId: string
+  teachingAllocationId: string
   day: $Enums.Day
   startTime: Date | string
   endTime: Date | string
@@ -295,7 +295,7 @@ export type TimetableUpdateManyMutationInput = {
 
 export type TimetableUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  teachingAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  teachingAllocationId?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayFieldUpdateOperationsInput | $Enums.Day
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -314,7 +314,7 @@ export type TimetableOrderByRelationAggregateInput = {
 
 export type TimetableCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  teachingAssignmentId?: Prisma.SortOrder
+  teachingAllocationId?: Prisma.SortOrder
   day?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -323,7 +323,7 @@ export type TimetableCountOrderByAggregateInput = {
 
 export type TimetableMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  teachingAssignmentId?: Prisma.SortOrder
+  teachingAllocationId?: Prisma.SortOrder
   day?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -332,52 +332,52 @@ export type TimetableMaxOrderByAggregateInput = {
 
 export type TimetableMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  teachingAssignmentId?: Prisma.SortOrder
+  teachingAllocationId?: Prisma.SortOrder
   day?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   room?: Prisma.SortOrder
 }
 
-export type TimetableCreateNestedManyWithoutTeachingAssignmentInput = {
-  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.TimetableCreateWithoutTeachingAssignmentInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput[]
-  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput | Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput[]
-  createMany?: Prisma.TimetableCreateManyTeachingAssignmentInputEnvelope
+export type TimetableCreateNestedManyWithoutTeachingAllocationInput = {
+  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput> | Prisma.TimetableCreateWithoutTeachingAllocationInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput[]
+  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput | Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput[]
+  createMany?: Prisma.TimetableCreateManyTeachingAllocationInputEnvelope
   connect?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
 }
 
-export type TimetableUncheckedCreateNestedManyWithoutTeachingAssignmentInput = {
-  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.TimetableCreateWithoutTeachingAssignmentInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput[]
-  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput | Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput[]
-  createMany?: Prisma.TimetableCreateManyTeachingAssignmentInputEnvelope
+export type TimetableUncheckedCreateNestedManyWithoutTeachingAllocationInput = {
+  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput> | Prisma.TimetableCreateWithoutTeachingAllocationInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput[]
+  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput | Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput[]
+  createMany?: Prisma.TimetableCreateManyTeachingAllocationInputEnvelope
   connect?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
 }
 
-export type TimetableUpdateManyWithoutTeachingAssignmentNestedInput = {
-  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.TimetableCreateWithoutTeachingAssignmentInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput[]
-  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput | Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput[]
-  upsert?: Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAssignmentInput[]
-  createMany?: Prisma.TimetableCreateManyTeachingAssignmentInputEnvelope
+export type TimetableUpdateManyWithoutTeachingAllocationNestedInput = {
+  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput> | Prisma.TimetableCreateWithoutTeachingAllocationInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput[]
+  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput | Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput[]
+  upsert?: Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAllocationInput | Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAllocationInput[]
+  createMany?: Prisma.TimetableCreateManyTeachingAllocationInputEnvelope
   set?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
   disconnect?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
   delete?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
   connect?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
-  update?: Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAssignmentInput[]
-  updateMany?: Prisma.TimetableUpdateManyWithWhereWithoutTeachingAssignmentInput | Prisma.TimetableUpdateManyWithWhereWithoutTeachingAssignmentInput[]
+  update?: Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAllocationInput | Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAllocationInput[]
+  updateMany?: Prisma.TimetableUpdateManyWithWhereWithoutTeachingAllocationInput | Prisma.TimetableUpdateManyWithWhereWithoutTeachingAllocationInput[]
   deleteMany?: Prisma.TimetableScalarWhereInput | Prisma.TimetableScalarWhereInput[]
 }
 
-export type TimetableUncheckedUpdateManyWithoutTeachingAssignmentNestedInput = {
-  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput> | Prisma.TimetableCreateWithoutTeachingAssignmentInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput[]
-  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput | Prisma.TimetableCreateOrConnectWithoutTeachingAssignmentInput[]
-  upsert?: Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAssignmentInput[]
-  createMany?: Prisma.TimetableCreateManyTeachingAssignmentInputEnvelope
+export type TimetableUncheckedUpdateManyWithoutTeachingAllocationNestedInput = {
+  create?: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput> | Prisma.TimetableCreateWithoutTeachingAllocationInput[] | Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput[]
+  connectOrCreate?: Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput | Prisma.TimetableCreateOrConnectWithoutTeachingAllocationInput[]
+  upsert?: Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAllocationInput | Prisma.TimetableUpsertWithWhereUniqueWithoutTeachingAllocationInput[]
+  createMany?: Prisma.TimetableCreateManyTeachingAllocationInputEnvelope
   set?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
   disconnect?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
   delete?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
   connect?: Prisma.TimetableWhereUniqueInput | Prisma.TimetableWhereUniqueInput[]
-  update?: Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAssignmentInput | Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAssignmentInput[]
-  updateMany?: Prisma.TimetableUpdateManyWithWhereWithoutTeachingAssignmentInput | Prisma.TimetableUpdateManyWithWhereWithoutTeachingAssignmentInput[]
+  update?: Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAllocationInput | Prisma.TimetableUpdateWithWhereUniqueWithoutTeachingAllocationInput[]
+  updateMany?: Prisma.TimetableUpdateManyWithWhereWithoutTeachingAllocationInput | Prisma.TimetableUpdateManyWithWhereWithoutTeachingAllocationInput[]
   deleteMany?: Prisma.TimetableScalarWhereInput | Prisma.TimetableScalarWhereInput[]
 }
 
@@ -385,7 +385,7 @@ export type EnumDayFieldUpdateOperationsInput = {
   set?: $Enums.Day
 }
 
-export type TimetableCreateWithoutTeachingAssignmentInput = {
+export type TimetableCreateWithoutTeachingAllocationInput = {
   id?: string
   day: $Enums.Day
   startTime: Date | string
@@ -393,7 +393,7 @@ export type TimetableCreateWithoutTeachingAssignmentInput = {
   room?: string | null
 }
 
-export type TimetableUncheckedCreateWithoutTeachingAssignmentInput = {
+export type TimetableUncheckedCreateWithoutTeachingAllocationInput = {
   id?: string
   day: $Enums.Day
   startTime: Date | string
@@ -401,30 +401,30 @@ export type TimetableUncheckedCreateWithoutTeachingAssignmentInput = {
   room?: string | null
 }
 
-export type TimetableCreateOrConnectWithoutTeachingAssignmentInput = {
+export type TimetableCreateOrConnectWithoutTeachingAllocationInput = {
   where: Prisma.TimetableWhereUniqueInput
-  create: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput>
+  create: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput>
 }
 
-export type TimetableCreateManyTeachingAssignmentInputEnvelope = {
-  data: Prisma.TimetableCreateManyTeachingAssignmentInput | Prisma.TimetableCreateManyTeachingAssignmentInput[]
+export type TimetableCreateManyTeachingAllocationInputEnvelope = {
+  data: Prisma.TimetableCreateManyTeachingAllocationInput | Prisma.TimetableCreateManyTeachingAllocationInput[]
   skipDuplicates?: boolean
 }
 
-export type TimetableUpsertWithWhereUniqueWithoutTeachingAssignmentInput = {
+export type TimetableUpsertWithWhereUniqueWithoutTeachingAllocationInput = {
   where: Prisma.TimetableWhereUniqueInput
-  update: Prisma.XOR<Prisma.TimetableUpdateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedUpdateWithoutTeachingAssignmentInput>
-  create: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedCreateWithoutTeachingAssignmentInput>
+  update: Prisma.XOR<Prisma.TimetableUpdateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedUpdateWithoutTeachingAllocationInput>
+  create: Prisma.XOR<Prisma.TimetableCreateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedCreateWithoutTeachingAllocationInput>
 }
 
-export type TimetableUpdateWithWhereUniqueWithoutTeachingAssignmentInput = {
+export type TimetableUpdateWithWhereUniqueWithoutTeachingAllocationInput = {
   where: Prisma.TimetableWhereUniqueInput
-  data: Prisma.XOR<Prisma.TimetableUpdateWithoutTeachingAssignmentInput, Prisma.TimetableUncheckedUpdateWithoutTeachingAssignmentInput>
+  data: Prisma.XOR<Prisma.TimetableUpdateWithoutTeachingAllocationInput, Prisma.TimetableUncheckedUpdateWithoutTeachingAllocationInput>
 }
 
-export type TimetableUpdateManyWithWhereWithoutTeachingAssignmentInput = {
+export type TimetableUpdateManyWithWhereWithoutTeachingAllocationInput = {
   where: Prisma.TimetableScalarWhereInput
-  data: Prisma.XOR<Prisma.TimetableUpdateManyMutationInput, Prisma.TimetableUncheckedUpdateManyWithoutTeachingAssignmentInput>
+  data: Prisma.XOR<Prisma.TimetableUpdateManyMutationInput, Prisma.TimetableUncheckedUpdateManyWithoutTeachingAllocationInput>
 }
 
 export type TimetableScalarWhereInput = {
@@ -432,14 +432,14 @@ export type TimetableScalarWhereInput = {
   OR?: Prisma.TimetableScalarWhereInput[]
   NOT?: Prisma.TimetableScalarWhereInput | Prisma.TimetableScalarWhereInput[]
   id?: Prisma.StringFilter<"Timetable"> | string
-  teachingAssignmentId?: Prisma.StringFilter<"Timetable"> | string
+  teachingAllocationId?: Prisma.StringFilter<"Timetable"> | string
   day?: Prisma.EnumDayFilter<"Timetable"> | $Enums.Day
   startTime?: Prisma.DateTimeFilter<"Timetable"> | Date | string
   endTime?: Prisma.DateTimeFilter<"Timetable"> | Date | string
   room?: Prisma.StringNullableFilter<"Timetable"> | string | null
 }
 
-export type TimetableCreateManyTeachingAssignmentInput = {
+export type TimetableCreateManyTeachingAllocationInput = {
   id?: string
   day: $Enums.Day
   startTime: Date | string
@@ -447,7 +447,7 @@ export type TimetableCreateManyTeachingAssignmentInput = {
   room?: string | null
 }
 
-export type TimetableUpdateWithoutTeachingAssignmentInput = {
+export type TimetableUpdateWithoutTeachingAllocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayFieldUpdateOperationsInput | $Enums.Day
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -455,7 +455,7 @@ export type TimetableUpdateWithoutTeachingAssignmentInput = {
   room?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type TimetableUncheckedUpdateWithoutTeachingAssignmentInput = {
+export type TimetableUncheckedUpdateWithoutTeachingAllocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayFieldUpdateOperationsInput | $Enums.Day
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -463,7 +463,7 @@ export type TimetableUncheckedUpdateWithoutTeachingAssignmentInput = {
   room?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type TimetableUncheckedUpdateManyWithoutTeachingAssignmentInput = {
+export type TimetableUncheckedUpdateManyWithoutTeachingAllocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayFieldUpdateOperationsInput | $Enums.Day
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -475,62 +475,62 @@ export type TimetableUncheckedUpdateManyWithoutTeachingAssignmentInput = {
 
 export type TimetableSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  teachingAssignmentId?: boolean
+  teachingAllocationId?: boolean
   day?: boolean
   startTime?: boolean
   endTime?: boolean
   room?: boolean
-  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  teachingAllocation?: boolean | Prisma.TeachingAllocationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["timetable"]>
 
 export type TimetableSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  teachingAssignmentId?: boolean
+  teachingAllocationId?: boolean
   day?: boolean
   startTime?: boolean
   endTime?: boolean
   room?: boolean
-  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  teachingAllocation?: boolean | Prisma.TeachingAllocationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["timetable"]>
 
 export type TimetableSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  teachingAssignmentId?: boolean
+  teachingAllocationId?: boolean
   day?: boolean
   startTime?: boolean
   endTime?: boolean
   room?: boolean
-  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  teachingAllocation?: boolean | Prisma.TeachingAllocationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["timetable"]>
 
 export type TimetableSelectScalar = {
   id?: boolean
-  teachingAssignmentId?: boolean
+  teachingAllocationId?: boolean
   day?: boolean
   startTime?: boolean
   endTime?: boolean
   room?: boolean
 }
 
-export type TimetableOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "teachingAssignmentId" | "day" | "startTime" | "endTime" | "room", ExtArgs["result"]["timetable"]>
+export type TimetableOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "teachingAllocationId" | "day" | "startTime" | "endTime" | "room", ExtArgs["result"]["timetable"]>
 export type TimetableInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  teachingAllocation?: boolean | Prisma.TeachingAllocationDefaultArgs<ExtArgs>
 }
 export type TimetableIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  teachingAllocation?: boolean | Prisma.TeachingAllocationDefaultArgs<ExtArgs>
 }
 export type TimetableIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  teachingAssignment?: boolean | Prisma.TeachingAssignmentDefaultArgs<ExtArgs>
+  teachingAllocation?: boolean | Prisma.TeachingAllocationDefaultArgs<ExtArgs>
 }
 
 export type $TimetablePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Timetable"
   objects: {
-    teachingAssignment: Prisma.$TeachingAssignmentPayload<ExtArgs>
+    teachingAllocation: Prisma.$TeachingAllocationPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    teachingAssignmentId: string
+    teachingAllocationId: string
     day: $Enums.Day
     startTime: Date
     endTime: Date
@@ -929,7 +929,7 @@ readonly fields: TimetableFieldRefs;
  */
 export interface Prisma__TimetableClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  teachingAssignment<T extends Prisma.TeachingAssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeachingAssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__TeachingAssignmentClient<runtime.Types.Result.GetResult<Prisma.$TeachingAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  teachingAllocation<T extends Prisma.TeachingAllocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeachingAllocationDefaultArgs<ExtArgs>>): Prisma.Prisma__TeachingAllocationClient<runtime.Types.Result.GetResult<Prisma.$TeachingAllocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -960,7 +960,7 @@ export interface Prisma__TimetableClient<T, Null = never, ExtArgs extends runtim
  */
 export interface TimetableFieldRefs {
   readonly id: Prisma.FieldRef<"Timetable", 'String'>
-  readonly teachingAssignmentId: Prisma.FieldRef<"Timetable", 'String'>
+  readonly teachingAllocationId: Prisma.FieldRef<"Timetable", 'String'>
   readonly day: Prisma.FieldRef<"Timetable", 'Day'>
   readonly startTime: Prisma.FieldRef<"Timetable", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"Timetable", 'DateTime'>

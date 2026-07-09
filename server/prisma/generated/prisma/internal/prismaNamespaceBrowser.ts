@@ -64,7 +64,7 @@ export const ModelName = {
   Class: 'Class',
   Enrollment: 'Enrollment',
   Subject: 'Subject',
-  TeachingAssignment: 'TeachingAssignment',
+  TeachingAllocation: 'TeachingAllocation',
   Timetable: 'Timetable',
   Attendance: 'Attendance',
   Exam: 'Exam',
@@ -208,9 +208,9 @@ export type ParentScalarFieldEnum = (typeof ParentScalarFieldEnum)[keyof typeof 
 
 export const ParentStudentScalarFieldEnum = {
   id: 'id',
+  relationship: 'relationship',
   parentId: 'parentId',
-  studentId: 'studentId',
-  relationship: 'relationship'
+  studentId: 'studentId'
 } as const
 
 export type ParentStudentScalarFieldEnum = (typeof ParentStudentScalarFieldEnum)[keyof typeof ParentStudentScalarFieldEnum]
@@ -231,8 +231,7 @@ export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[k
 
 export const ClassScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  academicYearId: 'academicYearId'
+  name: 'name'
 } as const
 
 export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
@@ -261,7 +260,7 @@ export const SubjectScalarFieldEnum = {
 export type SubjectScalarFieldEnum = (typeof SubjectScalarFieldEnum)[keyof typeof SubjectScalarFieldEnum]
 
 
-export const TeachingAssignmentScalarFieldEnum = {
+export const TeachingAllocationScalarFieldEnum = {
   id: 'id',
   teacherId: 'teacherId',
   subjectId: 'subjectId',
@@ -269,12 +268,12 @@ export const TeachingAssignmentScalarFieldEnum = {
   academicYearId: 'academicYearId'
 } as const
 
-export type TeachingAssignmentScalarFieldEnum = (typeof TeachingAssignmentScalarFieldEnum)[keyof typeof TeachingAssignmentScalarFieldEnum]
+export type TeachingAllocationScalarFieldEnum = (typeof TeachingAllocationScalarFieldEnum)[keyof typeof TeachingAllocationScalarFieldEnum]
 
 
 export const TimetableScalarFieldEnum = {
   id: 'id',
-  teachingAssignmentId: 'teachingAssignmentId',
+  teachingAllocationId: 'teachingAllocationId',
   day: 'day',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -287,7 +286,6 @@ export type TimetableScalarFieldEnum = (typeof TimetableScalarFieldEnum)[keyof t
 export const AttendanceScalarFieldEnum = {
   id: 'id',
   enrollmentId: 'enrollmentId',
-  academicYearId: 'academicYearId',
   date: 'date',
   present: 'present',
   createdAt: 'createdAt'
@@ -304,8 +302,7 @@ export const ExamScalarFieldEnum = {
   passMarks: 'passMarks',
   startTime: 'startTime',
   endTime: 'endTime',
-  teachingAssignmentId: 'teachingAssignmentId',
-  academicYearId: 'academicYearId',
+  teachingAllocationId: 'teachingAllocationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -315,9 +312,7 @@ export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof Exam
 
 export const ResultScalarFieldEnum = {
   id: 'id',
-  enrollmentId: 'enrollmentId',
   academicYearId: 'academicYearId',
-  examId: 'examId',
   score: 'score',
   grade: 'grade',
   comment: 'comment',

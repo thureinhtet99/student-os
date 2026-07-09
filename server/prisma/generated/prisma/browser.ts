@@ -83,10 +83,10 @@ export type Enrollment = Prisma.EnrollmentModel
  */
 export type Subject = Prisma.SubjectModel
 /**
- * Model TeachingAssignment
+ * Model TeachingAllocation
  * 
  */
-export type TeachingAssignment = Prisma.TeachingAssignmentModel
+export type TeachingAllocation = Prisma.TeachingAllocationModel
 /**
  * Model Timetable
  * 

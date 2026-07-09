@@ -397,7 +397,7 @@ export const ModelName = {
   Class: 'Class',
   Enrollment: 'Enrollment',
   Subject: 'Subject',
-  TeachingAssignment: 'TeachingAssignment',
+  TeachingAllocation: 'TeachingAllocation',
   Timetable: 'Timetable',
   Attendance: 'Attendance',
   Exam: 'Exam',
@@ -418,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "admin" | "teacher" | "student" | "parent" | "parentStudent" | "academicYear" | "class" | "enrollment" | "subject" | "teachingAssignment" | "timetable" | "attendance" | "exam" | "result" | "announcement"
+    modelProps: "user" | "session" | "account" | "verification" | "admin" | "teacher" | "student" | "parent" | "parentStudent" | "academicYear" | "class" | "enrollment" | "subject" | "teachingAllocation" | "timetable" | "attendance" | "exam" | "result" | "announcement"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1384,77 +1384,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    TeachingAssignment: {
-      payload: Prisma.$TeachingAssignmentPayload<ExtArgs>
-      fields: Prisma.TeachingAssignmentFieldRefs
+    TeachingAllocation: {
+      payload: Prisma.$TeachingAllocationPayload<ExtArgs>
+      fields: Prisma.TeachingAllocationFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.TeachingAssignmentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload> | null
+          args: Prisma.TeachingAllocationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.TeachingAssignmentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>
+          args: Prisma.TeachingAllocationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>
         }
         findFirst: {
-          args: Prisma.TeachingAssignmentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload> | null
+          args: Prisma.TeachingAllocationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.TeachingAssignmentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>
+          args: Prisma.TeachingAllocationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>
         }
         findMany: {
-          args: Prisma.TeachingAssignmentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>[]
+          args: Prisma.TeachingAllocationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>[]
         }
         create: {
-          args: Prisma.TeachingAssignmentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>
+          args: Prisma.TeachingAllocationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>
         }
         createMany: {
-          args: Prisma.TeachingAssignmentCreateManyArgs<ExtArgs>
+          args: Prisma.TeachingAllocationCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.TeachingAssignmentCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>[]
+          args: Prisma.TeachingAllocationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>[]
         }
         delete: {
-          args: Prisma.TeachingAssignmentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>
+          args: Prisma.TeachingAllocationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>
         }
         update: {
-          args: Prisma.TeachingAssignmentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>
+          args: Prisma.TeachingAllocationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>
         }
         deleteMany: {
-          args: Prisma.TeachingAssignmentDeleteManyArgs<ExtArgs>
+          args: Prisma.TeachingAllocationDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.TeachingAssignmentUpdateManyArgs<ExtArgs>
+          args: Prisma.TeachingAllocationUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.TeachingAssignmentUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>[]
+          args: Prisma.TeachingAllocationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>[]
         }
         upsert: {
-          args: Prisma.TeachingAssignmentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAssignmentPayload>
+          args: Prisma.TeachingAllocationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeachingAllocationPayload>
         }
         aggregate: {
-          args: Prisma.TeachingAssignmentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTeachingAssignment>
+          args: Prisma.TeachingAllocationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTeachingAllocation>
         }
         groupBy: {
-          args: Prisma.TeachingAssignmentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TeachingAssignmentGroupByOutputType>[]
+          args: Prisma.TeachingAllocationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeachingAllocationGroupByOutputType>[]
         }
         count: {
-          args: Prisma.TeachingAssignmentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TeachingAssignmentCountAggregateOutputType> | number
+          args: Prisma.TeachingAllocationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeachingAllocationCountAggregateOutputType> | number
         }
       }
     }
@@ -1987,9 +1987,9 @@ export type ParentScalarFieldEnum = (typeof ParentScalarFieldEnum)[keyof typeof 
 
 export const ParentStudentScalarFieldEnum = {
   id: 'id',
+  relationship: 'relationship',
   parentId: 'parentId',
-  studentId: 'studentId',
-  relationship: 'relationship'
+  studentId: 'studentId'
 } as const
 
 export type ParentStudentScalarFieldEnum = (typeof ParentStudentScalarFieldEnum)[keyof typeof ParentStudentScalarFieldEnum]
@@ -2010,8 +2010,7 @@ export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[k
 
 export const ClassScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  academicYearId: 'academicYearId'
+  name: 'name'
 } as const
 
 export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
@@ -2040,7 +2039,7 @@ export const SubjectScalarFieldEnum = {
 export type SubjectScalarFieldEnum = (typeof SubjectScalarFieldEnum)[keyof typeof SubjectScalarFieldEnum]
 
 
-export const TeachingAssignmentScalarFieldEnum = {
+export const TeachingAllocationScalarFieldEnum = {
   id: 'id',
   teacherId: 'teacherId',
   subjectId: 'subjectId',
@@ -2048,12 +2047,12 @@ export const TeachingAssignmentScalarFieldEnum = {
   academicYearId: 'academicYearId'
 } as const
 
-export type TeachingAssignmentScalarFieldEnum = (typeof TeachingAssignmentScalarFieldEnum)[keyof typeof TeachingAssignmentScalarFieldEnum]
+export type TeachingAllocationScalarFieldEnum = (typeof TeachingAllocationScalarFieldEnum)[keyof typeof TeachingAllocationScalarFieldEnum]
 
 
 export const TimetableScalarFieldEnum = {
   id: 'id',
-  teachingAssignmentId: 'teachingAssignmentId',
+  teachingAllocationId: 'teachingAllocationId',
   day: 'day',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -2066,7 +2065,6 @@ export type TimetableScalarFieldEnum = (typeof TimetableScalarFieldEnum)[keyof t
 export const AttendanceScalarFieldEnum = {
   id: 'id',
   enrollmentId: 'enrollmentId',
-  academicYearId: 'academicYearId',
   date: 'date',
   present: 'present',
   createdAt: 'createdAt'
@@ -2083,8 +2081,7 @@ export const ExamScalarFieldEnum = {
   passMarks: 'passMarks',
   startTime: 'startTime',
   endTime: 'endTime',
-  teachingAssignmentId: 'teachingAssignmentId',
-  academicYearId: 'academicYearId',
+  teachingAllocationId: 'teachingAllocationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2094,9 +2091,7 @@ export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof Exam
 
 export const ResultScalarFieldEnum = {
   id: 'id',
-  enrollmentId: 'enrollmentId',
   academicYearId: 'academicYearId',
-  examId: 'examId',
   score: 'score',
   grade: 'grade',
   comment: 'comment',
@@ -2377,7 +2372,7 @@ export type GlobalOmitConfig = {
   class?: Prisma.ClassOmit
   enrollment?: Prisma.EnrollmentOmit
   subject?: Prisma.SubjectOmit
-  teachingAssignment?: Prisma.TeachingAssignmentOmit
+  teachingAllocation?: Prisma.TeachingAllocationOmit
   timetable?: Prisma.TimetableOmit
   attendance?: Prisma.AttendanceOmit
   exam?: Prisma.ExamOmit

@@ -26,46 +26,46 @@ export type AggregateParentStudent = {
 
 export type ParentStudentMinAggregateOutputType = {
   id: string | null
+  relationship: $Enums.ParentRelationship | null
   parentId: string | null
   studentId: string | null
-  relationship: $Enums.ParentRelationship | null
 }
 
 export type ParentStudentMaxAggregateOutputType = {
   id: string | null
+  relationship: $Enums.ParentRelationship | null
   parentId: string | null
   studentId: string | null
-  relationship: $Enums.ParentRelationship | null
 }
 
 export type ParentStudentCountAggregateOutputType = {
   id: number
+  relationship: number
   parentId: number
   studentId: number
-  relationship: number
   _all: number
 }
 
 
 export type ParentStudentMinAggregateInputType = {
   id?: true
+  relationship?: true
   parentId?: true
   studentId?: true
-  relationship?: true
 }
 
 export type ParentStudentMaxAggregateInputType = {
   id?: true
+  relationship?: true
   parentId?: true
   studentId?: true
-  relationship?: true
 }
 
 export type ParentStudentCountAggregateInputType = {
   id?: true
+  relationship?: true
   parentId?: true
   studentId?: true
-  relationship?: true
   _all?: true
 }
 
@@ -143,9 +143,9 @@ export type ParentStudentGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type ParentStudentGroupByOutputType = {
   id: string
+  relationship: $Enums.ParentRelationship
   parentId: string
   studentId: string
-  relationship: $Enums.ParentRelationship
   _count: ParentStudentCountAggregateOutputType | null
   _min: ParentStudentMinAggregateOutputType | null
   _max: ParentStudentMaxAggregateOutputType | null
@@ -171,18 +171,18 @@ export type ParentStudentWhereInput = {
   OR?: Prisma.ParentStudentWhereInput[]
   NOT?: Prisma.ParentStudentWhereInput | Prisma.ParentStudentWhereInput[]
   id?: Prisma.StringFilter<"ParentStudent"> | string
+  relationship?: Prisma.EnumParentRelationshipFilter<"ParentStudent"> | $Enums.ParentRelationship
   parentId?: Prisma.StringFilter<"ParentStudent"> | string
   studentId?: Prisma.StringFilter<"ParentStudent"> | string
-  relationship?: Prisma.EnumParentRelationshipFilter<"ParentStudent"> | $Enums.ParentRelationship
   parent?: Prisma.XOR<Prisma.ParentScalarRelationFilter, Prisma.ParentWhereInput>
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
 }
 
 export type ParentStudentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  relationship?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
-  relationship?: Prisma.SortOrder
   parent?: Prisma.ParentOrderByWithRelationInput
   student?: Prisma.StudentOrderByWithRelationInput
 }
@@ -193,18 +193,18 @@ export type ParentStudentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ParentStudentWhereInput | Prisma.ParentStudentWhereInput[]
   OR?: Prisma.ParentStudentWhereInput[]
   NOT?: Prisma.ParentStudentWhereInput | Prisma.ParentStudentWhereInput[]
+  relationship?: Prisma.EnumParentRelationshipFilter<"ParentStudent"> | $Enums.ParentRelationship
   parentId?: Prisma.StringFilter<"ParentStudent"> | string
   studentId?: Prisma.StringFilter<"ParentStudent"> | string
-  relationship?: Prisma.EnumParentRelationshipFilter<"ParentStudent"> | $Enums.ParentRelationship
   parent?: Prisma.XOR<Prisma.ParentScalarRelationFilter, Prisma.ParentWhereInput>
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
 }, "id" | "parentId_studentId">
 
 export type ParentStudentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  relationship?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
-  relationship?: Prisma.SortOrder
   _count?: Prisma.ParentStudentCountOrderByAggregateInput
   _max?: Prisma.ParentStudentMaxOrderByAggregateInput
   _min?: Prisma.ParentStudentMinOrderByAggregateInput
@@ -215,9 +215,9 @@ export type ParentStudentScalarWhereWithAggregatesInput = {
   OR?: Prisma.ParentStudentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ParentStudentScalarWhereWithAggregatesInput | Prisma.ParentStudentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ParentStudent"> | string
+  relationship?: Prisma.EnumParentRelationshipWithAggregatesFilter<"ParentStudent"> | $Enums.ParentRelationship
   parentId?: Prisma.StringWithAggregatesFilter<"ParentStudent"> | string
   studentId?: Prisma.StringWithAggregatesFilter<"ParentStudent"> | string
-  relationship?: Prisma.EnumParentRelationshipWithAggregatesFilter<"ParentStudent"> | $Enums.ParentRelationship
 }
 
 export type ParentStudentCreateInput = {
@@ -229,9 +229,9 @@ export type ParentStudentCreateInput = {
 
 export type ParentStudentUncheckedCreateInput = {
   id?: string
+  relationship: $Enums.ParentRelationship
   parentId: string
   studentId: string
-  relationship: $Enums.ParentRelationship
 }
 
 export type ParentStudentUpdateInput = {
@@ -243,16 +243,16 @@ export type ParentStudentUpdateInput = {
 
 export type ParentStudentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
   parentId?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
-  relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
 }
 
 export type ParentStudentCreateManyInput = {
   id?: string
+  relationship: $Enums.ParentRelationship
   parentId: string
   studentId: string
-  relationship: $Enums.ParentRelationship
 }
 
 export type ParentStudentUpdateManyMutationInput = {
@@ -262,9 +262,9 @@ export type ParentStudentUpdateManyMutationInput = {
 
 export type ParentStudentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
   parentId?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
-  relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
 }
 
 export type ParentStudentListRelationFilter = {
@@ -284,23 +284,23 @@ export type ParentStudentParentIdStudentIdCompoundUniqueInput = {
 
 export type ParentStudentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  relationship?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
-  relationship?: Prisma.SortOrder
 }
 
 export type ParentStudentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  relationship?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
-  relationship?: Prisma.SortOrder
 }
 
 export type ParentStudentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  relationship?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
-  relationship?: Prisma.SortOrder
 }
 
 export type ParentStudentCreateNestedManyWithoutStudentInput = {
@@ -399,8 +399,8 @@ export type ParentStudentCreateWithoutStudentInput = {
 
 export type ParentStudentUncheckedCreateWithoutStudentInput = {
   id?: string
-  parentId: string
   relationship: $Enums.ParentRelationship
+  parentId: string
 }
 
 export type ParentStudentCreateOrConnectWithoutStudentInput = {
@@ -434,9 +434,9 @@ export type ParentStudentScalarWhereInput = {
   OR?: Prisma.ParentStudentScalarWhereInput[]
   NOT?: Prisma.ParentStudentScalarWhereInput | Prisma.ParentStudentScalarWhereInput[]
   id?: Prisma.StringFilter<"ParentStudent"> | string
+  relationship?: Prisma.EnumParentRelationshipFilter<"ParentStudent"> | $Enums.ParentRelationship
   parentId?: Prisma.StringFilter<"ParentStudent"> | string
   studentId?: Prisma.StringFilter<"ParentStudent"> | string
-  relationship?: Prisma.EnumParentRelationshipFilter<"ParentStudent"> | $Enums.ParentRelationship
 }
 
 export type ParentStudentCreateWithoutParentInput = {
@@ -447,8 +447,8 @@ export type ParentStudentCreateWithoutParentInput = {
 
 export type ParentStudentUncheckedCreateWithoutParentInput = {
   id?: string
-  studentId: string
   relationship: $Enums.ParentRelationship
+  studentId: string
 }
 
 export type ParentStudentCreateOrConnectWithoutParentInput = {
@@ -479,8 +479,8 @@ export type ParentStudentUpdateManyWithWhereWithoutParentInput = {
 
 export type ParentStudentCreateManyStudentInput = {
   id?: string
-  parentId: string
   relationship: $Enums.ParentRelationship
+  parentId: string
 }
 
 export type ParentStudentUpdateWithoutStudentInput = {
@@ -491,20 +491,20 @@ export type ParentStudentUpdateWithoutStudentInput = {
 
 export type ParentStudentUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.StringFieldUpdateOperationsInput | string
   relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
+  parentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ParentStudentUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.StringFieldUpdateOperationsInput | string
   relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
+  parentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ParentStudentCreateManyParentInput = {
   id?: string
-  studentId: string
   relationship: $Enums.ParentRelationship
+  studentId: string
 }
 
 export type ParentStudentUpdateWithoutParentInput = {
@@ -515,53 +515,53 @@ export type ParentStudentUpdateWithoutParentInput = {
 
 export type ParentStudentUncheckedUpdateWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
   relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ParentStudentUncheckedUpdateManyWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
   relationship?: Prisma.EnumParentRelationshipFieldUpdateOperationsInput | $Enums.ParentRelationship
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
 
 export type ParentStudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  relationship?: boolean
   parentId?: boolean
   studentId?: boolean
-  relationship?: boolean
   parent?: boolean | Prisma.ParentDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["parentStudent"]>
 
 export type ParentStudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  relationship?: boolean
   parentId?: boolean
   studentId?: boolean
-  relationship?: boolean
   parent?: boolean | Prisma.ParentDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["parentStudent"]>
 
 export type ParentStudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  relationship?: boolean
   parentId?: boolean
   studentId?: boolean
-  relationship?: boolean
   parent?: boolean | Prisma.ParentDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["parentStudent"]>
 
 export type ParentStudentSelectScalar = {
   id?: boolean
+  relationship?: boolean
   parentId?: boolean
   studentId?: boolean
-  relationship?: boolean
 }
 
-export type ParentStudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "parentId" | "studentId" | "relationship", ExtArgs["result"]["parentStudent"]>
+export type ParentStudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "relationship" | "parentId" | "studentId", ExtArgs["result"]["parentStudent"]>
 export type ParentStudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   parent?: boolean | Prisma.ParentDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
@@ -583,9 +583,9 @@ export type $ParentStudentPayload<ExtArgs extends runtime.Types.Extensions.Inter
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    relationship: $Enums.ParentRelationship
     parentId: string
     studentId: string
-    relationship: $Enums.ParentRelationship
   }, ExtArgs["result"]["parentStudent"]>
   composites: {}
 }
@@ -1012,9 +1012,9 @@ export interface Prisma__ParentStudentClient<T, Null = never, ExtArgs extends ru
  */
 export interface ParentStudentFieldRefs {
   readonly id: Prisma.FieldRef<"ParentStudent", 'String'>
+  readonly relationship: Prisma.FieldRef<"ParentStudent", 'ParentRelationship'>
   readonly parentId: Prisma.FieldRef<"ParentStudent", 'String'>
   readonly studentId: Prisma.FieldRef<"ParentStudent", 'String'>
-  readonly relationship: Prisma.FieldRef<"ParentStudent", 'ParentRelationship'>
 }
     
 
