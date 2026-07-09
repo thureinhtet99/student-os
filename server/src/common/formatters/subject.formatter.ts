@@ -8,8 +8,10 @@ export function formatSubject(
     id: subject.id,
     name: subject.name,
     description: subject.description,
-    teachingAssignments: subject.teachingAssignments.map((ta) => ({
+    teachingAllocations: subject.teachingAllocations.map((ta) => ({
       id: ta.id,
+      classId: ta.classId,
+      subjectId: ta.subjectId,
     })),
     createdAt: subject.createdAt,
     updatedAt: subject.updatedAt,

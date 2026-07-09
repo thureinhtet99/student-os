@@ -7,8 +7,8 @@ export class ClassResponseDto {
   @ApiProperty({ example: 'Grade 10' })
   name!: string;
 
-  @ApiProperty()
-  academicYearId!: string;
+  // @ApiProperty()
+  // academicYearId!: string;
 
   // @ApiProperty({ example: '2025-2026', nullable: true })
   // academicYearName!: string | null;

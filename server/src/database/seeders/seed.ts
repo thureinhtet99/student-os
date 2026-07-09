@@ -13,7 +13,7 @@ import { seedResults } from './seed-results.js';
 import { seedStudents } from './seed-students.js';
 import { seedSubjects } from './seed-subjects.js';
 import { seedTeachers } from './seed-teachers.js';
-import { seedTeachingAssignments } from './seed-teaching-assignments.js';
+import { seedTeachingAllocations } from './seed-teaching-allocations.js';
 
 async function main() {
   const appContext = await NestFactory.createApplicationContext(AppModule);
@@ -28,7 +28,7 @@ async function main() {
     await seedParentStudents(appContext);
     await seedClasses(appContext);
     await seedEnrollments(appContext);
-    await seedTeachingAssignments(appContext);
+    await seedTeachingAllocations(appContext);
     await seedAnnouncements(appContext);
     await seedExams(appContext);
     await seedAttendances(appContext);

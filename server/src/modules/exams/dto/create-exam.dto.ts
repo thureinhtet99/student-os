@@ -41,10 +41,10 @@ export class CreateExamDto {
   @IsNotEmpty()
   endTime!: string;
 
-  @ApiProperty({ example: 'ckx123teachingassignmentid' })
+  @ApiProperty({ example: 'ckx123teachingallocationid' })
   @IsString()
   @IsNotEmpty()
-  teachingAssignmentId!: string;
+  teachingAllocationId!: string;
 
   @ApiProperty({ example: 'ckx123academicyearid' })
   @IsString()

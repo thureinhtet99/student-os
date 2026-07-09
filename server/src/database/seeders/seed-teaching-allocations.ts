@@ -1,7 +1,7 @@
 import { INestApplicationContext } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 
-export async function seedTeachingAssignments(
+export async function seedTeachingAllocations(
   appContext: INestApplicationContext,
 ) {
   const prismaService = appContext.get(PrismaService);
@@ -9,7 +9,7 @@ export async function seedTeachingAssignments(
   try {
     console.log('Seeding teaching assignments...');
     const existingAssignments =
-      await prismaService.teachingAssignment.findFirst();
+      await prismaService.teachingAllocation.findFirst();
     if (existingAssignments) {
       console.log('Teaching assignments already exist. Skipping seeding.');
       return;
@@ -61,7 +61,7 @@ export async function seedTeachingAssignments(
       },
     ];
 
-    await prismaService.teachingAssignment.createMany({
+    await prismaService.teachingAllocation.createMany({
       data: assignmentsToCreate,
     });
 

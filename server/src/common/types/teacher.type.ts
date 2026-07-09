@@ -2,13 +2,13 @@ import {
   Class,
   Subject,
   Teacher,
-  TeachingAssignment,
+  TeachingAllocation,
   User,
 } from '../../../prisma/generated/prisma/client.js';
 
 export type TeacherWithRelations = Teacher & {
   user: User;
-  teachingAssignments: (TeachingAssignment & {
+  teachingAllocations: (TeachingAllocation & {
     class: Class;
     subject: Subject;
   })[];

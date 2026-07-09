@@ -30,7 +30,7 @@ export class SubjectsService {
         description: createSubjectDto.description?.trim() || null,
       },
       include: {
-        teachingAssignments: true,
+        teachingAllocations: true,
       },
     });
 
@@ -59,7 +59,7 @@ export class SubjectsService {
       take: limit,
       orderBy: { name: 'asc' },
       include: {
-        teachingAssignments: true,
+        teachingAllocations: true,
       },
     });
 
@@ -78,7 +78,7 @@ export class SubjectsService {
     const subject = await this.prisma.subject.findUnique({
       where: { id },
       include: {
-        teachingAssignments: true,
+        teachingAllocations: true,
       },
     });
 
@@ -120,7 +120,7 @@ export class SubjectsService {
             : updateSubjectDto.description?.trim() || null,
       },
       include: {
-        teachingAssignments: true,
+        teachingAllocations: true,
       },
     });
 

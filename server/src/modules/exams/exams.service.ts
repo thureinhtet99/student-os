@@ -21,8 +21,8 @@ export class ExamsService {
         passMarks: createExamDto.passMarks,
         startTime: new Date(createExamDto.startTime),
         endTime: new Date(createExamDto.endTime),
-        teachingAssignmentId: createExamDto.teachingAssignmentId,
-        academicYearId: createExamDto.academicYearId,
+        teachingAllocationId: createExamDto.teachingAllocationId,
+        // academicYearId: createExamDto.academicYearId,
       },
     });
 
@@ -99,8 +99,8 @@ export class ExamsService {
         endTime: updateExamDto.endTime
           ? new Date(updateExamDto.endTime)
           : undefined,
-        teachingAssignmentId: updateExamDto.teachingAssignmentId,
-        academicYearId: updateExamDto.academicYearId,
+        teachingAllocationId: updateExamDto.teachingAllocationId,
+        // academicYearId: updateExamDto.academicYearId,
       },
     });
 

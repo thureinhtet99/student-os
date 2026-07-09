@@ -2,7 +2,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
-export class QueryTeachingAssignmentDto {
+export class QueryTeachingAllocationDto {
   @ApiPropertyOptional({ example: 'ckx123teacherid' })
   @IsString()
   @IsOptional()

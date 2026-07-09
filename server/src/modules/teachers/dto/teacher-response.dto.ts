@@ -1,18 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-
-class ClassDto {
-  @ApiProperty({ example: 'ckx123classid' })
-  id!: string;
-  @ApiProperty({ example: 'Grade 10 A' })
-  name!: string;
-}
-
-class SubjectDto {
-  @ApiProperty({ example: 'ckx123subjectid' })
-  id!: string;
-  @ApiProperty({ example: 'Mathematics' })
-  name!: string;
-}
+import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto';
 
 export class TeacherResponseDto {
   @ApiProperty({ example: 'ckx123userid' })
@@ -30,11 +17,8 @@ export class TeacherResponseDto {
   @ApiProperty({ example: 'http://example.com/image.png', nullable: true })
   image!: string | null;
 
-  @ApiProperty({ type: [ClassDto] })
-  classes!: ClassDto[];
-
-  @ApiProperty({ type: [SubjectDto] })
-  subjects!: SubjectDto[];
+  @ApiProperty({ type: [TeachingAllocationDto] })
+  teachingAllocations!: TeachingAllocationDto[];
 
   @ApiProperty({ nullable: true })
   setPasswordToken!: string | null;

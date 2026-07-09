@@ -6,8 +6,8 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
 import rateLimit from 'express-rate-limit';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { auth } from './common/utils/auth';
 import { AcademicYearContextModule } from './common/academic-year/academic-year-context.module.js';
+import { auth } from './common/utils/auth';
 import { PrismaModule } from './database/prisma/prisma.module';
 import { AcademicYearsModule } from './modules/academic-years/academic-years.module.js';
 import { AdminsModule } from './modules/admins/admins.module';
@@ -22,7 +22,7 @@ import { ResultsModule } from './modules/results/results.module';
 import { StudentsModule } from './modules/students/students.module';
 import { SubjectsModule } from './modules/subjects/subjects.module';
 import { TeachersModule } from './modules/teachers/teachers.module';
-import { TeachingAssignmentsModule } from './modules/teaching-assignments/teaching-assignments.module.js';
+import { TeachingAllocationModule } from './modules/teaching-allocations/teaching-allocations.module';
 
 //  * better-auth's rateLimit: Protects your unauthenticated auth endpoints.
 //  * @nestjs/throttler: Protects your authenticated application endpoints.
@@ -67,8 +67,8 @@ const rateLimiter = rateLimit({
     AttendancesModule,
     ExamsModule,
     ResultsModule,
-    TeachingAssignmentsModule,
     AnnouncementsModule,
+    TeachingAllocationModule,
     AuthModule.forRoot({
       auth,
       bodyParser: {

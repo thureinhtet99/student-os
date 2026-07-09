@@ -34,7 +34,7 @@ export async function seedAttendances(appContext: INestApplicationContext) {
         date.setDate(today.getDate() - i);
         attendancesToCreate.push({
           enrollmentId: enrollment.id,
-          academicYearId: academicYear.id,
+          // academicYearId: academicYear.id,
           date,
           present: Math.random() > 0.1, // 90% chance of being present
         });
