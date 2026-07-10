@@ -116,13 +116,13 @@ export class AcademicYearsService {
     return await this.prisma.academicYear.update({
       where: { id },
       data: {
+        name: updateAcademicYearDto.name,
         startDate: updateAcademicYearDto.startDate
           ? new Date(updateAcademicYearDto.startDate)
           : undefined,
         endDate: updateAcademicYearDto.endDate
           ? new Date(updateAcademicYearDto.endDate)
           : undefined,
-        isCurrent: updateAcademicYearDto.isCurrent,
       },
     });
   }

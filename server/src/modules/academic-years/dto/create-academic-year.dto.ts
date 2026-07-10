@@ -25,7 +25,7 @@ export class CreateAcademicYearDto {
   @IsNotEmpty()
   endDate!: string;
 
-  @ApiProperty({ example: false, nullable: true })
+  @ApiProperty({ example: false })
   @IsBoolean()
   @IsOptional()
   isCurrent!: boolean;
