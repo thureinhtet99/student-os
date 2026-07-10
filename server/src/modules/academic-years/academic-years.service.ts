@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { AcademicYearResponseDto } from './dto/academic-year-response.dto.js';
@@ -9,7 +10,10 @@ import { UpdateAcademicYearDto } from './dto/update-academic-year.dto.js';
 
 @Injectable()
 export class AcademicYearsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly academicYearContext: AcademicYearContextService,
+  ) {}
 
   async create(
     createAcademicYearDto: CreateAcademicYearDto,
@@ -112,13 +116,13 @@ export class AcademicYearsService {
     return await this.prisma.academicYear.update({
       where: { id },
       data: {
+        name: updateAcademicYearDto.name,
         startDate: updateAcademicYearDto.startDate
           ? new Date(updateAcademicYearDto.startDate)
           : undefined,
         endDate: updateAcademicYearDto.endDate
           ? new Date(updateAcademicYearDto.endDate)
           : undefined,
-        isCurrent: updateAcademicYearDto.isCurrent,
       },
     });
   }

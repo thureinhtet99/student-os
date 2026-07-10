@@ -12,19 +12,10 @@ export async function seedClasses(appContext: INestApplicationContext) {
       return;
     }
 
-    const academicYear = await prismaService.academicYear.findFirst({
-      where: { isCurrent: true },
-    });
-
-    if (!academicYear) {
-      console.log('No current academic year found. Skipping class seeding.');
-      return;
-    }
-
     const classesToCreate = [
-      { name: 'Grade 1A', academicYearId: academicYear.id },
-      { name: 'Grade 1B', academicYearId: academicYear.id },
-      { name: 'Grade 2A', academicYearId: academicYear.id },
+      { name: 'Grade 1A' },
+      { name: 'Grade 1B' },
+      { name: 'Grade 2A' },
     ];
 
     await prismaService.class.createMany({
