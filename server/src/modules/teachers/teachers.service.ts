@@ -90,12 +90,8 @@ export class TeachersService {
           user: true,
           teachingAllocations: {
             include: {
-              class: {
-                select: { id: true },
-              },
-              subject: {
-                select: { id: true },
-              },
+              class: true,
+              subject: true,
             },
           },
         },
