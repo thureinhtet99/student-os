@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AcademicYearContextService } from '../../common/academic-year/academic-year-context.service.js';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { ClassesService } from './classes.service';
 
