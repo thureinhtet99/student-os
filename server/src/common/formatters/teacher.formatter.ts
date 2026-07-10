@@ -10,16 +10,11 @@ export function formatTeacher(
     name: teacher.user.name,
     email: teacher.user.email,
     image: teacher.user.image ?? null,
-    classes: Array.from(
-      new Map(
-        teacher.teachingAssignments.map((ta) => [ta.class.id, ta.class]),
-      ).values(),
-    ).map((c) => ({ id: c.id, name: c.name })),
-    subjects: Array.from(
-      new Map(
-        teacher.teachingAssignments.map((ta) => [ta.subject.id, ta.subject]),
-      ).values(),
-    ).map((s) => ({ id: s.id, name: s.name })),
+    teachingAllocations: teacher.teachingAllocations.map((ta) => ({
+      id: ta.id,
+      classId: ta.classId,
+      subjectId: ta.subjectId,
+    })),
     setPasswordToken: teacher.user.setPasswordToken,
     setPasswordTokenExpires: teacher.user.setPasswordTokenExpires ?? null,
     resetPasswordToken: teacher.user.resetPasswordToken,

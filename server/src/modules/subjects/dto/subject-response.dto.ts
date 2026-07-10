@@ -1,9 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-
-class TeachingAssignmentDto {
-  @ApiProperty({ example: 'ckx123teachingassignmentid' })
-  id!: string;
-}
+import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto';
 
 export class SubjectResponseDto {
   @ApiProperty({ example: 'ckx123subjectid' })
@@ -15,8 +11,8 @@ export class SubjectResponseDto {
   @ApiProperty({ example: 'Advanced algebra and calculus', nullable: true })
   description!: string | null;
 
-  @ApiProperty({ type: [TeachingAssignmentDto] })
-  teachingAssignments!: TeachingAssignmentDto[];
+  @ApiProperty({ type: [TeachingAllocationDto] })
+  teachingAllocations!: TeachingAllocationDto[];
 
   @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
   createdAt!: Date;

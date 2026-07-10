@@ -10,7 +10,7 @@ export function formatExam(exam: Exam): ExamResponseDto {
     passMarks: exam.passMarks.toNumber(),
     startTime: exam.startTime,
     endTime: exam.endTime,
-    teachingAssignmentId: exam.teachingAssignmentId,
+    teachingAllocationId: exam.teachingAllocationId,
     createdAt: exam.createdAt,
     updatedAt: exam.updatedAt,
   };

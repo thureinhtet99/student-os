@@ -1,5 +1,3 @@
-import { Prisma } from '../../../prisma/generated/prisma/client';
+import { Class } from '../../../prisma/generated/prisma/client';
 
-export type ClassWithAcademicYear = Prisma.ClassGetPayload<{
-  include: { academicYear: true };
-}>;
+export type ClassWithAcademicYear = Class;

@@ -12,13 +12,13 @@ export async function seedExams(appContext: INestApplicationContext) {
       return;
     }
 
-    const teachingAssignments =
-      await prismaService.teachingAssignment.findMany();
+    const teachingAllocations =
+      await prismaService.teachingAllocation.findMany();
     const academicYear = await prismaService.academicYear.findFirst({
       where: { isCurrent: true },
     });
 
-    if (teachingAssignments.length === 0 || !academicYear) {
+    if (teachingAllocations.length === 0 || !academicYear) {
       console.log(
         'No teaching assignments or current academic year found. Skipping exam seeding.',
       );
@@ -33,7 +33,7 @@ export async function seedExams(appContext: INestApplicationContext) {
         passMarks: 40,
         startTime: new Date('2024-03-15T09:00:00Z'),
         endTime: new Date('2024-03-15T11:00:00Z'),
-        teachingAssignmentId: teachingAssignments[0].id,
+        teachingAllocationId: teachingAllocations[0].id,
         academicYearId: academicYear.id,
       },
       {
@@ -43,7 +43,7 @@ export async function seedExams(appContext: INestApplicationContext) {
         passMarks: 40,
         startTime: new Date('2024-03-16T09:00:00Z'),
         endTime: new Date('2024-03-16T11:00:00Z'),
-        teachingAssignmentId: teachingAssignments[1].id,
+        teachingAllocationId: teachingAllocations[1].id,
         academicYearId: academicYear.id,
       },
     ];

@@ -88,7 +88,7 @@ export class TeachersService {
         },
         include: {
           user: true,
-          teachingAssignments: {
+          teachingAllocations: {
             include: {
               class: true,
               subject: true,
@@ -127,7 +127,7 @@ export class TeachersService {
       orderBy: { user: { name: 'asc' } },
       include: {
         user: true,
-        teachingAssignments: {
+        teachingAllocations: {
           include: {
             class: true,
             subject: true,
@@ -152,7 +152,7 @@ export class TeachersService {
       where: { id },
       include: {
         user: true,
-        teachingAssignments: {
+        teachingAllocations: {
           include: {
             class: true,
             subject: true,
@@ -246,7 +246,7 @@ export class TeachersService {
       },
       include: {
         user: true,
-        teachingAssignments: {
+        teachingAllocations: {
           include: {
             class: true,
             subject: true,

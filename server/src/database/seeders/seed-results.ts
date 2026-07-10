@@ -30,9 +30,9 @@ export async function seedResults(appContext: INestApplicationContext) {
     for (const enrollment of enrollments) {
       for (const exam of exams) {
         // Check if the exam is for a subject the student is taking
-        const teachingAssignment =
-          await prismaService.teachingAssignment.findUnique({
-            where: { id: exam.teachingAssignmentId },
+        const teachingAllocation =
+          await prismaService.teachingAllocation.findUnique({
+            where: { id: exam.teachingAllocationId },
           });
 
         const studentClass = await prismaService.class.findUnique({
@@ -40,14 +40,14 @@ export async function seedResults(appContext: INestApplicationContext) {
         });
 
         if (
-          teachingAssignment &&
+          teachingAllocation &&
           studentClass &&
-          teachingAssignment.classId === studentClass.id
+          teachingAllocation.classId === studentClass.id
         ) {
           resultsToCreate.push({
-            enrollmentId: enrollment.id,
+            // enrollmentId: enrollment.id,
             academicYearId: academicYear.id,
-            examId: exam.id,
+            // examId: exam.id,
             score: Math.floor(Math.random() * 61) + 40, // Score between 40 and 100
           });
         }

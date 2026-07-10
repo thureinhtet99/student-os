@@ -23,7 +23,7 @@ export class ExamResponseDto {
   endTime!: Date;
 
   @ApiProperty({ example: 'ckx123teachingassignmentid' })
-  teachingAssignmentId!: string;
+  teachingAllocationId!: string;
 
   @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
   createdAt!: Date;

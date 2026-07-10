@@ -23,14 +23,13 @@ export class ClassesService {
   async create(createClassDto: CreateClassDto): Promise<ClassResponseDto> {
     const className = createClassDto.name.trim();
 
-    const academicYearId =
-      createClassDto.academicYearId ??
-      (await this.academicYearContext.getActiveId());
+    // const academicYearId =
+    //   createClassDto.academicYearId ??
+    //   (await this.academicYearContext.getActiveId());
 
     const existingClass = await this.prisma.class.findFirst({
       where: {
         name: className,
-        academicYearId,
       },
     });
 
@@ -42,12 +41,9 @@ export class ClassesService {
     const classItem = await this.prisma.class.create({
       data: {
         name: className,
-        academicYear: {
-          connect: { id: academicYearId },
-        },
-      },
-      include: {
-        academicYear: true,
+        // academicYear: {
+        //   connect: { id: academicYearId },
+        // },
       },
     });
 
@@ -57,14 +53,14 @@ export class ClassesService {
   async findAll(
     queryClassDto: QueryClassDto,
   ): Promise<PaginatedResponseDto<ClassResponseDto>> {
-    const { limit = 10, page = 1, academicYearId, search } = queryClassDto;
+    const { limit = 10, page = 1, search } = queryClassDto;
 
-    const effectiveAcademicYearId =
-      academicYearId ?? (await this.academicYearContext.getActiveId());
+    // const effectiveAcademicYearId =
+    //   academicYearId ?? (await this.academicYearContext.getActiveId());
 
     const where: Prisma.ClassWhereInput = {};
 
-    if (effectiveAcademicYearId) where.academicYearId = effectiveAcademicYearId;
+    // if (effectiveAcademicYearId) where.academicYearId = effectiveAcademicYearId;
 
     if (search) where.name = { contains: search, mode: 'insensitive' };
 
@@ -75,9 +71,6 @@ export class ClassesService {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { name: 'asc' },
-      include: {
-        academicYear: true,
-      },
     });
 
     return {
@@ -94,9 +87,6 @@ export class ClassesService {
   async findOne(id: string): Promise<ClassResponseDto> {
     const classById = await this.prisma.class.findUnique({
       where: { id },
-      include: {
-        academicYear: true,
-      },
     });
 
     if (!classById) throw new NotFoundException('Class is not found');
@@ -121,7 +111,6 @@ export class ClassesService {
       const duplicateClass = await this.prisma.class.findFirst({
         where: {
           name: updateClassDto.name.trim(),
-          academicYearId: existingClass.academicYearId,
           NOT: { id },
         },
       });
@@ -134,13 +123,10 @@ export class ClassesService {
 
     if (updateClassDto.name !== undefined)
       data.name = updateClassDto.name.trim();
-    if (updateClassDto.academicYearId !== undefined)
-      data.academicYear = { connect: { id: updateClassDto.academicYearId } };
 
     const classItem = await this.prisma.class.update({
       where: { id },
       data,
-      include: { academicYear: true },
     });
 
     return formatClass(classItem);
