@@ -6,7 +6,7 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
 import rateLimit from 'express-rate-limit';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AcademicYearContextModule } from './common/academic-year/academic-year-context.module.js';
+import { AcademicYearContextModule } from './common/academic-year-context/academic-year-context.module';
 import { auth } from './common/utils/auth';
 import { PrismaModule } from './database/prisma/prisma.module';
 import { AcademicYearsModule } from './modules/academic-years/academic-years.module.js';

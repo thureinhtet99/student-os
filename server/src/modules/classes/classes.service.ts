@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../../prisma/generated/prisma/client.js';
-import { AcademicYearContextService } from '../../common/academic-year/academic-year-context.service.js';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatClass } from '../../common/formatters/class.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';

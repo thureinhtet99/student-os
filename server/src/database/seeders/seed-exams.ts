@@ -34,7 +34,7 @@ export async function seedExams(appContext: INestApplicationContext) {
         startTime: new Date('2024-03-15T09:00:00Z'),
         endTime: new Date('2024-03-15T11:00:00Z'),
         teachingAllocationId: teachingAllocations[0].id,
-        academicYearId: academicYear.id,
+        // academicYearId: academicYear.id,
       },
       {
         title: 'Mid-term Science',
@@ -44,7 +44,7 @@ export async function seedExams(appContext: INestApplicationContext) {
         startTime: new Date('2024-03-16T09:00:00Z'),
         endTime: new Date('2024-03-16T11:00:00Z'),
         teachingAllocationId: teachingAllocations[1].id,
-        academicYearId: academicYear.id,
+        // academicYearId: academicYear.id,
       },
     ];
 
