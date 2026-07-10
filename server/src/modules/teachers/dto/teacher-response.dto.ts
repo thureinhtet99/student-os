@@ -18,7 +18,7 @@ export class TeacherResponseDto {
   image!: string | null;
 
   @ApiProperty({ type: [TeachingAllocationDto] })
-  teachingAllocations!: TeachingAllocationDto[];
+  teachingAllocations?: TeachingAllocationDto[];
 
   @ApiProperty({ nullable: true })
   setPasswordToken!: string | null;

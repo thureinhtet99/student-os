@@ -1,5 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
+import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto';
 
 export class CreateClassDto {
   @ApiProperty({ example: 'Grade 10' })
@@ -9,11 +18,27 @@ export class CreateClassDto {
   name!: string;
 
   @ApiPropertyOptional({
-    example: 'ckx123academicyearid',
-    description:
-      'Defaults to the active academic year (from x-academic-year-id header or isCurrent = true) when omitted.',
+    example: 'clx123academicyearid',
   })
   @IsString()
+  @IsNotEmpty()
+  academicYearId!: string;
+
+  @ApiPropertyOptional({
+    type: [String],
+    example: ['clx123studentid'],
+  })
+  @IsArray()
+  @IsString({ each: true })
   @IsOptional()
-  academicYearId?: string;
+  studentIds?: string[];
+
+  @ApiPropertyOptional({
+    type: [TeachingAllocationDto],
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => TeachingAllocationDto)
+  @IsOptional()
+  teachingAllocations?: TeachingAllocationDto[];
 }

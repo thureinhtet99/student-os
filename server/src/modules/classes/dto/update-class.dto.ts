@@ -1,17 +1,61 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { CreateClassDto } from './create-class.dto.js';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class UpdateClassDto extends PartialType(CreateClassDto) {
-  @ApiProperty({ example: 'Grade 10' })
+class TeachingAllocationDto {
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200)
-  name!: string;
+  teacherId!: string;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  subjectId!: string;
+}
+
+export class UpdateClassDto {
+  @ApiPropertyOptional({ example: 'Grade 10' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(200)
+  name?: string;
+
+  @ApiProperty({
+    description:
+      'The academic year in which to update the class associations (enrollments, allocations)',
+    example: 'ckx123academicyearid',
+  })
   @IsString()
   @IsNotEmpty()
   academicYearId!: string;
+
+  @ApiPropertyOptional({
+    description:
+      'Provide a full list of student IDs to be in this class for the given academic year. This will replace existing enrollments.',
+    type: [String],
+    example: ['clx...studentid...'],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  studentIds?: string[];
+
+  @ApiPropertyOptional({
+    description:
+      'Provide a full list of teaching allocations for this class for the given academic year. This will replace existing allocations.',
+    type: [TeachingAllocationDto],
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => TeachingAllocationDto)
+  @IsOptional()
+  teachingAllocations?: TeachingAllocationDto[];
 }

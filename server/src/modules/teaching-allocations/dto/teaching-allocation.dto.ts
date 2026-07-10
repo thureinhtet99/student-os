@@ -9,4 +9,7 @@ export class TeachingAllocationDto {
 
   @ApiProperty({ example: 'ckx123classid' })
   classId!: string;
+
+  @ApiProperty({ example: 'ckx123teacherid' })
+  teacherId!: string;
 }

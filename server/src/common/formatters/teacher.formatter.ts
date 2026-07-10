@@ -14,6 +14,7 @@ export function formatTeacher(
       id: ta.id,
       classId: ta.classId,
       subjectId: ta.subjectId,
+      teacherId: teacher.id,
     })),
     setPasswordToken: teacher.user.setPasswordToken,
     setPasswordTokenExpires: teacher.user.setPasswordTokenExpires ?? null,

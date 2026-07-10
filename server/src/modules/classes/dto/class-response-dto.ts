@@ -1,21 +1,60 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
+class AcademicYearResponseDto {
+  @ApiProperty()
+  id!: string;
+  @ApiProperty()
+  name!: string;
+}
+
+class EnrolledStudentDto {
+  @ApiProperty()
+  id!: string;
+  @ApiProperty()
+  name!: string;
+}
+
+class EnrollmentResponseDto {
+  @ApiProperty()
+  enrollmentId!: string;
+  @ApiProperty()
+  student!: EnrolledStudentDto;
+}
+
+class AllocatedTeacherDto {
+  @ApiProperty()
+  id!: string;
+  @ApiProperty()
+  name!: string;
+}
+class AllocatedSubjectDto {
+  @ApiProperty()
+  id!: string;
+  @ApiProperty()
+  name!: string;
+}
+class TeachingAllocationResponseDto {
+  @ApiProperty()
+  allocationId!: string;
+  @ApiProperty()
+  teacher!: AllocatedTeacherDto;
+  @ApiProperty()
+  subject!: AllocatedSubjectDto;
+}
 
 export class ClassResponseDto {
-  @ApiProperty({ example: 'ckx123classid' })
+  @ApiProperty()
   id!: string;
 
-  @ApiProperty({ example: 'Grade 10' })
+  @ApiProperty()
   name!: string;
 
-  // @ApiProperty()
-  // academicYearId!: string;
+  @ApiPropertyOptional({ type: AcademicYearResponseDto })
+  academicYear?: AcademicYearResponseDto;
 
-  // @ApiProperty({ example: '2025-2026', nullable: true })
-  // academicYearName!: string | null;
+  @ApiPropertyOptional({ type: [EnrollmentResponseDto] })
+  enrollments?: EnrollmentResponseDto[];
 
-  // @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
-  // createdAt!: Date;
-
-  // @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })
-  // updatedAt!: Date;
+  @ApiPropertyOptional({ type: [TeachingAllocationResponseDto] })
+  teachingAllocations?: TeachingAllocationResponseDto[];
 }

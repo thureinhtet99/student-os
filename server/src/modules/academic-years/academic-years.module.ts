@@ -7,6 +7,6 @@ import { AcademicYearsService } from './academic-years.service.js';
   imports: [PrismaModule],
   controllers: [AcademicYearsController],
   providers: [AcademicYearsService],
-  exports: [AcademicYearsService],
+  // exports: [AcademicYearsService],
 })
 export class AcademicYearsModule {}
