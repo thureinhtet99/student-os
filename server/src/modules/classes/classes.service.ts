@@ -88,38 +88,30 @@ export class ClassesService {
         });
       }
 
-      const [result, academicYear] = await Promise.all([
-        tx.class.findUnique({
-          where: { id: classItem.id },
-          include: {
-            enrollments: {
-              where: { academicYearId },
-              include: { student: { include: { user: true } } },
-            },
-            teachingAllocations: {
-              where: { academicYearId },
-              include: {
-                teacher: { include: { user: true } },
-                subject: true,
-              },
+      const result = await tx.class.findUnique({
+        where: { id: classItem.id },
+        include: {
+          enrollments: {
+            where: { academicYearId },
+            include: { student: { include: { user: true } } },
+          },
+          teachingAllocations: {
+            where: { academicYearId },
+            include: {
+              teacher: { include: { user: true } },
+              subject: true,
             },
           },
-        }),
-        tx.academicYear.findUnique({ where: { id: academicYearId } }),
-      ]);
+        },
+      });
 
       if (!result) {
         throw new InternalServerErrorException(
           'Could not find the created class.',
         );
       }
-      if (!academicYear) {
-        throw new InternalServerErrorException(
-          'Could not find the specified academic year.',
-        );
-      }
 
-      return formatClass(result, academicYear);
+      return formatClass(result);
     });
   }
 
@@ -165,33 +157,36 @@ export class ClassesService {
 
     const total = await this.prisma.class.count({ where });
 
-    const [classItems, academicYear] = await Promise.all([
-      this.prisma.class.findMany({
-        where,
-        skip: (page - 1) * limit,
-        take: limit,
-        orderBy: { name: 'asc' },
-        include: {
-          enrollments: {
-            where: { academicYearId: effectiveAcademicYearId },
-            include: { student: { include: { user: true } } },
-          },
-          teachingAllocations: {
-            where: { academicYearId: effectiveAcademicYearId },
-            include: {
-              teacher: { include: { user: true } },
-              subject: true,
-            },
+    const classItems = await this.prisma.class.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { name: 'asc' },
+      include: {
+        enrollments: {
+          where: { academicYearId: effectiveAcademicYearId },
+          include: { student: { include: { user: true } } },
+        },
+        teachingAllocations: {
+          where: { academicYearId: effectiveAcademicYearId },
+          include: {
+            teacher: { include: { user: true } },
+            subject: true,
           },
         },
-      }),
-      this.prisma.academicYear.findUnique({
-        where: { id: effectiveAcademicYearId },
-      }),
-    ]);
+      },
+    });
 
-    if (effectiveAcademicYearId && !academicYear)
-      throw new NotFoundException('The specified academic year was not found.');
+    if (academicYearId) {
+      const academicYear = await this.prisma.academicYear.findUnique({
+        where: { id: academicYearId },
+      });
+      if (!academicYear) {
+        throw new NotFoundException(
+          'The specified academic year was not found.',
+        );
+      }
+    }
 
     return {
       data: classItems.map((classItem) => formatClass(classItem)),
@@ -310,38 +305,30 @@ export class ClassesService {
         });
       }
 
-      const [result, academicYear] = await Promise.all([
-        tx.class.findUnique({
-          where: { id },
-          include: {
-            enrollments: {
-              where: { academicYearId },
-              include: { student: { include: { user: true } } },
-            },
-            teachingAllocations: {
-              where: { academicYearId },
-              include: {
-                teacher: { include: { user: true } },
-                subject: true,
-              },
+      const result = await tx.class.findUnique({
+        where: { id },
+        include: {
+          enrollments: {
+            where: { academicYearId },
+            include: { student: { include: { user: true } } },
+          },
+          teachingAllocations: {
+            where: { academicYearId },
+            include: {
+              teacher: { include: { user: true } },
+              subject: true,
             },
           },
-        }),
-        tx.academicYear.findUnique({ where: { id: academicYearId } }),
-      ]);
+        },
+      });
 
       if (!result) {
         throw new InternalServerErrorException(
           'Could not find the updated class.',
         );
       }
-      if (!academicYear) {
-        throw new InternalServerErrorException(
-          'Could not find the specified academic year.',
-        );
-      }
 
-      return formatClass(result, academicYear);
+      return formatClass(result);
     });
   }
 

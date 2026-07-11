@@ -3,7 +3,6 @@ import {
   IsBoolean,
   IsDateString,
   IsNotEmpty,
-  IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -27,6 +26,5 @@ export class CreateAcademicYearDto {
 
   @ApiProperty({ example: false })
   @IsBoolean()
-  @IsOptional()
-  isCurrent!: boolean;
+  isCurrent: boolean = false;
 }

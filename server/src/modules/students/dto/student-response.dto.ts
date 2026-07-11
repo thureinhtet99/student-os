@@ -15,7 +15,7 @@ class ClassDto {
   name!: string;
 }
 class EnrollmentDto {
-  @ApiProperty({ example: 'ckx123enrollmentid' })
+  @ApiProperty({ example: 'enrollmentid123' })
   id!: string;
 }
 

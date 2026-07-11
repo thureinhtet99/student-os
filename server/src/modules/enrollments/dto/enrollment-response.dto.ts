@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class EnrollmentResponseDto {
-  @ApiProperty({ example: 'ckx123enrollmentid' })
+  @ApiProperty({ example: 'enrollmentid123' })
   id!: string;
 
   @ApiProperty({ example: 'ckx123studentid' })

@@ -31,7 +31,7 @@ export class CreateResultDto {
   @IsNotEmpty()
   academicYearId!: string;
 
-  @ApiProperty({ example: 'ckx123enrollmentid' })
+  @ApiProperty({ example: 'enrollmentid123' })
   @IsString()
   @IsNotEmpty()
   enrollmentId!: string;
