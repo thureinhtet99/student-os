@@ -8,7 +8,18 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateTeachingAllocationInputDto } from './create-teaching-allocation-input.dto';
+
+class CreateTeachingAllocationSummaryDto {
+  @ApiProperty({ type: String, example: 'teacherid123' })
+  @IsString()
+  @IsNotEmpty()
+  teacherId!: string;
+
+  @ApiProperty({ type: String, example: 'subjectid123' })
+  @IsString()
+  @IsNotEmpty()
+  subjectId!: string;
+}
 
 export class CreateClassDto {
   @ApiProperty({ example: 'Grade 10' })
@@ -32,11 +43,11 @@ export class CreateClassDto {
   studentIds?: string[];
 
   @ApiPropertyOptional({
-    type: [CreateTeachingAllocationInputDto],
+    type: [CreateTeachingAllocationSummaryDto],
   })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateTeachingAllocationInputDto)
+  @Type(() => CreateTeachingAllocationSummaryDto)
   @IsOptional()
-  teachingAllocations?: CreateTeachingAllocationInputDto[];
+  teachingAllocations?: CreateTeachingAllocationSummaryDto[];
 }
