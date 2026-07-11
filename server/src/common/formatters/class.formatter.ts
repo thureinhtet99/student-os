@@ -17,11 +17,21 @@ type FormatClassType = Class & {
   })[];
 };
 
-export function formatClass(classItem: FormatClassType): ClassResponseDto {
+export function formatClass(
+  classItem: FormatClassType,
+  academicYear?: { id: string; name: string } | null,
+): ClassResponseDto {
   const response: ClassResponseDto = {
     id: classItem.id,
     name: classItem.name,
   };
+
+  if (academicYear) {
+    response.academicYear = {
+      id: academicYear.id,
+      name: academicYear.name,
+    };
+  }
 
   if (classItem.enrollments) {
     response.enrollments = classItem.enrollments.map((e) => ({

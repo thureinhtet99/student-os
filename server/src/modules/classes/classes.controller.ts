@@ -8,7 +8,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
 import {
@@ -17,6 +22,7 @@ import {
 } from '../../common/dto/paginated-response.dto.js';
 import { ClassesService } from './classes.service.js';
 import { ClassResponseDto } from './dto/class-response-dto.js';
+import { CreateClassResponse } from './dto/create-class-response.dto.js';
 import { CreateClassDto } from './dto/create-class.dto.js';
 import { QueryClassDto } from './dto/query-class-dto.js';
 import { UpdateClassDto } from './dto/update-class.dto.js';
@@ -28,11 +34,11 @@ export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
   @ApiOperation({ summary: 'Create a class for an academic year' })
-  @ApiOkResponse({ type: ClassResponseDto })
+  @ApiCreatedResponse({ type: CreateClassResponse })
   @Post()
   async create(
     @Body() createClassDto: CreateClassDto,
-  ): Promise<ClassResponseDto> {
+  ): Promise<CreateClassResponse> {
     return this.classesService.create(createClassDto);
   }
 

@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
+import { AcademicYearDto } from '../../academic-years/dto/academic-year.dto';
 import { EnrollmentDto } from '../../enrollments/dto/enrollment.dto';
 import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto';
 
@@ -9,6 +10,10 @@ export class ClassResponseDto {
 
   @ApiProperty({ example: 'Grade 1A' })
   name!: string;
+
+  @ApiPropertyOptional({ type: AcademicYearDto })
+  @IsOptional()
+  academicYear?: AcademicYearDto;
 
   @ApiPropertyOptional({ type: [EnrollmentDto] })
   @IsOptional()
