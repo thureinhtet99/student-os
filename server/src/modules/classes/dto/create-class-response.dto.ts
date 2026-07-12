@@ -11,6 +11,9 @@ class TeacherSummaryDto extends PickType(TeacherDto, ['id'] as const) {}
 class SubjectSummaryDto extends PickType(SubjectDto, ['id'] as const) {}
 
 class TeachingAllocationRefDto {
+  // @ApiProperty({ type: String })
+  // id!: string;
+
   @ApiProperty({ type: TeacherSummaryDto })
   teacher!: TeacherSummaryDto;
 
@@ -19,10 +22,10 @@ class TeachingAllocationRefDto {
 }
 
 export class CreateClassResponse {
-  @ApiProperty({ example: 'Grade 10' })
+  @ApiProperty({ type: String, example: 'Grade 10' })
   name!: string;
 
-  @ApiProperty({ example: 'academicyearid123' })
+  @ApiProperty({ type: String, example: 'academicyearid123' })
   academicYearId!: string;
 
   @ApiPropertyOptional({ type: [StudentSummaryDto] })

@@ -13,6 +13,6 @@ export class TeachingAllocationResponseDto {
   @ApiProperty({ example: 'ckx123classid' })
   classId!: string;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty({ example: 'academicyearid123' })
   academicYearId!: string;
 }

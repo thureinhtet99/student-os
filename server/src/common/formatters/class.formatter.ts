@@ -54,10 +54,10 @@ export function formatClass(
         id: ta.subject.id,
         name: ta.subject.name,
       },
-      class: {
-        id: classItem.id,
-        name: classItem.name,
-      },
+      // class: {
+      //   id: classItem.id,
+      //   name: classItem.name,
+      // },
     }));
   }
 

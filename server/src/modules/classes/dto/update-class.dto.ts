@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsNotEmpty,
@@ -7,7 +8,6 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 class TeachingAllocationDto {
   @ApiProperty()
@@ -31,7 +31,7 @@ export class UpdateClassDto {
   @ApiProperty({
     description:
       'The academic year in which to update the class associations (enrollments, allocations)',
-    example: 'ckx123academicyearid',
+    example: 'academicyearid123',
   })
   @IsString()
   @IsNotEmpty()
@@ -41,7 +41,7 @@ export class UpdateClassDto {
     description:
       'Provide a full list of student IDs to be in this class for the given academic year. This will replace existing enrollments.',
     type: [String],
-    example: ['clx...studentid...'],
+    example: ['studentid123'],
   })
   @IsArray()
   @IsString({ each: true })

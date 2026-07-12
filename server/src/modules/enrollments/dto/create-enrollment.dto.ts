@@ -12,7 +12,7 @@ export class CreateEnrollmentDto {
   @IsNotEmpty()
   classId!: string;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty({ example: 'academicyearid123' })
   @IsString()
   @IsNotEmpty()
   academicYearId!: string;

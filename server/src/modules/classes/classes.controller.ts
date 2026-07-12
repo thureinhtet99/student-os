@@ -54,8 +54,11 @@ export class ClassesController {
   @ApiOperation({ summary: 'Get a class by id' })
   @ApiOkResponse({ type: ClassResponseDto })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ClassResponseDto> {
-    return this.classesService.findOne(id);
+  async findOne(
+    @Param('id') id: string,
+    @Query('academicYearId') academicYearId?: string,
+  ): Promise<ClassResponseDto> {
+    return this.classesService.findOne(id, academicYearId);
   }
 
   @ApiOperation({ summary: 'Update a class' })

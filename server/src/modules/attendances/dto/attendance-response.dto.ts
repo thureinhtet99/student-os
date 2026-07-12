@@ -13,7 +13,7 @@ export class AttendanceResponseDto {
   @ApiProperty({ example: 'enrollmentid123' })
   enrollmentId!: string;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty({ example: 'academicyearid123' })
   academicYearId!: string;
 
   @ApiProperty({ example: '2026-07-03T00:00:00.000Z' })

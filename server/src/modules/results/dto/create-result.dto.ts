@@ -26,7 +26,7 @@ export class CreateResultDto {
   @IsOptional()
   examId!: string | null;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty({ example: 'academicyearid123' })
   @IsString()
   @IsNotEmpty()
   academicYearId!: string;

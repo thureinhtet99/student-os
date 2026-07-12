@@ -2,29 +2,29 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 
 class SubjectSummaryDto {
-  @ApiProperty({ example: 'subjectid123' })
+  @ApiProperty({ type: String, example: 'subjectid123' })
   id!: string;
 
-  @ApiProperty({ example: 'English' })
+  @ApiProperty({ type: String, example: 'English' })
   name!: string;
 }
 class ClassSummaryDto {
-  @ApiProperty({ example: 'classid123' })
+  @ApiProperty({ type: String, example: 'classid123' })
   id!: string;
 
-  @ApiProperty({ example: 'Grade 10' })
+  @ApiProperty({ type: String, example: 'Grade 10' })
   name!: string;
 }
 class TeacherSummaryDto {
-  @ApiProperty({ example: 'teacherid123' })
+  @ApiProperty({ type: String, example: 'teacherid123' })
   id!: string;
 
-  @ApiProperty({ example: 'Mrs Alice' })
+  @ApiProperty({ type: String, example: 'Mrs Alice' })
   name!: string;
 }
 
 export class TeachingAllocationDto {
-  @ApiProperty({ example: 'teachingallocationid123' })
+  @ApiProperty({ type: String, example: 'teachingallocationid123' })
   id!: string;
 
   @ApiPropertyOptional({ type: SubjectSummaryDto })

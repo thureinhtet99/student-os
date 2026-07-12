@@ -7,6 +7,7 @@ import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-a
 class ClassTeachingAllocationDto extends OmitType(TeachingAllocationDto, [
   'class',
 ] as const) {}
+
 export class ClassResponseDto {
   @ApiProperty({ example: 'classid123' })
   id!: string;
