@@ -8,31 +8,37 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
-import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
+import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import {
   ApiPaginatedResponse,
   PaginatedResponseDto,
 } from '../../common/dto/paginated-response.dto.js';
 import { ClassesService } from './classes.service.js';
 import { ClassResponseDto } from './dto/class-response-dto.js';
+import { CreateClassResponse } from './dto/create-class-response.dto.js';
 import { CreateClassDto } from './dto/create-class.dto.js';
 import { QueryClassDto } from './dto/query-class-dto.js';
 import { UpdateClassDto } from './dto/update-class.dto.js';
 
 @ApiTags('Classes')
-@Roles(TEACHING_ROLES)
+@Roles(ADMIN_ROLES)
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
   @ApiOperation({ summary: 'Create a class for an academic year' })
-  @ApiOkResponse({ type: ClassResponseDto })
+  @ApiCreatedResponse({ type: CreateClassResponse })
   @Post()
   async create(
     @Body() createClassDto: CreateClassDto,
-  ): Promise<ClassResponseDto> {
+  ): Promise<CreateClassResponse> {
     return this.classesService.create(createClassDto);
   }
 
@@ -48,8 +54,11 @@ export class ClassesController {
   @ApiOperation({ summary: 'Get a class by id' })
   @ApiOkResponse({ type: ClassResponseDto })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ClassResponseDto> {
-    return this.classesService.findOne(id);
+  async findOne(
+    @Param('id') id: string,
+    @Query('academicYearId') academicYearId?: string,
+  ): Promise<ClassResponseDto> {
+    return this.classesService.findOne(id, academicYearId);
   }
 
   @ApiOperation({ summary: 'Update a class' })
@@ -62,12 +71,28 @@ export class ClassesController {
     return this.classesService.update(id, updateClassDto);
   }
 
-  @ApiOperation({ summary: 'Delete a class' })
+  @ApiOperation({
+    summary: 'Archive a class (soft delete)',
+    description: 'This performs a soft delete, preserving all related data.',
+  })
   @ApiOkResponse({
-    schema: { example: { message: 'Class deleted successfully' } },
+    schema: { example: { message: 'Class archived successfully' } },
+  })
+  @Delete(':id/archive')
+  async archive(@Param('id') id: string): Promise<{ message: string }> {
+    return this.classesService.archive(id);
+  }
+
+  @ApiOperation({
+    summary: 'Permanently delete a class (destructive)',
+    description:
+      'Warning: This action is irreversible and will delete the class and all its associated data, including enrollments, attendance, exams, and timetables.',
+  })
+  @ApiOkResponse({
+    schema: { example: { message: 'Class permanently deleted successfully' } },
   })
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<{ message: string }> {
-    return this.classesService.remove(id);
+  async delete(@Param('id') id: string): Promise<{ message: string }> {
+    return this.classesService.delete(id);
   }
 }

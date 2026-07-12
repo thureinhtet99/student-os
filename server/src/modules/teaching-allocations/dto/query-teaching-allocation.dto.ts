@@ -18,7 +18,7 @@ export class QueryTeachingAllocationDto {
   @IsOptional()
   classId?: string;
 
-  @ApiPropertyOptional({ example: 'ckx123academicyearid' })
+  @ApiPropertyOptional({ example: 'academicyearid123' })
   @IsString()
   @IsOptional()
   academicYearId?: string;

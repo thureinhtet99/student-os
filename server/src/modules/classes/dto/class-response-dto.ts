@@ -1,60 +1,29 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
+import { AcademicYearDto } from '../../academic-years/dto/academic-year.dto';
+import { EnrollmentDto } from '../../enrollments/dto/enrollment.dto';
+import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto';
 
-class AcademicYearResponseDto {
-  @ApiProperty()
-  id!: string;
-  @ApiProperty()
-  name!: string;
-}
-
-class EnrolledStudentDto {
-  @ApiProperty()
-  id!: string;
-  @ApiProperty()
-  name!: string;
-}
-
-class EnrollmentResponseDto {
-  @ApiProperty()
-  enrollmentId!: string;
-  @ApiProperty()
-  student!: EnrolledStudentDto;
-}
-
-class AllocatedTeacherDto {
-  @ApiProperty()
-  id!: string;
-  @ApiProperty()
-  name!: string;
-}
-class AllocatedSubjectDto {
-  @ApiProperty()
-  id!: string;
-  @ApiProperty()
-  name!: string;
-}
-class TeachingAllocationResponseDto {
-  @ApiProperty()
-  allocationId!: string;
-  @ApiProperty()
-  teacher!: AllocatedTeacherDto;
-  @ApiProperty()
-  subject!: AllocatedSubjectDto;
-}
+class ClassTeachingAllocationDto extends OmitType(TeachingAllocationDto, [
+  'class',
+] as const) {}
 
 export class ClassResponseDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'classid123' })
   id!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Grade 1A' })
   name!: string;
 
-  @ApiPropertyOptional({ type: AcademicYearResponseDto })
-  academicYear?: AcademicYearResponseDto;
+  @ApiPropertyOptional({ type: AcademicYearDto })
+  @IsOptional()
+  academicYear?: AcademicYearDto;
 
-  @ApiPropertyOptional({ type: [EnrollmentResponseDto] })
-  enrollments?: EnrollmentResponseDto[];
+  @ApiPropertyOptional({ type: [EnrollmentDto] })
+  @IsOptional()
+  enrollments?: EnrollmentDto[];
 
-  @ApiPropertyOptional({ type: [TeachingAllocationResponseDto] })
-  teachingAllocations?: TeachingAllocationResponseDto[];
+  @ApiPropertyOptional({ type: [ClassTeachingAllocationDto] })
+  @IsOptional()
+  teachingAllocations?: ClassTeachingAllocationDto[];
 }

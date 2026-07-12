@@ -10,6 +10,7 @@ import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js
 import { formatClass } from '../../common/formatters/class.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { ClassResponseDto } from './dto/class-response-dto.js';
+import { CreateClassResponse } from './dto/create-class-response.dto.js';
 import { CreateClassDto } from './dto/create-class.dto.js';
 import { QueryClassDto } from './dto/query-class-dto.js';
 import { UpdateClassDto } from './dto/update-class.dto.js';
@@ -21,7 +22,7 @@ export class ClassesService {
     private readonly academicYearContext: AcademicYearContextService,
   ) {}
 
-  async create(createClassDto: CreateClassDto): Promise<ClassResponseDto> {
+  async create(createClassDto: CreateClassDto): Promise<CreateClassResponse> {
     const { name, studentIds, teachingAllocations } = createClassDto;
     const className = name.trim();
 
@@ -31,7 +32,7 @@ export class ClassesService {
         (await this.academicYearContext.getActiveId());
 
       let classItem = await tx.class.findFirst({
-        where: { name: className },
+        where: { name: className, deletedAt: null },
       });
 
       if (classItem) {
@@ -46,7 +47,7 @@ export class ClassesService {
 
         if (enrollment || teachingAllocation) {
           throw new ConflictException(
-            `Class with name '${className}' is already used for this academic year.`,
+            'Class with this name is already used for this academic year.',
           );
         }
       } else {
@@ -62,11 +63,10 @@ export class ClassesService {
             academicYearId: academicYearId,
           },
         });
-        if (existingEnrollments.length > 0) {
+        if (existingEnrollments.length > 0)
           throw new ConflictException(
             `One or more students are already enrolled in a class for this academic year.`,
           );
-        }
 
         await tx.enrollment.createMany({
           data: studentIds.map((studentId) => ({
@@ -88,38 +88,47 @@ export class ClassesService {
         });
       }
 
-      const [result, academicYear] = await Promise.all([
-        tx.class.findUnique({
-          where: { id: classItem.id },
-          include: {
-            enrollments: {
-              where: { academicYearId },
-              include: { student: { include: { user: true } } },
-            },
-            teachingAllocations: {
-              where: { academicYearId },
-              include: {
-                teacher: { include: { user: true } },
-                subject: true,
-              },
+      const result = await tx.class.findUnique({
+        where: { id: classItem.id },
+        include: {
+          enrollments: {
+            where: { academicYearId },
+            include: { student: { include: { user: true } } },
+          },
+          teachingAllocations: {
+            where: { academicYearId },
+            include: {
+              teacher: { include: { user: true } },
+              subject: true,
             },
           },
-        }),
-        tx.academicYear.findUnique({ where: { id: academicYearId } }),
-      ]);
+        },
+      });
 
-      if (!result) {
+      if (!result)
         throw new InternalServerErrorException(
           'Could not find the created class.',
         );
-      }
-      if (!academicYear) {
-        throw new InternalServerErrorException(
-          'Could not find the specified academic year.',
-        );
+
+      const response: CreateClassResponse = {
+        name: classItem.name,
+        academicYearId,
+      };
+
+      if (result.enrollments) {
+        response.students = result.enrollments.map((e) => ({
+          id: e.student.id,
+        }));
       }
 
-      return formatClass(result, academicYear);
+      if (result.teachingAllocations) {
+        response.teachingAllocations = result.teachingAllocations.map((ta) => ({
+          teacher: { id: ta.teacher.id },
+          subject: { id: ta.subject.id },
+        }));
+      }
+
+      return response;
     });
   }
 
@@ -131,8 +140,8 @@ export class ClassesService {
     const effectiveAcademicYearId =
       academicYearId ?? (await this.academicYearContext.getActiveId());
 
-    const where: Prisma.ClassWhereInput = {};
-    const andConditions: Prisma.ClassWhereInput[] = [];
+    const where: Prisma.ClassWhereInput = { deletedAt: null };
+    const andConditions: Prisma.ClassWhereInput[] = [{ deletedAt: null }];
 
     if (effectiveAcademicYearId) {
       andConditions.push({
@@ -155,46 +164,51 @@ export class ClassesService {
       });
     }
 
-    if (search) {
+    if (search)
       andConditions.push({ name: { contains: search, mode: 'insensitive' } });
-    }
 
-    if (andConditions.length > 0) {
-      where.AND = andConditions;
-    }
+    if (andConditions.length > 0) where.AND = andConditions;
 
     const total = await this.prisma.class.count({ where });
 
-    const [classItems, academicYear] = await Promise.all([
-      this.prisma.class.findMany({
-        where,
-        skip: (page - 1) * limit,
-        take: limit,
-        orderBy: { name: 'asc' },
-        include: {
-          enrollments: {
-            where: { academicYearId: effectiveAcademicYearId },
-            include: { student: { include: { user: true } } },
-          },
-          teachingAllocations: {
-            where: { academicYearId: effectiveAcademicYearId },
-            include: {
-              teacher: { include: { user: true } },
-              subject: true,
-            },
+    const classItems = await this.prisma.class.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { name: 'asc' },
+      include: {
+        enrollments: {
+          where: { academicYearId: effectiveAcademicYearId },
+          include: { student: { include: { user: true } } },
+        },
+        teachingAllocations: {
+          where: { academicYearId: effectiveAcademicYearId },
+          include: {
+            teacher: { include: { user: true } },
+            subject: true,
           },
         },
-      }),
-      this.prisma.academicYear.findUnique({
-        where: { id: effectiveAcademicYearId },
-      }),
-    ]);
+      },
+    });
 
-    if (effectiveAcademicYearId && !academicYear)
-      throw new NotFoundException('The specified academic year was not found.');
+    if (academicYearId) {
+      const academicYear = await this.prisma.academicYear.findUnique({
+        where: { id: academicYearId },
+      });
+      if (!academicYear)
+        throw new NotFoundException(
+          'The specified academic year was not found.',
+        );
+    }
+
+    const academicYear = effectiveAcademicYearId
+      ? await this.prisma.academicYear.findUnique({
+          where: { id: effectiveAcademicYearId },
+        })
+      : null;
 
     return {
-      data: classItems.map((classItem) => formatClass(classItem)),
+      data: classItems.map((classItem) => formatClass(classItem, academicYear)),
       meta: {
         total,
         page,
@@ -204,14 +218,39 @@ export class ClassesService {
     };
   }
 
-  async findOne(id: string): Promise<ClassResponseDto> {
+  async findOne(
+    id: string,
+    academicYearId?: string,
+  ): Promise<ClassResponseDto> {
+    const effectiveAcademicYearId =
+      academicYearId ?? (await this.academicYearContext.getActiveId());
+
     const classById = await this.prisma.class.findUnique({
-      where: { id },
+      where: { id, deletedAt: null },
+      include: {
+        enrollments: {
+          where: { academicYearId: effectiveAcademicYearId },
+          include: { student: { include: { user: true } } },
+        },
+        teachingAllocations: {
+          where: { academicYearId: effectiveAcademicYearId },
+          include: {
+            teacher: { include: { user: true } },
+            subject: true,
+          },
+        },
+      },
     });
 
     if (!classById) throw new NotFoundException('Class is not found');
 
-    return formatClass(classById);
+    const academicYear = effectiveAcademicYearId
+      ? await this.prisma.academicYear.findUnique({
+          where: { id: effectiveAcademicYearId },
+        })
+      : null;
+
+    return formatClass(classById, academicYear);
   }
 
   async update(
@@ -222,8 +261,8 @@ export class ClassesService {
       updateClassDto;
 
     return this.prisma.$transaction(async (tx) => {
-      const classItem = await tx.class.findUnique({
-        where: { id },
+      const classItem = await tx.class.findFirst({
+        where: { id, deletedAt: null },
       });
       if (!classItem) throw new NotFoundException('Class is not found');
 
@@ -231,6 +270,7 @@ export class ClassesService {
         const duplicateClass = await tx.class.findFirst({
           where: {
             name: name.trim(),
+            deletedAt: null,
             NOT: { id },
           },
         });
@@ -275,6 +315,7 @@ export class ClassesService {
             where: {
               academicYearId,
               studentId: { in: studentIdsToEnroll },
+              classId: { not: id },
             },
           });
           if (otherEnrollments.length > 0) {
@@ -310,49 +351,63 @@ export class ClassesService {
         });
       }
 
-      const [result, academicYear] = await Promise.all([
-        tx.class.findUnique({
-          where: { id },
-          include: {
-            enrollments: {
-              where: { academicYearId },
-              include: { student: { include: { user: true } } },
-            },
-            teachingAllocations: {
-              where: { academicYearId },
-              include: {
-                teacher: { include: { user: true } },
-                subject: true,
-              },
+      const result = await tx.class.findUnique({
+        where: { id },
+        include: {
+          enrollments: {
+            where: { academicYearId },
+            include: { student: { include: { user: true } } },
+          },
+          teachingAllocations: {
+            where: { academicYearId },
+            include: {
+              teacher: { include: { user: true } },
+              subject: true,
             },
           },
-        }),
-        tx.academicYear.findUnique({ where: { id: academicYearId } }),
-      ]);
+        },
+      });
 
-      if (!result) {
+      if (!result)
         throw new InternalServerErrorException(
           'Could not find the updated class.',
         );
-      }
-      if (!academicYear) {
-        throw new InternalServerErrorException(
-          'Could not find the specified academic year.',
-        );
-      }
+
+      const academicYear = await tx.academicYear.findUnique({
+        where: { id: academicYearId },
+      });
 
       return formatClass(result, academicYear);
     });
   }
 
-  async remove(id: string): Promise<{ message: string }> {
+  async archive(id: string): Promise<{ message: string }> {
+    const existingClass = await this.prisma.class.findFirst({
+      where: { id, deletedAt: null },
+    });
+    if (!existingClass) throw new NotFoundException('Class is not found');
+
+    await this.prisma.class.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+
+    return { message: 'Class soft-deleted successfully' };
+  }
+
+  async delete(id: string): Promise<{ message: string }> {
     const existingClass = await this.prisma.class.findUnique({
       where: { id },
     });
     if (!existingClass) throw new NotFoundException('Class is not found');
 
-    await this.prisma.class.delete({ where: { id } });
+    // Deleting enrollments and allocations will cascade to attendance, exams, etc.
+    await this.prisma.$transaction([
+      this.prisma.enrollment.deleteMany({ where: { classId: id } }),
+      this.prisma.teachingAllocation.deleteMany({ where: { classId: id } }),
+      this.prisma.class.delete({ where: { id } }),
+    ]);
 
-    return { message: 'Class deleted successfully' };
+    return { message: 'Class permanently deleted successfully' };
   }
 }

@@ -15,12 +15,12 @@ class ClassDto {
   name!: string;
 }
 class EnrollmentDto {
-  @ApiProperty({ example: 'ckx123enrollmentid' })
+  @ApiProperty({ example: 'enrollmentid123' })
   id!: string;
 }
 
 export class StudentResponseDto {
-  @ApiProperty({ example: 'ckx123userid' })
+  @ApiProperty({ example: 'userid123' })
   id!: string;
 
   @ApiProperty({ example: 'John Doe' })

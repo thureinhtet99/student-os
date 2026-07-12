@@ -1,70 +1,81 @@
-User
-├── Admin
-├── Teacher
-└── Student
-      │
-      ├── ParentStudent
-      │      │
-      │      └── Parent
-      │
-      └── Enrollment
-              │
-              ├── AcademicYear
-              ├── Class
-              │      │
-              │      └── Grade
-              │
-              ├── Attendance
-              └── Result
-                     │
-                     ├── Exam
-                     └── Assignment
 
-Teacher
-      │
-      └── TeachingAssignment
-              │
-              ├── Subject
-              ├── Class
-              ├── AcademicYear
-              ├── Timetable
-              ├── Exam
-              └── Assignment
+1. Core Identity: The User Model
+Everything starts with a central User, which is then extended into specific roles.
+
+    1               +---------+
+    2               |  User   |
+    3               +---------+
+    4               /    |    \
+    5              /     |     \
+    6 (1-to-1)    /      |      \    (1-to-1)
+    7            /       |       \
+    8           v        v        v
+    9   +---------+  +---------+  +---------+
+   10   |  Admin  |  | Teacher |  | Student |
+   11   +---------+  +---------+  +---------+
+---
+
+  2. Main Entities at a Glance
+
+   * People: Teacher, Student, Parent
+   * Structure: AcademicYear, Class, Subject
+
+  ---
+
+  3. The Junctions: How Everything Connects
+
+  Enrollment and TeachingAllocation are the most important models. They are the "glue" that holds the system together.
+
+  A) The Enrollment Flow
+  This model answers the question: "Which student is in which class for which year?"
+
+    1 +--------------+
+    2 | AcademicYear |
+    3 +--------------+
+    4       |
+    5       | links to
+    6       v
+    7 +----------------+      +---------+
+    8 |   Enrollment   | <----| Student |
+    9 |----------------|      +---------+
+   10 | academicYearId |
+   11 | classId        |
+   12 | studentId      |      +-------+
+   13 +----------------+ ---->| Class |
+   14                         +-------+
+
+  B) The TeachingAllocation Flow
+  This model answers the question: "Which teacher is teaching which subject in which class for which year?"
+
+    1 +--------------+
+    2 | AcademicYear |
+    3 +--------------+
+    4       |
+    5       | links to
+    6       v
+    7 +----------------------+     +---------+
+    8 | TeachingAllocation   |<----| Teacher |
+    9 |----------------------|     +---------+
+   10 | academicYearId       |
+   11 | classId              |
+   12 | subjectId            |    +-------+
+   13 | teacherId            |--->| Class |
+   14 +----------------------+    +-------+
+   15             |
+   16             | links to    +---------+
+   17             +----------->| Subject |
+   18                          +---------+
+
+  ---
+
+  4. Activities & Records Flow
+
+  Once the main connections are made via Enrollment and TeachingAllocation, all other activities can occur.
+
+   * Attendance requires an Enrollment (you take attendance for an enrolled student).
+   * Exam requires a TeachingAllocation (an exam is for a specific teacher's subject in a class).
+   * Timetable requires a TeachingAllocation (a schedule for that specific teaching assignment).
+   * Result requires an AcademicYear (and logically, should also be tied to an Enrollment and Exam).
 
 
-
-Authentication (Better Auth)
-────────────────────────────
-User
-Session
-Account
-Verification
-
-            │
-            │ 1:1
-            ▼
-
-School Domain
-────────────────────────────
-Admin
-Teacher
-Student
-
-Parent
-ParentStudent
-
-AcademicYear
-Grade
-Class
-Enrollment
-
-Subject
-TeachingAssignment
-Timetable
-
-Attendance
-Assignment
-Exam
-Result
-
-Announcement
+                                        

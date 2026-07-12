@@ -1,5 +1,4 @@
 import {
-  AcademicYear,
   Class,
   Enrollment,
   Student,
@@ -20,7 +19,7 @@ type FormatClassType = Class & {
 
 export function formatClass(
   classItem: FormatClassType,
-  academicYear?: AcademicYear,
+  academicYear?: { id: string; name: string } | null,
 ): ClassResponseDto {
   const response: ClassResponseDto = {
     id: classItem.id,
@@ -36,7 +35,7 @@ export function formatClass(
 
   if (classItem.enrollments) {
     response.enrollments = classItem.enrollments.map((e) => ({
-      enrollmentId: e.id,
+      id: e.id,
       student: {
         id: e.student.id,
         name: e.student.user.name,
@@ -46,7 +45,7 @@ export function formatClass(
 
   if (classItem.teachingAllocations) {
     response.teachingAllocations = classItem.teachingAllocations.map((ta) => ({
-      allocationId: ta.id,
+      id: ta.id,
       teacher: {
         id: ta.teacher.id,
         name: ta.teacher.user.name,
@@ -55,6 +54,10 @@ export function formatClass(
         id: ta.subject.id,
         name: ta.subject.name,
       },
+      // class: {
+      //   id: classItem.id,
+      //   name: classItem.name,
+      // },
     }));
   }
 

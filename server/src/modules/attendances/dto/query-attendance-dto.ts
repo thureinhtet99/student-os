@@ -9,12 +9,12 @@ import {
 } from 'class-validator';
 
 export class QueryAttendanceDto {
-  @ApiPropertyOptional({ example: 'ckx123enrollmentid' })
+  @ApiPropertyOptional({ example: 'enrollmentid123' })
   @IsString()
   @IsOptional()
   enrollmentId?: string;
 
-  @ApiPropertyOptional({ example: 'ckx123academicyearid' })
+  @ApiPropertyOptional({ example: 'academicyearid123' })
   @IsString()
   @IsOptional()
   academicYearId?: string;

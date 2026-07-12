@@ -12,12 +12,12 @@ export class CreateAttendanceDto {
   @IsNotEmpty()
   date!: string;
 
-  @ApiProperty({ example: 'ckx123enrollmentid' })
+  @ApiProperty({ example: 'enrollmentid123' })
   @IsString()
   @IsNotEmpty()
   enrollmentId!: string;
 
-  @ApiProperty({ example: 'ckx123academicyearid' })
+  @ApiProperty({ example: 'academicyearid123' })
   @IsString()
   @IsNotEmpty()
   academicYearId!: string;

@@ -170,23 +170,13 @@ model AcademicYear {
   @@map("academic_years")
 }
 
-// model Grade {
-//   id String @id @default(cuid())
-
-//   name String
-
-//   classes Class[]
-
-//   @@unique([name])
-//   @@map("grades")
-// }
-
 model Class {
   id                  String               @id @default(cuid())
   name                String
   enrollments         Enrollment[]
   teachingAllocations TeachingAllocation[]
   announcements       Announcement[]
+  deletedAt           DateTime?
   // academicYearId String
   // academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
   // gradeId String
@@ -251,7 +241,7 @@ model Timetable {
   startTime            DateTime
   endTime              DateTime
   room                 String?
-  teachingAllocation   TeachingAllocation @relation(fields: [teachingAllocationId], references: [id])
+  teachingAllocation   TeachingAllocation @relation(fields: [teachingAllocationId], references: [id], onDelete: Cascade)
 
   @@index([day])
   @@map("time_tables")
@@ -260,7 +250,7 @@ model Timetable {
 model Attendance {
   id           String     @id @default(cuid())
   enrollmentId String
-  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   // academicYearId String
   // academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
   date         DateTime
@@ -280,7 +270,7 @@ model Exam {
   startTime            DateTime
   endTime              DateTime
   teachingAllocationId String
-  teachingAllocation   TeachingAllocation @relation(fields: [teachingAllocationId], references: [id])
+  teachingAllocation   TeachingAllocation @relation(fields: [teachingAllocationId], references: [id], onDelete: Cascade)
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
   // results              Result[]
@@ -313,7 +303,7 @@ model Announcement {
   title       String
   content     String
   classId     String?
-  class       Class?   @relation(fields: [classId], references: [id])
+  class       Class?   @relation(fields: [classId], references: [id], onDelete: SetNull)
   publishedAt DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

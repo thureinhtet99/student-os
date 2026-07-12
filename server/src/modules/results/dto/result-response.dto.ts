@@ -13,10 +13,10 @@
 //   @ApiProperty({ example: 'ckx123examid', nullable: true })
 //   examId!: string | null;
 
-//   @ApiProperty({ example: 'ckx123academicyearid' })
+//   @ApiProperty({ example: 'academicyearid123' })
 //   academicYearId!: string;
 
-//   @ApiProperty({ example: 'ckx123enrollmentid' })
+//   @ApiProperty({ example: 'enrollmentid123' })
 //   enrollmentId!: string;
 
 //   @ApiProperty({ example: '2025-07-03T00:00:00.000Z' })

@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ClassDto {
-  @ApiProperty({ example: 'ckx123classid' })
+  @ApiProperty({ example: 'classid123' })
   id!: string;
+
   @ApiProperty({ example: 'Grade 10' })
   name!: string;
 }

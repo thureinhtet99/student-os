@@ -2,7 +2,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 export class QueryResultDto {
-  @ApiPropertyOptional({ example: 'ckx123enrollmentid' })
+  @ApiPropertyOptional({ example: 'enrollmentid123' })
   @IsString()
   @IsOptional()
   enrollmentId?: string;
