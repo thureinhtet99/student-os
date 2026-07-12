@@ -170,23 +170,13 @@ model AcademicYear {
   @@map("academic_years")
 }
 
-// model Grade {
-//   id String @id @default(cuid())
-
-//   name String
-
-//   classes Class[]
-
-//   @@unique([name])
-//   @@map("grades")
-// }
-
 model Class {
   id                  String               @id @default(cuid())
   name                String
   enrollments         Enrollment[]
   teachingAllocations TeachingAllocation[]
   announcements       Announcement[]
+  deletedAt           DateTime?
   // academicYearId String
   // academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
   // gradeId String
@@ -241,7 +231,7 @@ model TeachingAllocation {
   // assignments Assignment[]
 
   @@unique([teacherId, subjectId, classId, academicYearId])
-  @@map("teaching_allocations")
+  @@map("teaching_assignments")
 }
 
 model Timetable {

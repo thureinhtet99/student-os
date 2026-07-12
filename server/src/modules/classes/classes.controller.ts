@@ -15,7 +15,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
-import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
+import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import {
   ApiPaginatedResponse,
   PaginatedResponseDto,
@@ -28,7 +28,7 @@ import { QueryClassDto } from './dto/query-class-dto.js';
 import { UpdateClassDto } from './dto/update-class.dto.js';
 
 @ApiTags('Classes')
-@Roles(TEACHING_ROLES)
+@Roles(ADMIN_ROLES)
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
@@ -71,12 +71,28 @@ export class ClassesController {
     return this.classesService.update(id, updateClassDto);
   }
 
-  @ApiOperation({ summary: 'Delete a class' })
+  @ApiOperation({
+    summary: 'Archive a class (soft delete)',
+    description: 'This performs a soft delete, preserving all related data.',
+  })
   @ApiOkResponse({
-    schema: { example: { message: 'Class deleted successfully' } },
+    schema: { example: { message: 'Class archived successfully' } },
+  })
+  @Delete(':id/archive')
+  async archive(@Param('id') id: string): Promise<{ message: string }> {
+    return this.classesService.archive(id);
+  }
+
+  @ApiOperation({
+    summary: 'Permanently delete a class (destructive)',
+    description:
+      'Warning: This action is irreversible and will delete the class and all its associated data, including enrollments, attendance, exams, and timetables.',
+  })
+  @ApiOkResponse({
+    schema: { example: { message: 'Class permanently deleted successfully' } },
   })
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<{ message: string }> {
-    return this.classesService.remove(id);
+  async delete(@Param('id') id: string): Promise<{ message: string }> {
+    return this.classesService.delete(id);
   }
 }

@@ -2010,7 +2010,8 @@ export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[k
 
 export const ClassScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  deletedAt: 'deletedAt'
 } as const
 
 export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]

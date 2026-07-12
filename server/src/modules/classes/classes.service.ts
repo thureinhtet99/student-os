@@ -32,7 +32,7 @@ export class ClassesService {
         (await this.academicYearContext.getActiveId());
 
       let classItem = await tx.class.findFirst({
-        where: { name: className },
+        where: { name: className, deletedAt: null },
       });
 
       if (classItem) {
@@ -140,8 +140,8 @@ export class ClassesService {
     const effectiveAcademicYearId =
       academicYearId ?? (await this.academicYearContext.getActiveId());
 
-    const where: Prisma.ClassWhereInput = {};
-    const andConditions: Prisma.ClassWhereInput[] = [];
+    const where: Prisma.ClassWhereInput = { deletedAt: null };
+    const andConditions: Prisma.ClassWhereInput[] = [{ deletedAt: null }];
 
     if (effectiveAcademicYearId) {
       andConditions.push({
@@ -164,13 +164,10 @@ export class ClassesService {
       });
     }
 
-    if (search) {
+    if (search)
       andConditions.push({ name: { contains: search, mode: 'insensitive' } });
-    }
 
-    if (andConditions.length > 0) {
-      where.AND = andConditions;
-    }
+    if (andConditions.length > 0) where.AND = andConditions;
 
     const total = await this.prisma.class.count({ where });
 
@@ -229,7 +226,7 @@ export class ClassesService {
       academicYearId ?? (await this.academicYearContext.getActiveId());
 
     const classById = await this.prisma.class.findUnique({
-      where: { id },
+      where: { id, deletedAt: null },
       include: {
         enrollments: {
           where: { academicYearId: effectiveAcademicYearId },
@@ -264,8 +261,8 @@ export class ClassesService {
       updateClassDto;
 
     return this.prisma.$transaction(async (tx) => {
-      const classItem = await tx.class.findUnique({
-        where: { id },
+      const classItem = await tx.class.findFirst({
+        where: { id, deletedAt: null },
       });
       if (!classItem) throw new NotFoundException('Class is not found');
 
@@ -273,6 +270,7 @@ export class ClassesService {
         const duplicateClass = await tx.class.findFirst({
           where: {
             name: name.trim(),
+            deletedAt: null,
             NOT: { id },
           },
         });
@@ -317,7 +315,7 @@ export class ClassesService {
             where: {
               academicYearId,
               studentId: { in: studentIdsToEnroll },
-              classId: { not: id }, // Exclude the current class
+              classId: { not: id },
             },
           });
           if (otherEnrollments.length > 0) {
@@ -383,19 +381,33 @@ export class ClassesService {
     });
   }
 
-  async remove(id: string): Promise<{ message: string }> {
+  async archive(id: string): Promise<{ message: string }> {
+    const existingClass = await this.prisma.class.findFirst({
+      where: { id, deletedAt: null },
+    });
+    if (!existingClass) throw new NotFoundException('Class is not found');
+
+    await this.prisma.class.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+
+    return { message: 'Class soft-deleted successfully' };
+  }
+
+  async delete(id: string): Promise<{ message: string }> {
     const existingClass = await this.prisma.class.findUnique({
       where: { id },
     });
     if (!existingClass) throw new NotFoundException('Class is not found');
 
-    // The transaction ensures that all these operations succeed or none of them do.
+    // Deleting enrollments and allocations will cascade to attendance, exams, etc.
     await this.prisma.$transaction([
       this.prisma.enrollment.deleteMany({ where: { classId: id } }),
       this.prisma.teachingAllocation.deleteMany({ where: { classId: id } }),
       this.prisma.class.delete({ where: { id } }),
     ]);
 
-    return { message: 'Class deleted successfully' };
+    return { message: 'Class permanently deleted successfully' };
   }
 }
