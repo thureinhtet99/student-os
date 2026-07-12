@@ -19,10 +19,8 @@ export class AnnouncementsService {
       data: {
         title: createAnnouncementDto.title.trim(),
         content: createAnnouncementDto.content.trim(),
-        publishedAt: new Date(createAnnouncementDto.date),
-        class: createAnnouncementDto.classId
-          ? { connect: { id: createAnnouncementDto.classId } }
-          : undefined,
+        publishedAt: new Date(createAnnouncementDto.publishedAt),
+        classId: createAnnouncementDto.classId,
       },
       include: { class: true },
     });
@@ -91,8 +89,8 @@ export class AnnouncementsService {
       data.title = updateAnnouncementDto.title.trim();
     if (updateAnnouncementDto.content !== undefined)
       data.content = updateAnnouncementDto.content?.trim() ?? null;
-    if (updateAnnouncementDto.date !== undefined)
-      data.publishedAt = new Date(updateAnnouncementDto.date);
+    if (updateAnnouncementDto.publishedAt !== undefined)
+      data.publishedAt = new Date(updateAnnouncementDto.publishedAt);
     if (updateAnnouncementDto.classId !== undefined) {
       data.class = updateAnnouncementDto.classId
         ? { connect: { id: updateAnnouncementDto.classId } }

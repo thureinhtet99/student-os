@@ -1,23 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+// class ClassSummaryForAnnouncementDto {
+//   @ApiProperty({ example: 'classid123' })
+//   id!: string;
+// }
+
 export class AnnouncementResponseDto {
-  @ApiProperty({ example: 'ckx123announcementid' })
+  @ApiProperty({ example: 'announcementid123' })
   id!: string;
 
-  @ApiProperty({ example: 'School closed Friday' })
+  @ApiProperty({ example: 'Announcement title' })
   title!: string;
 
-  @ApiProperty({ example: 'Reminder that school is closed...' })
+  @ApiProperty({ example: 'Announcement description' })
   content!: string;
 
   @ApiProperty({ example: '2026-07-10T09:00:00.000Z' })
   publishedAt!: Date;
 
-  @ApiProperty({ example: 'ckx123classid', nullable: true })
-  classId!: string | null;
+  @ApiProperty({ example: 'classid123', nullable: true })
+  classId?: string | null;
 
-  @ApiProperty({ example: 'Grade 10 A', nullable: true })
-  className!: string | null;
+  // @ApiPropertyOptional({ type: ClassSummaryForAnnouncementDto, nullable: true })
+  // class?: ClassSummaryForAnnouncementDto | null;
 
   @ApiProperty({ example: '2026-07-03T00:00:00.000Z' })
   createdAt!: Date;

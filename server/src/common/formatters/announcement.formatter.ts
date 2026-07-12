@@ -10,7 +10,7 @@ export function formatAnnouncement(
     content: announcement.content,
     publishedAt: announcement.publishedAt,
     classId: announcement.classId,
-    className: announcement.class?.name ?? null,
+    // class: announcement.class ? { id: announcement.class.id } : null,
     createdAt: announcement.createdAt,
     updatedAt: announcement.updatedAt,
   };

@@ -8,24 +8,24 @@ import {
 } from 'class-validator';
 
 export class CreateAnnouncementDto {
-  @ApiProperty({ example: 'School closed Friday' })
+  @ApiProperty({ type: String, example: 'Announcement title' })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200)
+  @MaxLength(800)
   title!: string;
 
-  @ApiPropertyOptional({ example: 'Reminder that school is closed...' })
+  @ApiPropertyOptional({ type: String, example: 'Announcement description' })
   @IsString()
   @IsOptional()
-  @MaxLength(1000)
+  @MaxLength(2000)
   content!: string;
 
-  @ApiProperty({ example: '2026-07-10T09:00:00.000Z' })
+  @ApiProperty({ type: String, example: '2026-07-10T09:00:00.000Z' })
   @IsDateString()
   @IsNotEmpty()
-  date!: string;
+  publishedAt!: string;
 
-  @ApiPropertyOptional({ example: 'ckx123classid', nullable: true })
+  @ApiPropertyOptional({ example: 'classid123', nullable: true })
   @IsString()
   @IsOptional()
   classId?: string | null;
