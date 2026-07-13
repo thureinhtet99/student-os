@@ -163,9 +163,6 @@ model AcademicYear {
   results             Result[]
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
-  // classes Class[]
-  // attendances Attendance[]
-  // exams Exam[]
 
   @@map("academic_years")
 }
@@ -177,12 +174,6 @@ model Class {
   teachingAllocations TeachingAllocation[]
   announcements       Announcement[]
   deletedAt           DateTime?
-  // academicYearId String
-  // academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-  // gradeId String
-  // grade Grade @relation(fields: [gradeId], references: [id])
-  // @@unique([gradeId, name])
-  // @@unique([name, academicYearId])
 
   @@unique([name])
   @@map("classes")
@@ -228,7 +219,6 @@ model TeachingAllocation {
   academicYear     AcademicYear @relation(fields: [academicYearId], references: [id])
   timetableEntries Timetable[]
   exams            Exam[]
-  // assignments Assignment[]
 
   @@unique([teacherId, subjectId, classId, academicYearId])
   @@map("teaching_assignments")
