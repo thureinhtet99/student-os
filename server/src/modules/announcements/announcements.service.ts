@@ -7,6 +7,7 @@ import { AnnouncementResponseDto } from './dto/announcement-response.dto.js';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto.js';
 import { QueryAnnouncementDto } from './dto/query-announcement-dto.js';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto.js';
+import { checkDuplicate } from '../../common/utils/db.util.js';
 
 @Injectable()
 export class AnnouncementsService {
@@ -15,14 +16,22 @@ export class AnnouncementsService {
   async create(
     createAnnouncementDto: CreateAnnouncementDto,
   ): Promise<AnnouncementResponseDto> {
+    const { title } = createAnnouncementDto;
+
+    await checkDuplicate(
+      this.prisma.announcement,
+      'title',
+      title,
+      null,
+      'Announcement with this title already exists',
+    );
+
     const announcement = await this.prisma.announcement.create({
       data: {
         title: createAnnouncementDto.title.trim(),
         content: createAnnouncementDto.content.trim(),
-        publishedAt: new Date(createAnnouncementDto.date),
-        class: createAnnouncementDto.classId
-          ? { connect: { id: createAnnouncementDto.classId } }
-          : undefined,
+        publishedAt: new Date(createAnnouncementDto.publishedAt),
+        classId: createAnnouncementDto.classId,
       },
       include: { class: true },
     });
@@ -91,8 +100,8 @@ export class AnnouncementsService {
       data.title = updateAnnouncementDto.title.trim();
     if (updateAnnouncementDto.content !== undefined)
       data.content = updateAnnouncementDto.content?.trim() ?? null;
-    if (updateAnnouncementDto.date !== undefined)
-      data.publishedAt = new Date(updateAnnouncementDto.date);
+    if (updateAnnouncementDto.publishedAt !== undefined)
+      data.publishedAt = new Date(updateAnnouncementDto.publishedAt);
     if (updateAnnouncementDto.classId !== undefined) {
       data.class = updateAnnouncementDto.classId
         ? { connect: { id: updateAnnouncementDto.classId } }

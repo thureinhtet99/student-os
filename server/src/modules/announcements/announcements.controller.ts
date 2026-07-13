@@ -8,7 +8,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { TEACHING_ROLES } from '../../common/constants/role.constant.js';
 import {
@@ -28,7 +33,7 @@ export class AnnouncementsController {
   constructor(private readonly announcementsService: AnnouncementsService) {}
 
   @ApiOperation({ summary: 'Create announcement' })
-  @ApiOkResponse({ type: AnnouncementResponseDto })
+  @ApiCreatedResponse({ type: AnnouncementResponseDto })
   @Post()
   async create(
     @Body() createAnnouncementDto: CreateAnnouncementDto,

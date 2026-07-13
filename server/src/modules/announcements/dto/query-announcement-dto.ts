@@ -3,12 +3,12 @@ import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class QueryAnnouncementDto {
-  @ApiPropertyOptional({ example: 'closed' })
+  @ApiPropertyOptional({ type: String })
   @IsString()
   @IsOptional()
   search?: string;
 
-  @ApiPropertyOptional({ example: 'ckx123classid' })
+  @ApiPropertyOptional({ type: String, example: 'classid123' })
   @IsString()
   @IsOptional()
   classId?: string;

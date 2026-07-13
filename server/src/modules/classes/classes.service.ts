@@ -14,6 +14,7 @@ import { CreateClassResponse } from './dto/create-class-response.dto.js';
 import { CreateClassDto } from './dto/create-class.dto.js';
 import { QueryClassDto } from './dto/query-class-dto.js';
 import { UpdateClassDto } from './dto/update-class.dto.js';
+import { checkDuplicate } from '../../common/utils/db.util.js';
 
 @Injectable()
 export class ClassesService {
@@ -25,6 +26,14 @@ export class ClassesService {
   async create(createClassDto: CreateClassDto): Promise<CreateClassResponse> {
     const { name, studentIds, teachingAllocations } = createClassDto;
     const className = name.trim();
+
+    await checkDuplicate(
+      this.prisma.class,
+      'name',
+      name,
+      null,
+      'Class with this name already exists',
+    );
 
     return this.prisma.$transaction(async (tx) => {
       const academicYearId =
