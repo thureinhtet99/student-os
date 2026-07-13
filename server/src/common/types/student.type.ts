@@ -10,9 +10,9 @@ import {
 export type StudentWithRelations = Omit<Student, 'password'> & {
   user: User;
   enrollments: (Enrollment & {
-    class: Class;
+    class: Pick<Class, 'id'>;
   })[];
   parents: (ParentStudent & {
-    parent: Parent;
+    parent: Pick<Parent, 'id'>;
   })[];
 };

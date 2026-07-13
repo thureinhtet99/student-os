@@ -1,11 +1,16 @@
 import { INestApplicationContext } from '@nestjs/common';
 import { UserGender } from '../../../prisma/generated/prisma/client.js';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
+import { CreateTeacherDto } from '../../modules/teachers/dto/create-teacher.dto.js';
 import { TeachersService } from '../../modules/teachers/teachers.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 
 export async function seedTeachers(appContext: INestApplicationContext) {
   const prismaService = appContext.get(PrismaService);
   const teachersService = appContext.get(TeachersService);
+  const academicYearContextService = appContext.get(AcademicYearContextService);
+  const effectiveAcademicYearId =
+    await academicYearContextService.getActiveId();
 
   try {
     console.log('Seeding teachers...');
@@ -15,7 +20,12 @@ export async function seedTeachers(appContext: INestApplicationContext) {
       return;
     }
 
-    const teachersToCreate = [
+    if (!effectiveAcademicYearId)
+      throw new Error(
+        'No current academic year found. Seed academic years first.',
+      );
+
+    const teachersToCreate: CreateTeacherDto[] = [
       {
         name: 'John Doe',
         email: 'john.doe@example.com',
@@ -25,6 +35,7 @@ export async function seedTeachers(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
+        academicYearId: effectiveAcademicYearId,
       },
       {
         name: 'Jane Smith',
@@ -35,6 +46,7 @@ export async function seedTeachers(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
+        academicYearId: effectiveAcademicYearId,
       },
       {
         name: 'Peter Jones',
@@ -45,6 +57,7 @@ export async function seedTeachers(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
+        academicYearId: effectiveAcademicYearId,
       },
     ];
 

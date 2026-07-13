@@ -6,7 +6,7 @@ import {
   Prisma,
   UserRole,
 } from '../../../prisma/generated/prisma/client.js';
-import { APP_CONSTANT } from '../../common/constants/app.constant.js';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatStudent } from '../../common/formatters/student.formatter.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
@@ -26,6 +26,7 @@ export class StudentsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinary: CloudinaryService,
+    private readonly academicYearContext: AcademicYearContextService,
   ) {}
 
   async create(
@@ -41,9 +42,7 @@ export class StudentsService {
       gender,
       dateOfBirth,
       classId,
-      newParentName,
-      newParentPhone,
-      newParentAddress,
+      parentId,
     } = createStudentDto;
 
     await checkDuplicate(
@@ -87,7 +86,7 @@ export class StudentsService {
           accounts: {
             create: {
               id: randomUUID(),
-              accountId: `${APP_CONSTANT.APP_NAME}-${userId}`,
+              accountId: userId,
               providerId: 'credential',
               password: hashedPwd,
             },
@@ -95,25 +94,11 @@ export class StudentsService {
         },
       });
 
-      let parentIdToUse = createStudentDto.parentId;
-      if (newParentName) {
-        const newParent = await tx.parent.create({
-          data: {
-            name: newParentName,
-            phone: newParentPhone || null,
-            address: newParentAddress || null,
-          },
-        });
-        parentIdToUse = newParent.id;
-      }
-
       const studentId = `STU-${createdUser.id.slice(-12)}`;
 
-      const currentYear = await tx.academicYear.findFirst({
-        where: { isCurrent: true },
-      });
       const academicYearId =
-        currentYear?.id || (await tx.academicYear.findFirst())?.id;
+        createStudentDto.academicYearId ??
+        (await this.academicYearContext.getActiveId());
 
       return tx.student.create({
         data: {
@@ -132,10 +117,10 @@ export class StudentsService {
                 },
               },
             }),
-          ...(parentIdToUse && {
+          ...(parentId && {
             parents: {
               create: {
-                parentId: parentIdToUse,
+                parentId: parentId,
                 relationship: ParentRelationship.GUARDIAN,
               },
             },
@@ -145,12 +130,12 @@ export class StudentsService {
           user: true,
           parents: {
             include: {
-              parent: true,
+              parent: { select: { id: true } },
             },
           },
           enrollments: {
             include: {
-              class: true,
+              class: { select: { id: true } },
             },
           },
         },
@@ -163,13 +148,7 @@ export class StudentsService {
   async findAll(
     queryStudentDto: QueryStudentDto,
   ): Promise<PaginatedResponseDto<StudentResponseDto>> {
-    const {
-      class: classId,
-      gender,
-      search,
-      page = 1,
-      limit = 10,
-    } = queryStudentDto;
+    const { classId, gender, search, page = 1, limit = 10 } = queryStudentDto;
 
     const where: Prisma.StudentWhereInput = {};
 
@@ -212,12 +191,12 @@ export class StudentsService {
         user: true,
         parents: {
           include: {
-            parent: true,
+            parent: { select: { id: true } },
           },
         },
         enrollments: {
           include: {
-            class: true,
+            class: { select: { id: true } },
           },
         },
       },
@@ -241,12 +220,12 @@ export class StudentsService {
         user: true,
         parents: {
           include: {
-            parent: true,
+            parent: { select: { id: true } },
           },
         },
         enrollments: {
           include: {
-            class: true,
+            class: { select: { id: true } },
           },
         },
       },
@@ -307,11 +286,9 @@ export class StudentsService {
       );
     }
 
-    const currentYear = await this.prisma.academicYear.findFirst({
-      where: { isCurrent: true },
-    });
     const academicYearId =
-      currentYear?.id || (await this.prisma.academicYear.findFirst())?.id;
+      updateStudentDto.academicYearId ??
+      (await this.academicYearContext.getActiveId());
     const classId =
       updateStudentDto.classId === undefined
         ? undefined
@@ -324,7 +301,7 @@ export class StudentsService {
           user: {
             update: {
               email: updateStudentDto.email?.trim(),
-              role: updateStudentDto.role,
+              // role: updateStudentDto.role,
               name: updateStudentDto.name?.trim(),
               image:
                 updateStudentDto.image === undefined
@@ -396,12 +373,12 @@ export class StudentsService {
           user: true,
           parents: {
             include: {
-              parent: true,
+              parent: { select: { id: true } },
             },
           },
           enrollments: {
             include: {
-              class: true,
+              class: { select: { id: true } },
             },
           },
         },

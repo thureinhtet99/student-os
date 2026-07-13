@@ -7,7 +7,6 @@ import {
 import { hashPassword } from 'better-auth/crypto';
 import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
-import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatAdmin } from '../../common/formatters/admin.formatter.js';
 import { checkDuplicate } from '../../common/utils/db.util.js';
@@ -54,7 +53,7 @@ export class AdminsService {
             accounts: {
               create: {
                 id: randomUUID(),
-                accountId: `${APP_CONSTANT.APP_NAME}-${userId}`,
+                accountId: userId,
                 providerId: 'credential',
                 password: hashedPwd,
               },

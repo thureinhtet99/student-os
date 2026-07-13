@@ -1,28 +1,23 @@
-import { IsOptional, IsString } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { CreateUserDto } from '../../../common/dto/create-user.dto.js';
 
 export class CreateStudentDto extends CreateUserDto {
+  @ApiPropertyOptional({ type: String, example: 'parentId123' })
   @IsString()
   @IsOptional()
-  parentId!: string | null;
+  parentId?: string | null;
 
+  @ApiPropertyOptional({
+    type: String,
+    example: 'classId123',
+  })
   @IsString()
   @IsOptional()
-  classId!: string | null;
+  classId?: string | null;
 
-  // @IsString()
-  // @IsOptional()
-  // academicYearId!: string;
-
+  @ApiPropertyOptional({ type: String, example: 'academicYearId' })
   @IsString()
-  @IsOptional()
-  newParentName!: string | null;
-
-  @IsString()
-  @IsOptional()
-  newParentPhone!: string | null;
-
-  @IsString()
-  @IsOptional()
-  newParentAddress!: string | null;
+  @IsNotEmpty()
+  academicYearId!: string;
 }

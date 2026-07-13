@@ -2,7 +2,6 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { hashPassword } from 'better-auth/crypto';
 import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
-import { APP_CONSTANT } from '../../common/constants/app.constant.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatTeacher } from '../../common/formatters/teacher.formatter.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
@@ -70,7 +69,7 @@ export class TeachersService {
           accounts: {
             create: {
               id: randomUUID(),
-              accountId: `${APP_CONSTANT.APP_NAME}-${userId}`,
+              accountId: userId,
               providerId: 'credential',
               password: hashedPwd,
             },
