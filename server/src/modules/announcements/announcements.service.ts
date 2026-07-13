@@ -31,7 +31,7 @@ export class AnnouncementsService {
         title: createAnnouncementDto.title.trim(),
         content: createAnnouncementDto.content.trim(),
         publishedAt: new Date(createAnnouncementDto.publishedAt),
-        classId: createAnnouncementDto.classId,
+        classId: createAnnouncementDto.classId ?? null,
       },
       include: { class: true },
     });
@@ -94,23 +94,14 @@ export class AnnouncementsService {
     if (!existingAnnouncement)
       throw new NotFoundException('Announcement is not found');
 
-    const data: Prisma.AnnouncementUpdateInput = {};
-
-    if (updateAnnouncementDto.title !== undefined)
-      data.title = updateAnnouncementDto.title.trim();
-    if (updateAnnouncementDto.content !== undefined)
-      data.content = updateAnnouncementDto.content?.trim() ?? null;
-    if (updateAnnouncementDto.publishedAt !== undefined)
-      data.publishedAt = new Date(updateAnnouncementDto.publishedAt);
-    if (updateAnnouncementDto.classId !== undefined) {
-      data.class = updateAnnouncementDto.classId
-        ? { connect: { id: updateAnnouncementDto.classId } }
-        : { disconnect: true };
-    }
-
     const announcement = await this.prisma.announcement.update({
       where: { id },
-      data,
+      data: {
+        title: updateAnnouncementDto.title.trim(),
+        content: updateAnnouncementDto.content.trim(),
+        publishedAt: new Date(updateAnnouncementDto.publishedAt),
+        classId: updateAnnouncementDto.classId ?? null,
+      },
       include: { class: true },
     });
 
