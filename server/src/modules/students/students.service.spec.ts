@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { UserGender, UserRole } from '../../../prisma/generated/prisma/client';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
+import * as studentFormatter from '../../common/formatters/student.formatter.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CloudinaryService } from '../../integrations/cloudinary/cloudinary.service.js';
-import { StudentsService } from './students.service';
-import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
 import { CreateStudentDto } from './dto/create-student.dto.js';
 import { StudentResponseDto } from './dto/student-response.dto.js';
-import { UserGender, UserRole } from '../../../prisma/generated/prisma/client';
-import * as studentFormatter from '../../common/formatters/student.formatter.js';
+import { StudentsService } from './students.service';
 
 describe('StudentsService', () => {
   let service: StudentsService;
@@ -59,8 +59,9 @@ describe('StudentsService', () => {
 
     service = module.get<StudentsService>(StudentsService);
     prisma = module.get<PrismaService>(PrismaService);
-    academicYearContext =
-      module.get<AcademicYearContextService>(AcademicYearContextService);
+    academicYearContext = module.get<AcademicYearContextService>(
+      AcademicYearContextService,
+    );
   });
 
   afterEach(() => {
@@ -77,6 +78,8 @@ describe('StudentsService', () => {
         name: 'Test Student',
         email: 'test@student.com',
         password: 'password123',
+        gender: 'MALE',
+        academicYearId: 'academicYearId',
       };
 
       const mockUser = {
@@ -102,9 +105,9 @@ describe('StudentsService', () => {
       (prisma.student.findFirst as jest.Mock).mockResolvedValue(null);
       (prisma.user.create as jest.Mock).mockResolvedValue(mockUser);
       (prisma.student.create as jest.Mock).mockResolvedValue(mockStudent);
-      (
-        academicYearContext.getActiveId as jest.Mock
-      ).mockResolvedValue('active-year-id');
+      (academicYearContext.getActiveId as jest.Mock).mockResolvedValue(
+        'active-year-id',
+      );
 
       const expectedResult: Partial<StudentResponseDto> = {
         id: 'user-1',
@@ -129,6 +132,7 @@ describe('StudentsService', () => {
         password: 'password123',
         academicYearId: 'provided-year-id',
         classId: 'class-1',
+        gender: 'MALE',
       };
 
       const mockUser = {
@@ -164,7 +168,10 @@ describe('StudentsService', () => {
         expect.objectContaining({
           data: expect.objectContaining({
             enrollments: {
-              create: { classId: 'class-1', academicYearId: 'provided-year-id' },
+              create: {
+                classId: 'class-1',
+                academicYearId: 'provided-year-id',
+              },
             },
           }),
         }),

@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
-import { AcademicYearsService } from './academic-years.service';
+import { AcademicYearsService } from './academic-years.service.js';
 
 describe('AcademicYearsService', () => {
   let service: AcademicYearsService;
