@@ -5,7 +5,8 @@ export function formatStudent(
   student: StudentWithRelations,
 ): StudentResponseDto {
   return {
-    id: student.user.id,
+    id: student.id,
+    userId: student.user.id,
     name: student.user.name,
     email: student.user.email,
     studentNumber: student.studentNumber,

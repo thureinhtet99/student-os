@@ -5,6 +5,9 @@ export class StudentResponseDto {
   @ApiProperty({ type: String, example: 'studentid123' })
   id!: string;
 
+  @ApiProperty({ type: String, example: 'user123' })
+  userId!: string;
+
   @ApiProperty({ type: String, example: 'John Doe' })
   name!: string;
 

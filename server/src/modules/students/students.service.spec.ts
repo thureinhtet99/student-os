@@ -28,11 +28,16 @@ describe('StudentsService', () => {
               update: jest.fn(),
               delete: jest.fn(),
               count: jest.fn(),
+              findUniqueOrThrow: jest.fn(),
             },
             user: {
               findFirst: jest.fn(),
               delete: jest.fn(),
               create: jest.fn(),
+            },
+            enrollment: {
+              upsert: jest.fn(),
+              deleteMany: jest.fn(),
             },
             $transaction: jest
               .fn()
@@ -79,7 +84,6 @@ describe('StudentsService', () => {
         email: 'test@student.com',
         password: 'password123',
         gender: 'MALE',
-        academicYearId: 'academicYearId',
       };
 
       const mockUser = {
@@ -173,6 +177,152 @@ describe('StudentsService', () => {
                 academicYearId: 'provided-year-id',
               },
             },
+          }),
+        }),
+      );
+    });
+  });
+
+  describe('update', () => {
+    it('updates a student without resolving active academic year when class is unchanged', async () => {
+      const existingStudent = {
+        id: 'student-1',
+        userId: 'user-1',
+        user: { id: 'user-1', name: 'Old Name', email: 'old@student.com' },
+      };
+      const updatedStudent = {
+        ...existingStudent,
+        user: { ...existingStudent.user, name: 'New Name' },
+      };
+
+      (prisma.student.findUnique as jest.Mock).mockResolvedValue(
+        existingStudent,
+      );
+      (prisma.user.findFirst as jest.Mock).mockResolvedValue(null);
+      (prisma.student.update as jest.Mock).mockResolvedValue(updatedStudent);
+      (prisma.student.findUniqueOrThrow as jest.Mock).mockResolvedValue(
+        updatedStudent,
+      );
+      jest
+        .spyOn(studentFormatter, 'formatStudent')
+        .mockReturnValue(updatedStudent as any);
+
+      const result = await service.update('student-1', {
+        name: 'New Name',
+      } as any);
+
+      expect(result).toEqual(updatedStudent);
+      expect(academicYearContext.getActiveId).not.toHaveBeenCalled();
+      expect(prisma.student.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'student-1' },
+          data: expect.objectContaining({
+            user: expect.any(Object),
+          }),
+        }),
+      );
+    });
+
+    it('fetches active academic year when updating class enrollment without academicYearId', async () => {
+      const existingStudent = {
+        id: 'student-1',
+        userId: 'user-1',
+        user: { id: 'user-1', name: 'Old Name', email: 'old@student.com' },
+      };
+      const updatedStudent = {
+        ...existingStudent,
+        user: { ...existingStudent.user, name: 'New Name' },
+      };
+
+      (prisma.student.findUnique as jest.Mock).mockResolvedValue(
+        existingStudent,
+      );
+      (prisma.user.findFirst as jest.Mock).mockResolvedValue(null);
+      (prisma.student.update as jest.Mock).mockResolvedValue(updatedStudent);
+      (prisma.enrollment.upsert as jest.Mock).mockResolvedValue({});
+      (prisma.student.findUniqueOrThrow as jest.Mock).mockResolvedValue(
+        updatedStudent,
+      );
+      (academicYearContext.getActiveId as jest.Mock).mockResolvedValue(
+        'active-year-id',
+      );
+      jest
+        .spyOn(studentFormatter, 'formatStudent')
+        .mockReturnValue(updatedStudent as any);
+
+      const result = await service.update('student-1', {
+        name: 'New Name',
+        classId: 'class-1',
+      } as any);
+
+      expect(result).toEqual(updatedStudent);
+      expect(academicYearContext.getActiveId).toHaveBeenCalled();
+      expect(prisma.enrollment.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            studentId_academicYearId: {
+              studentId: 'student-1',
+              academicYearId: 'active-year-id',
+            },
+          },
+          update: {
+            classId: 'class-1',
+          },
+          create: {
+            studentId: 'student-1',
+            classId: 'class-1',
+            academicYearId: 'active-year-id',
+          },
+        }),
+      );
+    });
+
+    it('updates email and preserves unchanged optional fields', async () => {
+      const existingStudent = {
+        id: 'student-1',
+        userId: 'user-1',
+        user: {
+          id: 'user-1',
+          name: 'Old Name',
+          email: 'old@student.com',
+          image: 'http://example.com/old-image.png',
+        },
+        phone: '1234567890',
+        address: '123 Old St',
+        dateOfBirth: new Date('2005-01-01'),
+      };
+      const updatedStudent = {
+        ...existingStudent,
+        user: { ...existingStudent.user, email: 'new@student.com' },
+      };
+
+      (prisma.student.findUnique as jest.Mock).mockResolvedValue(
+        existingStudent,
+      );
+      (prisma.user.findFirst as jest.Mock).mockResolvedValue(null);
+      (prisma.student.update as jest.Mock).mockResolvedValue(updatedStudent);
+      (prisma.student.findUniqueOrThrow as jest.Mock).mockResolvedValue(
+        updatedStudent,
+      );
+      jest
+        .spyOn(studentFormatter, 'formatStudent')
+        .mockReturnValue(updatedStudent as any);
+
+      const result = await service.update('student-1', {
+        email: 'new@student.com',
+      } as any);
+
+      expect(result).toEqual(updatedStudent);
+      expect(prisma.student.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'student-1' },
+          data: expect.objectContaining({
+            user: expect.objectContaining({
+              email: 'new@student.com',
+              image: undefined,
+            }),
+            address: undefined,
+            dateOfBirth: undefined,
           }),
         }),
       );

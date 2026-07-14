@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { CloudinaryService } from '../../integrations/cloudinary/cloudinary.service.js';
-import { TeachersService } from './teachers.service';
+import { TeachersService } from './teachers.service.js';
 
 describe('TeachersService', () => {
   let service: TeachersService;

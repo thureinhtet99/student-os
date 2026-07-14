@@ -286,13 +286,16 @@ export class StudentsService {
       );
     }
 
-    const academicYearId =
-      updateStudentDto.academicYearId ??
-      (await this.academicYearContext.getActiveId());
     const classId =
       updateStudentDto.classId === undefined
         ? undefined
         : updateStudentDto.classId?.trim() || null;
+
+    const academicYearId =
+      updateStudentDto.academicYearId ??
+      (classId !== undefined
+        ? await this.academicYearContext.getActiveId()
+        : undefined);
 
     const student = await this.prisma.$transaction(async (tx) => {
       await tx.student.update({
@@ -301,7 +304,6 @@ export class StudentsService {
           user: {
             update: {
               email: updateStudentDto.email?.trim(),
-              // role: updateStudentDto.role,
               name: updateStudentDto.name?.trim(),
               image:
                 updateStudentDto.image === undefined
@@ -309,7 +311,10 @@ export class StudentsService {
                   : resolveImageUrl(updateStudentDto.image, this.cloudinary),
             },
           },
-          phone: updateStudentDto.phone?.trim(),
+          phone:
+            updateStudentDto.phone === undefined
+              ? undefined
+              : updateStudentDto.phone?.trim() || null,
           address:
             updateStudentDto.address === undefined
               ? undefined
@@ -405,8 +410,18 @@ export class StudentsService {
       }
     }
 
-    // Delete user which will cascade delete the student
-    await this.prisma.user.delete({ where: { id: existingStudent.userId } });
+    await this.prisma.$transaction([
+      this.prisma.parentStudent.deleteMany({
+        where: { studentId: id },
+      }),
+      this.prisma.enrollment.deleteMany({
+        where: { studentId: id },
+      }),
+      this.prisma.account.deleteMany({
+        where: { userId: existingStudent.userId },
+      }),
+      this.prisma.user.delete({ where: { id: existingStudent.userId } }),
+    ]);
 
     return { message: 'Student deleted successfully' };
   }
