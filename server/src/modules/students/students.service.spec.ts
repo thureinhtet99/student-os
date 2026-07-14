@@ -84,6 +84,8 @@ describe('StudentsService', () => {
         email: 'test@student.com',
         password: 'password123',
         gender: 'MALE',
+        parentName: 'Test Parent',
+        academicYearId: 'year-123',
       };
 
       const mockUser = {
@@ -137,6 +139,7 @@ describe('StudentsService', () => {
         academicYearId: 'provided-year-id',
         classId: 'class-1',
         gender: 'MALE',
+        parentName: 'Test Parent 2',
       };
 
       const mockUser = {

@@ -1,5 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { UserGender } from '../../../../prisma/generated/prisma/client';
+import {
+  ParentRelationship,
+  UserGender,
+} from '../../../../prisma/generated/prisma/client';
 
 export class StudentResponseDto {
   @ApiProperty({ type: String, example: 'studentid123' })
@@ -46,18 +49,37 @@ export class StudentResponseDto {
   dateOfBirth?: string | null;
 
   @ApiPropertyOptional({
-    type: String,
-    example: 'parentId123',
+    enum: ParentRelationship,
+    example: 'GUARDIAN',
     nullable: true,
   })
-  parentId?: string | null;
+  parent_student_relationship?: ParentRelationship | null;
+
+  @ApiPropertyOptional({
+    type: Object,
+    example: {
+      name: 'John Doe Sr.',
+      phone: '1234567890',
+      address: '123 Main St',
+    },
+    nullable: true,
+  })
+  parent?: {
+    name: string;
+    phone?: string | null;
+    address?: string | null;
+  } | null;
 
   @ApiPropertyOptional({
     type: String,
-    example: 'classId123',
+    example: {
+      name: 'Grade 10',
+    },
     nullable: true,
   })
-  classId?: string | null;
+  class?: {
+    name: string;
+  } | null;
 
   @ApiPropertyOptional({
     type: String,

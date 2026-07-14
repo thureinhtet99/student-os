@@ -19,6 +19,22 @@ import { QueryStudentDto } from './dto/query-student-dto.js';
 import { StudentResponseDto } from './dto/student-response.dto.js';
 import { UpdateStudentDto } from './dto/update-student.dto.js';
 
+type StudentCreateResult = Prisma.StudentGetPayload<{
+  include: {
+    user: true;
+    parents: {
+      include: {
+        parent: true;
+      };
+    };
+    enrollments: {
+      include: {
+        class: true;
+      };
+    };
+  };
+}>;
+
 @Injectable()
 export class StudentsService {
   private readonly logger = new Logger(StudentsService.name);
@@ -41,8 +57,9 @@ export class StudentsService {
       image,
       gender,
       dateOfBirth,
-      classId,
-      parentId,
+      parent,
+      parent_student_relationship,
+      class: studentClass,
     } = createStudentDto;
 
     await checkDuplicate(
@@ -75,76 +92,88 @@ export class StudentsService {
     const hashedPwd = await hashPassword(password);
     const userId = randomUUID();
 
-    const student = await this.prisma.$transaction(async (tx) => {
-      const createdUser = await tx.user.create({
-        data: {
-          id: userId,
-          email: email.trim(),
-          name: name.trim(),
-          role: UserRole.STUDENT,
-          image: imageUrl,
-          accounts: {
-            create: {
-              id: randomUUID(),
-              accountId: userId,
-              providerId: 'credential',
-              password: hashedPwd,
+    const student = await this.prisma.$transaction(
+      async (tx): Promise<StudentCreateResult> => {
+        const createdUser = await tx.user.create({
+          data: {
+            id: userId,
+            email: email.trim(),
+            name: name.trim(),
+            role: UserRole.STUDENT,
+            image: imageUrl,
+            accounts: {
+              create: {
+                id: randomUUID(),
+                accountId: userId,
+                providerId: 'credential',
+                password: hashedPwd,
+              },
             },
           },
-        },
-      });
+        });
 
-      const studentId = `STU-${createdUser.id.slice(-12)}`;
+        const studentId = `STU-${createdUser.id.slice(-12)}`;
 
-      const academicYearId =
-        createStudentDto.academicYearId ??
-        (await this.academicYearContext.getActiveId());
+        const academicYearId =
+          createStudentDto.academicYearId ??
+          (await this.academicYearContext.getActiveId());
 
-      return tx.student.create({
-        data: {
-          studentNumber: studentId,
-          userId: createdUser.id,
-          phone,
-          address,
-          gender,
-          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-          ...(classId &&
-            academicYearId && {
-              enrollments: {
+        return tx.student.create({
+          data: {
+            studentNumber: studentId,
+            userId: createdUser.id,
+            phone,
+            address,
+            gender,
+            dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+            ...(studentClass &&
+              academicYearId && {
+                enrollments: {
+                  create: {
+                    class: {
+                      create: { name: studentClass.name },
+                    },
+                    academicYear: {
+                      connect: { id: academicYearId },
+                    },
+                  },
+                },
+              }),
+            ...(parent && {
+              parents: {
                 create: {
-                  classId,
-                  academicYearId,
+                  relationship:
+                    parent_student_relationship ?? ParentRelationship.GUARDIAN,
+                  parent: {
+                    create: {
+                      name: parent.name,
+                      phone: parent.phone,
+                      address: parent.address,
+                    },
+                  },
                 },
               },
             }),
-          ...(parentId && {
+          },
+          include: {
+            user: true,
             parents: {
-              create: {
-                parentId: parentId,
-                relationship: ParentRelationship.GUARDIAN,
+              include: {
+                parent: true,
               },
             },
-          }),
-        },
-        include: {
-          user: true,
-          parents: {
-            include: {
-              parent: { select: { id: true } },
+            enrollments: {
+              include: {
+                class: true,
+              },
             },
           },
-          enrollments: {
-            include: {
-              class: { select: { id: true } },
-            },
-          },
-        },
-      });
-    });
+        });
+      },
+    );
 
     return formatStudent(student);
   }
-
   async findAll(
     queryStudentDto: QueryStudentDto,
   ): Promise<PaginatedResponseDto<StudentResponseDto>> {
@@ -191,12 +220,12 @@ export class StudentsService {
         user: true,
         parents: {
           include: {
-            parent: { select: { id: true } },
+            parent: true,
           },
         },
         enrollments: {
           include: {
-            class: { select: { id: true } },
+            class: { select: { id: true, name: true } },
           },
         },
       },
@@ -220,7 +249,7 @@ export class StudentsService {
         user: true,
         parents: {
           include: {
-            parent: { select: { id: true } },
+            parent: true,
           },
         },
         enrollments: {
@@ -298,6 +327,56 @@ export class StudentsService {
         : undefined);
 
     const student = await this.prisma.$transaction(async (tx) => {
+      if (updateStudentDto.parentName !== undefined) {
+        const existingParentStudent = await tx.parentStudent.findFirst({
+          where: { studentId: id, relationship: ParentRelationship.GUARDIAN },
+        });
+
+        if (updateStudentDto.parentName) {
+          if (existingParentStudent) {
+            await tx.parent.update({
+              where: { id: existingParentStudent.parentId },
+              data: {
+                name: updateStudentDto.parentName,
+                phone:
+                  updateStudentDto.parentPhone !== undefined
+                    ? updateStudentDto.parentPhone
+                    : undefined,
+                address:
+                  updateStudentDto.parentAddress !== undefined
+                    ? updateStudentDto.parentAddress
+                    : undefined,
+              },
+            });
+          } else {
+            await tx.parentStudent.create({
+              data: {
+                student: { connect: { id } },
+                relationship: ParentRelationship.GUARDIAN,
+                parent: {
+                  create: {
+                    name: updateStudentDto.parentName,
+                    phone: updateStudentDto.parentPhone,
+                    address: updateStudentDto.parentAddress,
+                  },
+                },
+              },
+            });
+          }
+        } else if (
+          updateStudentDto.parentName === null ||
+          updateStudentDto.parentName === ''
+        ) {
+          if (existingParentStudent) {
+            await tx.parentStudent.delete({
+              where: { id: existingParentStudent.id },
+            });
+            await tx.parent.delete({
+              where: { id: existingParentStudent.parentId },
+            });
+          }
+        }
+      }
       await tx.student.update({
         where: { id },
         data: {
@@ -328,19 +407,6 @@ export class StudentsService {
           gender: updateStudentDto.gender
             ? formatGender(updateStudentDto.gender)
             : undefined,
-          ...(updateStudentDto.parentId !== undefined && {
-            parents: updateStudentDto.parentId
-              ? {
-                  deleteMany: {},
-                  create: {
-                    parentId: updateStudentDto.parentId,
-                    relationship: 'GUARDIAN',
-                  },
-                }
-              : {
-                  deleteMany: {},
-                },
-          }),
         },
       });
 
@@ -378,7 +444,7 @@ export class StudentsService {
           user: true,
           parents: {
             include: {
-              parent: { select: { id: true } },
+              parent: true,
             },
           },
           enrollments: {
@@ -410,9 +476,17 @@ export class StudentsService {
       }
     }
 
+    const parentStudents = await this.prisma.parentStudent.findMany({
+      where: { studentId: id },
+    });
+    const parentIds = parentStudents.map((ps) => ps.parentId);
+
     await this.prisma.$transaction([
       this.prisma.parentStudent.deleteMany({
         where: { studentId: id },
+      }),
+      this.prisma.parent.deleteMany({
+        where: { id: { in: parentIds } },
       }),
       this.prisma.enrollment.deleteMany({
         where: { studentId: id },

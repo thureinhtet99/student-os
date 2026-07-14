@@ -35,8 +35,14 @@ export async function seedStudents(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
-        parentId: null,
-        classId: null,
+        parent: {
+          name: 'parent-1',
+          phone: '123123123',
+          address: 'Yangon',
+        },
+        class: {
+          name: 'class-1',
+        },
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -48,8 +54,14 @@ export async function seedStudents(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
-        parentId: null,
-        classId: null,
+        parent: {
+          name: 'parent-1',
+          phone: '123123123',
+          address: 'Yangon',
+        },
+        class: {
+          name: 'class-1',
+        },
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -61,8 +73,14 @@ export async function seedStudents(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
-        parentId: null,
-        classId: null,
+        parent: {
+          name: 'parent-1',
+          phone: '123123123',
+          address: 'Yangon',
+        },
+        class: {
+          name: 'class-1',
+        },
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -74,8 +92,14 @@ export async function seedStudents(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
-        parentId: null,
-        classId: null,
+        parent: {
+          name: 'parent-1',
+          phone: '123123123',
+          address: 'Yangon',
+        },
+        class: {
+          name: 'class-1',
+        },
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -87,8 +111,14 @@ export async function seedStudents(appContext: INestApplicationContext) {
         address: null,
         dateOfBirth: null,
         image: null,
-        parentId: null,
-        classId: null,
+        parent: {
+          name: 'parent-1',
+          phone: '123123123',
+          address: 'Yangon',
+        },
+        class: {
+          name: 'class-1',
+        },
         academicYearId: effectiveAcademicYearId,
       },
     ];

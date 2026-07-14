@@ -17,7 +17,6 @@ import { AuthModule as LocalAuthModule } from './modules/auth/auth.module.js';
 import { ClassesModule } from './modules/classes/classes.module';
 import { EnrollmentsModule } from './modules/enrollments/enrollments.module.js';
 import { ExamsModule } from './modules/exams/exams.module';
-import { ParentsModule } from './modules/parents/parents.module';
 import { ResultsModule } from './modules/results/results.module';
 import { StudentsModule } from './modules/students/students.module';
 import { SubjectsModule } from './modules/subjects/subjects.module';
@@ -59,7 +58,6 @@ const rateLimiter = rateLimit({
     StudentsModule,
     AcademicYearsModule,
     ClassesModule,
-    ParentsModule,
     TeachersModule,
     AdminsModule,
     SubjectsModule,

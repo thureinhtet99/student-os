@@ -15,8 +15,19 @@ export function formatStudent(
     address: student.address,
     gender: student.gender,
     dateOfBirth: student.dateOfBirth ? student.dateOfBirth.toISOString() : null,
-    parentId: student.parents?.[0]?.parent?.id ?? null,
-    classId: student.enrollments?.[0]?.class?.id ?? null,
+    parent_student_relationship: student.parents?.[0]?.relationship ?? null,
+    parent: student.parents?.[0]?.parent
+      ? {
+          name: student.parents[0].parent.name,
+          phone: student.parents[0].parent.phone,
+          address: student.parents[0].parent.address,
+        }
+      : null,
+    class: student.enrollments?.[0]?.class
+      ? {
+          name: student.enrollments?.[0].class.name,
+        }
+      : null,
     setPasswordToken: student.user.setPasswordToken,
     setPasswordTokenExpires: student.user.setPasswordTokenExpires ?? null,
     resetPasswordToken: student.user.resetPasswordToken,
