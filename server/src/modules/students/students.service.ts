@@ -29,7 +29,7 @@ type StudentCreateResult = Prisma.StudentGetPayload<{
     };
     enrollments: {
       include: {
-        class: true;
+        class: { select: { id: true; name: true; deletedAt: true } };
       };
     };
   };
@@ -164,7 +164,7 @@ export class StudentsService {
             },
             enrollments: {
               include: {
-                class: true,
+                class: { select: { id: true, name: true, deletedAt: true } },
               },
             },
           },
@@ -225,7 +225,7 @@ export class StudentsService {
         },
         enrollments: {
           include: {
-            class: { select: { id: true, name: true } },
+            class: { select: { id: true, name: true, deletedAt: true } },
           },
         },
       },
@@ -254,7 +254,7 @@ export class StudentsService {
         },
         enrollments: {
           include: {
-            class: { select: { id: true } },
+            class: { select: { id: true, name: true, deletedAt: true } },
           },
         },
       },
@@ -449,7 +449,9 @@ export class StudentsService {
           },
           enrollments: {
             include: {
-              class: { select: { id: true } },
+              class: {
+                select: { id: true, name: true, deletedAt: true },
+              },
             },
           },
         },
