@@ -3,7 +3,11 @@ import { IsOptional, IsString } from 'class-validator';
 import { CreateUserDto } from '../../../common/dto/create-user.dto.js';
 
 export class UpdateStudentDto extends PartialType(CreateUserDto) {
-  @ApiPropertyOptional({ type: String, example: 'John Doe Sr.', nullable: true })
+  @ApiPropertyOptional({
+    type: String,
+    example: 'John Doe Sr.',
+    nullable: true,
+  })
   @IsString()
   @IsOptional()
   parentName?: string | null;

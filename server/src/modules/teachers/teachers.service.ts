@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { hashPassword } from 'better-auth/crypto';
 import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatTeacher } from '../../common/formatters/teacher.formatter.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
@@ -14,6 +15,18 @@ import { QueryTeacherDto } from './dto/query-teacher-dto.js';
 import { TeacherResponseDto } from './dto/teacher-response.dto.js';
 import { UpdateTeacherDto } from './dto/update-teacher.dto.js';
 
+type TeacherCreateResult = Prisma.TeacherGetPayload<{
+  include: {
+    user: true;
+    teachingAllocations: {
+      include: {
+        class: true;
+        subject: true;
+      };
+    };
+  };
+}>;
+
 @Injectable()
 export class TeachersService {
   private readonly logger = new Logger(TeachersService.name);
@@ -21,6 +34,7 @@ export class TeachersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinary: CloudinaryService,
+    private readonly academicYearContext: AcademicYearContextService,
   ) {}
 
   async create(
@@ -54,48 +68,70 @@ export class TeachersService {
       );
     }
 
+    const imageUrl = resolveImageUrl(image, this.cloudinary);
     const hashedPwd = await hashPassword(password);
     const userId = randomUUID();
-    const imageUrl = resolveImageUrl(image, this.cloudinary);
 
-    const teacher = await this.prisma.$transaction(async (tx) => {
-      const createdUser = await tx.user.create({
-        data: {
-          id: userId,
-          email: email.trim(),
-          name: name.trim(),
-          role: UserRole.TEACHER,
-          image: imageUrl,
-          accounts: {
-            create: {
-              id: randomUUID(),
-              accountId: userId,
-              providerId: 'credential',
-              password: hashedPwd,
+    const teacher = await this.prisma.$transaction(
+      async (tx): Promise<TeacherCreateResult> => {
+        const createdUser = await tx.user.create({
+          data: {
+            id: userId,
+            email: email.trim(),
+            name: name.trim(),
+            role: UserRole.TEACHER,
+            image: imageUrl,
+            accounts: {
+              create: {
+                id: randomUUID(),
+                accountId: userId,
+                providerId: 'credential',
+                password: hashedPwd,
+              },
             },
           },
-        },
-      });
+        });
 
-      const teacherId = `TCH-${createdUser.id.slice(-12)}`;
+        const teacherId = `TCH-${createdUser.id.slice(-12)}`;
 
-      return tx.teacher.create({
-        data: {
-          employeeCode: teacherId,
-          userId: createdUser.id,
-          gender,
-        },
-        include: {
-          user: true,
-          teachingAllocations: {
-            include: {
-              class: true,
-              subject: true,
+        const academicYearId =
+          createTeacherDto.academicYearId ??
+          (await this.academicYearContext.getActiveId());
+
+        return tx.teacher.create({
+          data: {
+            employeeCode: teacherId,
+            userId: createdUser.id,
+            phone: createTeacherDto.phone,
+            address: createTeacherDto.address,
+            gender,
+            dateOfBirth: createTeacherDto.dateOfBirth
+              ? new Date(createTeacherDto.dateOfBirth)
+              : null,
+            ...(createTeacherDto.classId &&
+              createTeacherDto.subjectId &&
+              academicYearId && {
+                teachingAllocations: {
+                  create: {
+                    classId: createTeacherDto.classId,
+                    subjectId: createTeacherDto.subjectId,
+                    academicYearId,
+                  },
+                },
+              }),
+          },
+          include: {
+            user: true,
+            teachingAllocations: {
+              include: {
+                class: true,
+                subject: true,
+              },
             },
           },
-        },
-      });
-    });
+        });
+      },
+    );
 
     return formatTeacher(teacher);
   }
@@ -103,11 +139,19 @@ export class TeachersService {
   async findAll(
     queryTeacherDto: QueryTeacherDto,
   ): Promise<PaginatedResponseDto<TeacherResponseDto>> {
-    const { filter, search, page = 1, limit = 10 } = queryTeacherDto;
+    const { classId, gender, search, page = 1, limit = 10 } = queryTeacherDto;
 
     const where: Prisma.TeacherWhereInput = {};
 
-    if (filter) where.gender = filter;
+    if (classId) {
+      where.teachingAllocations = {
+        some: {
+          classId,
+        },
+      };
+    }
+
+    if (gender) where.gender = gender;
 
     if (search) {
       where.OR = [
@@ -204,7 +248,7 @@ export class TeachersService {
 
     if (
       updateTeacherDto.phone &&
-      existingTeacher.phone !== updateTeacherDto.phone?.trim()
+      existingTeacher.phone !== updateTeacherDto.phone.trim()
     ) {
       await checkDuplicate(
         this.prisma.teacher,
@@ -215,43 +259,90 @@ export class TeachersService {
       );
     }
 
-    const teacher = await this.prisma.teacher.update({
-      where: { id },
-      data: {
-        user: {
-          update: {
-            email: updateTeacherDto.email?.trim(),
-            name: updateTeacherDto.name?.trim(),
-            image:
-              updateTeacherDto.image === undefined
-                ? undefined
-                : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
+    const classId =
+      updateTeacherDto.classId === undefined
+        ? undefined
+        : updateTeacherDto.classId?.trim() || null;
+
+    const subjectId =
+      updateTeacherDto.subjectId === undefined
+        ? undefined
+        : updateTeacherDto.subjectId?.trim() || null;
+
+    const academicYearId =
+      updateTeacherDto.academicYearId ??
+      (classId !== undefined
+        ? await this.academicYearContext.getActiveId()
+        : undefined);
+
+    const teacher = await this.prisma.$transaction(async (tx) => {
+      await tx.teacher.update({
+        where: { id },
+        data: {
+          user: {
+            update: {
+              email: updateTeacherDto.email?.trim(),
+              name: updateTeacherDto.name?.trim(),
+              image:
+                updateTeacherDto.image === undefined
+                  ? undefined
+                  : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
+            },
+          },
+          phone:
+            updateTeacherDto.phone === undefined
+              ? undefined
+              : updateTeacherDto.phone?.trim() || null,
+          address:
+            updateTeacherDto.address === undefined
+              ? undefined
+              : updateTeacherDto.address?.trim() || null,
+          dateOfBirth:
+            updateTeacherDto.dateOfBirth === undefined
+              ? undefined
+              : updateTeacherDto.dateOfBirth
+                ? new Date(updateTeacherDto.dateOfBirth)
+                : null,
+          gender: updateTeacherDto.gender
+            ? formatGender(updateTeacherDto.gender)
+            : undefined,
+        },
+      });
+
+      if (classId !== undefined && subjectId !== undefined && academicYearId) {
+        if (classId && subjectId) {
+          await tx.teachingAllocation.upsert({
+            where: {
+              teacherId_subjectId_classId_academicYearId: {
+                teacherId: id,
+                subjectId,
+                classId,
+                academicYearId,
+              },
+            },
+            update: {},
+            create: {
+              teacherId: id,
+              subjectId,
+              classId,
+              academicYearId,
+            },
+          });
+        }
+      }
+
+      return tx.teacher.findUniqueOrThrow({
+        where: { id },
+        include: {
+          user: true,
+          teachingAllocations: {
+            include: {
+              class: true,
+              subject: true,
+            },
           },
         },
-        phone: updateTeacherDto.phone?.trim(),
-        address:
-          updateTeacherDto.address === undefined
-            ? undefined
-            : updateTeacherDto.address?.trim() || null,
-        dateOfBirth:
-          updateTeacherDto.dateOfBirth === undefined
-            ? undefined
-            : updateTeacherDto.dateOfBirth
-              ? new Date(updateTeacherDto.dateOfBirth)
-              : null,
-        gender: updateTeacherDto.gender
-          ? formatGender(updateTeacherDto.gender)
-          : undefined,
-      },
-      include: {
-        user: true,
-        teachingAllocations: {
-          include: {
-            class: true,
-            subject: true,
-          },
-        },
-      },
+      });
     });
 
     return formatTeacher(teacher);
@@ -274,8 +365,15 @@ export class TeachersService {
       }
     }
 
-    // Delete user which will cascade delete the teacher
-    await this.prisma.user.delete({ where: { id: existingTeacher.userId } });
+    await this.prisma.$transaction([
+      this.prisma.teachingAllocation.deleteMany({
+        where: { teacherId: id },
+      }),
+      this.prisma.account.deleteMany({
+        where: { userId: existingTeacher.userId },
+      }),
+      this.prisma.user.delete({ where: { id: existingTeacher.userId } }),
+    ]);
 
     return { message: 'Teacher deleted successfully' };
   }

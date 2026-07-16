@@ -101,6 +101,7 @@ model Teacher {
   address             String?
   gender              UserGender
   dateOfBirth         DateTime?
+  // joinDate            DateTime?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   teachingAllocations TeachingAllocation[]

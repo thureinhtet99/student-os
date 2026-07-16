@@ -8,6 +8,6 @@ import { TeachersService } from './teachers.service.js';
   imports: [PrismaModule],
   controllers: [TeachersController],
   providers: [TeachersService, CloudinaryService],
-  exports: [TeachersService],
+  // exports: [TeachersService],
 })
 export class TeachersModule {}

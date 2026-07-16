@@ -1,37 +1,107 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { UserGender } from '../../../../prisma/generated/prisma/client.js';
+import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto.js';
 
 export class TeacherResponseDto {
-  @ApiProperty({ example: 'ckx123userid' })
+  @ApiProperty({ type: String, example: 'teacherid123' })
   id!: string;
 
-  @ApiProperty({ example: 'TCH-12345' })
-  teacherId!: string;
+  @ApiProperty({ type: String, example: 'user123' })
+  userId!: string;
 
-  @ApiProperty({ example: 'John Doe' })
+  @ApiProperty({ type: String, example: 'John Doe' })
   name!: string;
 
-  @ApiProperty({ example: 'john.doe@example.com' })
+  @ApiProperty({ type: String, example: 'john.doe@example.com' })
   email!: string;
 
-  @ApiProperty({ example: 'http://example.com/image.png', nullable: true })
-  image!: string | null;
+  @ApiProperty({ type: String, example: 'TCH-12345' })
+  employeeCode!: string;
 
-  @ApiProperty({ type: [TeachingAllocationDto] })
+  @ApiPropertyOptional({
+    type: String,
+    example: 'http://example.com/image.png',
+    nullable: true,
+  })
+  image?: string | null;
+
+  @ApiPropertyOptional({ type: String, example: '1234567890', nullable: true })
+  phone?: string | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: '123 Main St, Anytown',
+    nullable: true,
+  })
+  address?: string | null;
+
+  @ApiProperty({ enum: UserGender, example: UserGender.MALE })
+  gender!: UserGender;
+
+  @ApiPropertyOptional({
+    example: '2005-08-24T00:00:00.000Z',
+    type: String,
+    nullable: true,
+  })
+  dateOfBirth?: string | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: 'classId123',
+    nullable: true,
+  })
+  classId?: string | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: 'subjectId123',
+    nullable: true,
+  })
+  subjectId?: string | null;
+
+  @ApiPropertyOptional({ type: String, example: 'academicYearId' })
+  academicYearId?: string;
+
+  @ApiPropertyOptional({ type: [TeachingAllocationDto] })
   teachingAllocations?: TeachingAllocationDto[];
 
-  @ApiProperty({ nullable: true })
-  setPasswordToken!: string | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: 'setPasswordToken123',
+    nullable: true,
+    readOnly: true,
+  })
+  setPasswordToken?: string | null;
 
-  @ApiProperty({ nullable: true })
-  setPasswordTokenExpires!: Date | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: '2005-08-24T00:00:00.000Z',
+    nullable: true,
+    readOnly: true,
+  })
+  setPasswordTokenExpires?: Date | null;
 
-  @ApiProperty({ nullable: true })
-  resetPasswordToken!: string | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: 'resetPasswordToken123',
+    nullable: true,
+    readOnly: true,
+  })
+  resetPasswordToken?: string | null;
 
-  @ApiProperty({ nullable: true })
-  resetPasswordTokenExpires!: Date | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: '2005-08-24T00:00:00.000Z',
+    nullable: true,
+    readOnly: true,
+  })
+  resetPasswordTokenExpires?: Date | null;
 
-  @ApiProperty({ nullable: true })
-  lastLoginAt!: Date | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: '2005-08-24T00:00:00.000Z',
+    nullable: true,
+    readOnly: true,
+  })
+  lastLoginAt?: Date | null;
 }
