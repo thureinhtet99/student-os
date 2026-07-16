@@ -5,27 +5,27 @@ import { CreateTeacherDto } from './create-teacher.dto.js';
 export class UpdateTeacherDto extends PartialType(CreateTeacherDto) {
   @ApiPropertyOptional({
     type: String,
-    example: 'classId123',
+    example: { name: 'Grade-10' },
     nullable: true,
   })
   @IsString()
   @IsOptional()
-  classId?: string | null;
+  class?: {
+    name: string;
+  } | null;
 
   @ApiPropertyOptional({
     type: String,
-    example: 'subjectId123',
+    example: 'English',
     nullable: true,
   })
   @IsString()
   @IsOptional()
-  subjectId?: string | null;
+  subject?: {
+    name: string;
+  } | null;
 
-  @ApiPropertyOptional({
-    type: String,
-    example: 'academicYearId',
-    nullable: true,
-  })
+  @ApiPropertyOptional({ type: String, example: 'academicYearId' })
   @IsString()
   @IsOptional()
   academicYearId?: string;

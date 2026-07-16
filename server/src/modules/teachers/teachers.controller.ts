@@ -27,8 +27,8 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto.js';
 import { TeachersService } from './teachers.service.js';
 
 @ApiTags('Teachers')
-@Controller('teachers')
 @Roles(ADMIN_ROLES)
+@Controller('teachers')
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 

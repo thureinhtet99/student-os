@@ -83,6 +83,13 @@ export class StudentResponseDto {
 
   @ApiPropertyOptional({
     type: String,
+    example: 'academicYearId123',
+    nullable: true,
+  })
+  academicYearId?: string | null;
+
+  @ApiPropertyOptional({
+    type: String,
     example: 'setPasswordToken123',
     nullable: true,
     readOnly: true,

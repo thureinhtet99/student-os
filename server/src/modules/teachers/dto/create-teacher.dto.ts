@@ -5,21 +5,25 @@ import { CreateUserDto } from '../../../common/dto/create-user.dto.js';
 export class CreateTeacherDto extends CreateUserDto {
   @ApiPropertyOptional({
     type: String,
-    example: 'classId123',
+    example: { name: 'Grade-10' },
     nullable: true,
   })
   @IsString()
   @IsOptional()
-  classId?: string | null;
+  class?: {
+    name: string;
+  } | null;
 
   @ApiPropertyOptional({
     type: String,
-    example: 'subjectId123',
+    example: 'English',
     nullable: true,
   })
   @IsString()
   @IsOptional()
-  subjectId?: string | null;
+  subject?: {
+    name: string;
+  } | null;
 
   @ApiPropertyOptional({ type: String, example: 'academicYearId' })
   @IsString()

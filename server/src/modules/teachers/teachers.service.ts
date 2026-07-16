@@ -40,7 +40,18 @@ export class TeachersService {
   async create(
     createTeacherDto: CreateTeacherDto,
   ): Promise<TeacherResponseDto> {
-    const { email, password, name, image, gender } = createTeacherDto;
+    const {
+      email,
+      password,
+      name,
+      image,
+      gender,
+      dateOfBirth,
+      address,
+      class: teacherClass,
+      phone,
+      subject,
+    } = createTeacherDto;
 
     await checkDuplicate(
       this.prisma.user,
@@ -93,7 +104,6 @@ export class TeachersService {
         });
 
         const teacherId = `TCH-${createdUser.id.slice(-12)}`;
-
         const academicYearId =
           createTeacherDto.academicYearId ??
           (await this.academicYearContext.getActiveId());
@@ -102,23 +112,34 @@ export class TeachersService {
           data: {
             employeeCode: teacherId,
             userId: createdUser.id,
-            phone: createTeacherDto.phone,
-            address: createTeacherDto.address,
+            phone: phone,
+            address: address,
             gender,
-            dateOfBirth: createTeacherDto.dateOfBirth
-              ? new Date(createTeacherDto.dateOfBirth)
-              : null,
-            ...(createTeacherDto.classId &&
-              createTeacherDto.subjectId &&
+            dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+            ...(teacherClass &&
               academicYearId && {
-                teachingAllocations: {
+                enrollments: {
                   create: {
-                    classId: createTeacherDto.classId,
-                    subjectId: createTeacherDto.subjectId,
-                    academicYearId,
+                    class: {
+                      create: { name: teacherClass.name },
+                    },
+                    academicYear: {
+                      connect: { id: academicYearId },
+                    },
                   },
                 },
               }),
+            ...(subject && {
+              subject: {
+                connectOrCreate: {
+                  where: { name: subject.name },
+                  create: { name: subject.name },
+                },
+              },
+            }),
+            academicYear: {
+              connect: { id: academicYearId },
+            },
           },
           include: {
             user: true,
@@ -259,22 +280,6 @@ export class TeachersService {
       );
     }
 
-    const classId =
-      updateTeacherDto.classId === undefined
-        ? undefined
-        : updateTeacherDto.classId?.trim() || null;
-
-    const subjectId =
-      updateTeacherDto.subjectId === undefined
-        ? undefined
-        : updateTeacherDto.subjectId?.trim() || null;
-
-    const academicYearId =
-      updateTeacherDto.academicYearId ??
-      (classId !== undefined
-        ? await this.academicYearContext.getActiveId()
-        : undefined);
-
     const teacher = await this.prisma.$transaction(async (tx) => {
       await tx.teacher.update({
         where: { id },
@@ -308,28 +313,6 @@ export class TeachersService {
             : undefined,
         },
       });
-
-      if (classId !== undefined && subjectId !== undefined && academicYearId) {
-        if (classId && subjectId) {
-          await tx.teachingAllocation.upsert({
-            where: {
-              teacherId_subjectId_classId_academicYearId: {
-                teacherId: id,
-                subjectId,
-                classId,
-                academicYearId,
-              },
-            },
-            update: {},
-            create: {
-              teacherId: id,
-              subjectId,
-              classId,
-              academicYearId,
-            },
-          });
-        }
-      }
 
       return tx.teacher.findUniqueOrThrow({
         where: { id },

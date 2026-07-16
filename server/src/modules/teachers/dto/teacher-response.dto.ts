@@ -1,6 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserGender } from '../../../../prisma/generated/prisma/client.js';
-import { TeachingAllocationDto } from '../../teaching-allocations/dto/teaching-allocation.dto.js';
 
 export class TeacherResponseDto {
   @ApiProperty({ type: String, example: 'teacherid123' })
@@ -45,25 +44,15 @@ export class TeacherResponseDto {
   })
   dateOfBirth?: string | null;
 
-  @ApiPropertyOptional({
-    type: String,
-    example: 'classId123',
-    nullable: true,
-  })
-  classId?: string | null;
+  // @ApiPropertyOptional({ type: [TeachingAllocationDto] })
+  // teachingAllocations?: TeachingAllocationDto[];
 
   @ApiPropertyOptional({
     type: String,
-    example: 'subjectId123',
+    example: 'academicYearId123',
     nullable: true,
   })
-  subjectId?: string | null;
-
-  @ApiPropertyOptional({ type: String, example: 'academicYearId' })
-  academicYearId?: string;
-
-  @ApiPropertyOptional({ type: [TeachingAllocationDto] })
-  teachingAllocations?: TeachingAllocationDto[];
+  academicYearId?: string | null;
 
   @ApiPropertyOptional({
     type: String,

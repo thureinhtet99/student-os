@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { ParentRelationship } from '../../../../prisma/generated/prisma/client.js';
 import { CreateUserDto } from '../../../common/dto/create-user.dto.js';
 
@@ -39,6 +39,6 @@ export class CreateStudentDto extends CreateUserDto {
 
   @ApiPropertyOptional({ type: String, example: 'academicYearId' })
   @IsString()
-  @IsNotEmpty()
-  academicYearId!: string;
+  @IsOptional()
+  academicYearId?: string;
 }
