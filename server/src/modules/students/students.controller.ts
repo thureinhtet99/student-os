@@ -8,7 +8,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import {
@@ -28,7 +33,7 @@ export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @ApiOperation({ summary: 'Create a student' })
-  @ApiOkResponse({ type: StudentResponseDto })
+  @ApiCreatedResponse({ type: StudentResponseDto })
   @Post()
   async create(
     @Body() createStudentDto: CreateStudentDto,

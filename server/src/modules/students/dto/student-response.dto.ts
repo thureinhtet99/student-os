@@ -1,60 +1,123 @@
-import { ApiProperty } from '@nestjs/swagger';
-
-class ParentDto {
-  @ApiProperty({ example: 'ckx123parentid' })
-  id!: string;
-  @ApiProperty({ example: 'Jane Doe' })
-  name!: string;
-}
-
-class ClassDto {
-  @ApiProperty({ example: 'ckx123classid' })
-  id!: string;
-
-  @ApiProperty({ example: 'Class 1' })
-  name!: string;
-}
-class EnrollmentDto {
-  @ApiProperty({ example: 'enrollmentid123' })
-  id!: string;
-}
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  ParentRelationship,
+  UserGender,
+} from '../../../../prisma/generated/prisma/client';
 
 export class StudentResponseDto {
-  @ApiProperty({ example: 'userid123' })
+  @ApiProperty({ type: String, example: 'studentid123' })
   id!: string;
 
-  @ApiProperty({ example: 'John Doe' })
+  @ApiProperty({ type: String, example: 'user123' })
+  userId!: string;
+
+  @ApiProperty({ type: String, example: 'John Doe' })
   name!: string;
 
-  @ApiProperty({ example: 'john@example.com' })
+  @ApiProperty({ type: String, example: 'john.doe@example.com' })
   email!: string;
 
-  @ApiProperty({ example: 'STU-12345' })
-  studentId!: string;
+  @ApiProperty({ type: String, example: 'STU-studentos123' })
+  studentNumber!: string;
 
-  @ApiProperty({ example: 'http://example.com/image.png', nullable: true })
-  image!: string | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: 'http://example.com/image.png',
+    nullable: true,
+  })
+  image?: string | null;
 
-  @ApiProperty({ type: ParentDto, nullable: true })
-  parent!: ParentDto | null;
+  @ApiPropertyOptional({ type: String, example: '1234567890', nullable: true })
+  phone?: string | null;
 
-  // @ApiProperty({ type: EnrollmentDto, nullable: true })
-  // enrollment!: EnrollmentDto | null;
-  @ApiProperty({ type: EnrollmentDto, nullable: true })
-  class!: ClassDto | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: '123 Main St, Anytown',
+    nullable: true,
+  })
+  address?: string | null;
 
-  @ApiProperty({ nullable: true })
-  setPasswordToken!: string | null;
+  @ApiProperty({ enum: UserGender, example: UserGender.MALE })
+  gender!: UserGender;
 
-  @ApiProperty({ nullable: true })
-  setPasswordTokenExpires!: Date | null;
+  @ApiPropertyOptional({
+    example: '2005-08-24T00:00:00.000Z',
+    type: String,
+    // format: 'date-time',
+    nullable: true,
+  })
+  dateOfBirth?: string | null;
 
-  @ApiProperty({ nullable: true })
-  resetPasswordToken!: string | null;
+  @ApiPropertyOptional({
+    enum: ParentRelationship,
+    example: 'GUARDIAN',
+    nullable: true,
+  })
+  parent_student_relationship?: ParentRelationship | null;
 
-  @ApiProperty({ nullable: true })
-  resetPasswordTokenExpires!: Date | null;
+  @ApiPropertyOptional({
+    type: Object,
+    example: {
+      name: 'John Doe Sr.',
+      phone: '1234567890',
+      address: '123 Main St',
+    },
+    nullable: true,
+  })
+  parent?: {
+    name: string;
+    phone?: string | null;
+    address?: string | null;
+  } | null;
 
-  @ApiProperty({ nullable: true })
-  lastLoginAt!: Date | null;
+  @ApiPropertyOptional({
+    type: String,
+    example: {
+      name: 'Grade 10',
+    },
+    nullable: true,
+  })
+  class?: {
+    name: string;
+  } | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: 'setPasswordToken123',
+    nullable: true,
+    readOnly: true,
+  })
+  setPasswordToken?: string | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: '2005-08-24T00:00:00.000Z',
+    nullable: true,
+    readOnly: true,
+  })
+  setPasswordTokenExpires?: Date | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: 'resetPasswordToken123',
+    nullable: true,
+    readOnly: true,
+  })
+  resetPasswordToken?: string | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: '2005-08-24T00:00:00.000Z',
+    nullable: true,
+    readOnly: true,
+  })
+  resetPasswordTokenExpires?: Date | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: '2005-08-24T00:00:00.000Z',
+    nullable: true,
+    readOnly: true,
+  })
+  lastLoginAt?: Date | null;
 }

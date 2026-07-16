@@ -1,7 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
-import { AcademicYearsService } from './academic-years.service';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
+import { AcademicYearsService } from './academic-years.service.js';
 
 describe('AcademicYearsService', () => {
   let service: AcademicYearsService;
@@ -40,6 +41,12 @@ describe('AcademicYearsService', () => {
         {
           provide: PrismaService,
           useValue: prisma,
+        },
+        {
+          provide: AcademicYearContextService,
+          useValue: {
+            getActiveId: jest.fn(),
+          },
         },
       ],
     }).compile();
