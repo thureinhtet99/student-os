@@ -267,6 +267,25 @@ export class TeachersService {
       );
     }
 
+    const classId =
+      updateTeacherDto.classId === undefined
+        ? undefined
+        : updateTeacherDto.classId?.trim() || null;
+
+    const subjectId =
+      updateTeacherDto.subjectId === undefined
+        ? undefined
+        : updateTeacherDto.subjectId?.trim() || null;
+
+    const shouldUpdateAllocation =
+      classId !== undefined || subjectId !== undefined;
+
+    const academicYearId =
+      updateTeacherDto.academicYearId ??
+      (shouldUpdateAllocation
+        ? await this.academicYearContext.getActiveId()
+        : undefined);
+
     const teacher = await this.prisma.$transaction(async (tx) => {
       await tx.teacher.update({
         where: { id },
@@ -300,6 +319,52 @@ export class TeachersService {
             : undefined,
         },
       });
+
+      if (shouldUpdateAllocation && academicYearId) {
+        const existingAllocation = await tx.teachingAllocation.findFirst({
+          where: { teacherId: id, academicYearId },
+        });
+
+        const resolvedClassId =
+          classId !== undefined
+            ? classId
+            : (existingAllocation?.classId ?? null);
+        const resolvedSubjectId =
+          subjectId !== undefined
+            ? subjectId
+            : (existingAllocation?.subjectId ?? null);
+
+        const isClearing =
+          classId === null ||
+          subjectId === null ||
+          (classId !== undefined && !resolvedClassId) ||
+          (subjectId !== undefined && !resolvedSubjectId);
+
+        if (isClearing) {
+          await tx.teachingAllocation.deleteMany({
+            where: { teacherId: id, academicYearId },
+          });
+        } else if (resolvedClassId && resolvedSubjectId) {
+          if (existingAllocation) {
+            await tx.teachingAllocation.update({
+              where: { id: existingAllocation.id },
+              data: {
+                classId: resolvedClassId,
+                subjectId: resolvedSubjectId,
+              },
+            });
+          } else {
+            await tx.teachingAllocation.create({
+              data: {
+                teacherId: id,
+                classId: resolvedClassId,
+                subjectId: resolvedSubjectId,
+                academicYearId,
+              },
+            });
+          }
+        }
+      }
 
       return tx.teacher.findUniqueOrThrow({
         where: { id },
