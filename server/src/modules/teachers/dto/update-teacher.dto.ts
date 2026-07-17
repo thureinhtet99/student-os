@@ -24,5 +24,5 @@ export class UpdateTeacherDto extends PartialType(CreateTeacherDto) {
   @ApiPropertyOptional({ type: String, example: 'academicYearId' })
   @IsString()
   @IsOptional()
-  academicYearId?: string;
+  academicYearId?: string | null;
 }

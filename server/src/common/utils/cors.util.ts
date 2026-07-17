@@ -1,7 +1,7 @@
 export function getAllowedOrigins(): string[] {
-  return (
-    process.env.ALLOWED_ORIGINS?.split(',')
-      .map((o) => o.trim())
-      .filter(Boolean) ?? ['http://localhost:3001']
-  );
+  const origins = process.env.ALLOWED_ORIGINS?.split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+  return origins?.length ? origins : ['http://localhost:3001'];
 }

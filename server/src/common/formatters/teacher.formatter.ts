@@ -1,10 +1,15 @@
 import { TeacherResponseDto } from '../../modules/teachers/dto/teacher-response.dto.js';
 import { TeacherWithRelations } from '../types/teacher.type.js';
+import { resolveTeachingAllocation } from '../utils/teaching-allocation.util.js';
 
 export function formatTeacher(
   teacher: TeacherWithRelations,
+  academicYearId?: string | null,
 ): TeacherResponseDto {
-  const firstAllocation = teacher.teachingAllocations?.[0];
+  const allocation = resolveTeachingAllocation(
+    teacher.teachingAllocations,
+    academicYearId,
+  );
 
   return {
     id: teacher.id,
@@ -17,15 +22,9 @@ export function formatTeacher(
     address: teacher.address,
     gender: teacher.gender,
     dateOfBirth: teacher.dateOfBirth ? teacher.dateOfBirth.toISOString() : null,
-    class: firstAllocation?.class ? { name: firstAllocation.class.name } : null,
-    subject: firstAllocation?.subject
-      ? { name: firstAllocation.subject.name }
-      : null,
-    academicYearId: firstAllocation?.academicYearId,
-    setPasswordToken: teacher.user.setPasswordToken,
-    setPasswordTokenExpires: teacher.user.setPasswordTokenExpires ?? null,
-    resetPasswordToken: teacher.user.resetPasswordToken,
-    resetPasswordTokenExpires: teacher.user.resetPasswordTokenExpires ?? null,
+    class: allocation?.class ? { name: allocation.class.name } : null,
+    subject: allocation?.subject ? { name: allocation.subject.name } : null,
+    academicYearId: allocation?.academicYearId ?? null,
     lastLoginAt: teacher.user.lastLoginAt,
   };
 }

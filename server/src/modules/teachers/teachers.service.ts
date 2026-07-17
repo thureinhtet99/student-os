@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { hashPassword } from 'better-auth/crypto';
 import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
@@ -83,6 +88,21 @@ export class TeachersService {
     const hashedPwd = await hashPassword(password);
     const userId = randomUUID();
 
+    const wantsAllocation = Boolean(
+      classId || subjectId || createTeacherDto.academicYearId,
+    );
+
+    if (wantsAllocation && (!classId || !subjectId)) {
+      throw new BadRequestException(
+        'classId and subjectId are required when creating a teaching allocation',
+      );
+    }
+
+    const academicYearId = wantsAllocation
+      ? (createTeacherDto.academicYearId ??
+        (await this.academicYearContext.getActiveId()))
+      : undefined;
+
     const teacher = await this.prisma.$transaction(
       async (tx): Promise<TeacherCreateResult> => {
         const createdUser = await tx.user.create({
@@ -104,9 +124,6 @@ export class TeachersService {
         });
 
         const teacherId = `TCH-${createdUser.id.slice(-12)}`;
-        const academicYearId =
-          createTeacherDto.academicYearId ??
-          (await this.academicYearContext.getActiveId());
 
         return tx.teacher.create({
           data: {
@@ -116,13 +133,12 @@ export class TeachersService {
             address: address,
             gender,
             dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-            ...(classId &&
-              subjectId &&
+            ...(wantsAllocation &&
               academicYearId && {
                 teachingAllocations: {
                   create: {
-                    classId,
-                    subjectId,
+                    classId: classId!,
+                    subjectId: subjectId!,
                     academicYearId,
                   },
                 },
@@ -141,7 +157,7 @@ export class TeachersService {
       },
     );
 
-    return formatTeacher(teacher);
+    return formatTeacher(teacher, academicYearId);
   }
 
   async findAll(
@@ -170,6 +186,7 @@ export class TeachersService {
     }
 
     const total = await this.prisma.teacher.count({ where });
+    const academicYearId = await this.academicYearContext.getActiveId();
 
     const teachers = await this.prisma.teacher.findMany({
       where,
@@ -188,7 +205,7 @@ export class TeachersService {
     });
 
     return {
-      data: teachers.map((teacher) => formatTeacher(teacher)),
+      data: teachers.map((teacher) => formatTeacher(teacher, academicYearId)),
       meta: {
         total,
         page,
@@ -214,7 +231,9 @@ export class TeachersService {
 
     if (!teacher) throw new NotFoundException('Teacher is not found');
 
-    return formatTeacher(teacher);
+    const academicYearId = await this.academicYearContext.getActiveId();
+
+    return formatTeacher(teacher, academicYearId);
   }
 
   async update(
@@ -363,6 +382,10 @@ export class TeachersService {
               },
             });
           }
+        } else {
+          throw new BadRequestException(
+            'classId and subjectId are required when assigning a teaching allocation',
+          );
         }
       }
 
@@ -380,7 +403,10 @@ export class TeachersService {
       });
     });
 
-    return formatTeacher(teacher);
+    const responseAcademicYearId =
+      academicYearId ?? (await this.academicYearContext.getActiveId());
+
+    return formatTeacher(teacher, responseAcademicYearId);
   }
 
   async remove(id: string): Promise<{ message: string }> {

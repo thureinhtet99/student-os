@@ -45,9 +45,9 @@ export class TeacherResponseDto {
   dateOfBirth?: string | null;
 
   @ApiPropertyOptional({
-    type: String,
-    example: {
-      name: 'Grade 10',
+    type: 'object',
+    properties: {
+      name: { type: 'string', example: 'Grade 10' },
     },
     nullable: true,
   })
@@ -56,18 +56,13 @@ export class TeacherResponseDto {
   } | null;
 
   @ApiPropertyOptional({
-    type: String,
-    example: {
-      name: 'Math',
-    },
+    type: 'object',
+    properties: { name: { type: 'string', example: 'Math' } },
     nullable: true,
   })
   subject?: {
     name: string;
   } | null;
-
-  // @ApiPropertyOptional({ type: [TeachingAllocationDto] })
-  // teachingAllocations?: TeachingAllocationDto[];
 
   @ApiPropertyOptional({
     type: String,
@@ -75,38 +70,6 @@ export class TeacherResponseDto {
     nullable: true,
   })
   academicYearId?: string | null;
-
-  @ApiPropertyOptional({
-    type: String,
-    example: 'setPasswordToken123',
-    nullable: true,
-    readOnly: true,
-  })
-  setPasswordToken?: string | null;
-
-  @ApiPropertyOptional({
-    type: String,
-    example: '2005-08-24T00:00:00.000Z',
-    nullable: true,
-    readOnly: true,
-  })
-  setPasswordTokenExpires?: Date | null;
-
-  @ApiPropertyOptional({
-    type: String,
-    example: 'resetPasswordToken123',
-    nullable: true,
-    readOnly: true,
-  })
-  resetPasswordToken?: string | null;
-
-  @ApiPropertyOptional({
-    type: String,
-    example: '2005-08-24T00:00:00.000Z',
-    nullable: true,
-    readOnly: true,
-  })
-  resetPasswordTokenExpires?: Date | null;
 
   @ApiPropertyOptional({
     type: String,

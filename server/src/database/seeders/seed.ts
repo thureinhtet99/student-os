@@ -22,11 +22,11 @@ async function main() {
     await seedAdmin(appContext);
     await seedAcademicYears(appContext);
     await seedSubjects(appContext);
+    await seedClasses(appContext);
     await seedTeachers(appContext);
     await seedStudents(appContext);
     await seedParents(appContext);
     await seedParentStudents(appContext);
-    await seedClasses(appContext);
     await seedEnrollments(appContext);
     await seedTeachingAllocations(appContext);
     await seedAnnouncements(appContext);

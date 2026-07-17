@@ -71,7 +71,7 @@ export class StudentResponseDto {
   } | null;
 
   @ApiPropertyOptional({
-    type: String,
+    type: Object,
     example: {
       name: 'Grade 10',
     },
