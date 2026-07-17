@@ -48,9 +48,9 @@ export class TeachersService {
       gender,
       dateOfBirth,
       address,
-      class: teacherClass,
+      classId,
       phone,
-      subject,
+      subjectId,
     } = createTeacherDto;
 
     await checkDuplicate(
@@ -116,30 +116,17 @@ export class TeachersService {
             address: address,
             gender,
             dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-            ...(teacherClass &&
+            ...(classId &&
+              subjectId &&
               academicYearId && {
-                enrollments: {
+                teachingAllocations: {
                   create: {
-                    class: {
-                      create: { name: teacherClass.name },
-                    },
-                    academicYear: {
-                      connect: { id: academicYearId },
-                    },
+                    classId,
+                    subjectId,
+                    academicYearId,
                   },
                 },
               }),
-            ...(subject && {
-              subject: {
-                connectOrCreate: {
-                  where: { name: subject.name },
-                  create: { name: subject.name },
-                },
-              },
-            }),
-            academicYear: {
-              connect: { id: academicYearId },
-            },
           },
           include: {
             user: true,

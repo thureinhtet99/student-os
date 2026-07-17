@@ -24,7 +24,7 @@ export class TeacherResponseDto {
   })
   image?: string | null;
 
-  @ApiPropertyOptional({ type: String, example: '1234567890', nullable: true })
+  @ApiPropertyOptional({ type: String, example: '123456789', nullable: true })
   phone?: string | null;
 
   @ApiPropertyOptional({
@@ -43,6 +43,28 @@ export class TeacherResponseDto {
     nullable: true,
   })
   dateOfBirth?: string | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: {
+      name: 'Grade 10',
+    },
+    nullable: true,
+  })
+  class?: {
+    name: string;
+  } | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: {
+      name: 'Math',
+    },
+    nullable: true,
+  })
+  subject?: {
+    name: string;
+  } | null;
 
   // @ApiPropertyOptional({ type: [TeachingAllocationDto] })
   // teachingAllocations?: TeachingAllocationDto[];

@@ -17,16 +17,11 @@ export function formatTeacher(
     address: teacher.address,
     gender: teacher.gender,
     dateOfBirth: teacher.dateOfBirth ? teacher.dateOfBirth.toISOString() : null,
-    classId: firstAllocation?.classId ?? null,
-    subjectId: firstAllocation?.subjectId ?? null,
+    class: firstAllocation?.class ? { name: firstAllocation.class.name } : null,
+    subject: firstAllocation?.subject
+      ? { name: firstAllocation.subject.name }
+      : null,
     academicYearId: firstAllocation?.academicYearId,
-    teachingAllocations: teacher.teachingAllocations.map((ta) => ({
-      id: ta.id,
-      teacherId: ta.teacherId,
-      subjectId: ta.subjectId,
-      classId: ta.classId,
-      academicYearId: ta.academicYearId,
-    })),
     setPasswordToken: teacher.user.setPasswordToken,
     setPasswordTokenExpires: teacher.user.setPasswordTokenExpires ?? null,
     resetPasswordToken: teacher.user.resetPasswordToken,

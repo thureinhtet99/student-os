@@ -24,7 +24,9 @@ export class PrismaService
   }
 
   async onModuleInit() {
-    console.log(`Database initialized in ${this.environmentMode} mode`);
+    console.log(
+      `Database initialized in ${this.environmentMode} mode at port ${process.env.PORT}`,
+    );
     await this.$connect();
     console.log('Database connected successfully!');
   }

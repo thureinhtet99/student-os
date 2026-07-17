@@ -1,7 +1,24 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { ParentRelationship } from '../../../../prisma/generated/prisma/client.js';
 import { CreateUserDto } from '../../../common/dto/create-user.dto.js';
+
+class CreateStudentParentDto {
+  @ApiPropertyOptional({ type: String, example: 'John Doe Sr.' })
+  @IsString()
+  name!: string;
+
+  @ApiPropertyOptional({ type: String, example: '1234567890', nullable: true })
+  @IsOptional()
+  @IsString()
+  phone?: string | null;
+
+  @ApiPropertyOptional({ type: String, example: '123 Main St', nullable: true })
+  @IsOptional()
+  @IsString()
+  address?: string | null;
+}
 
 export class CreateStudentDto extends CreateUserDto {
   @ApiPropertyOptional({
@@ -9,36 +26,34 @@ export class CreateStudentDto extends CreateUserDto {
     example: 'GUARDIAN',
     nullable: true,
   })
+  @IsOptional()
+  @IsEnum(ParentRelationship)
   parent_student_relationship?: ParentRelationship | null;
 
   @ApiPropertyOptional({
-    type: Object,
-    example: {
-      name: 'John Doe Sr.',
-      phone: '1234567890',
-      address: '123 Main St',
-    },
+    type: CreateStudentParentDto,
     nullable: true,
   })
-  parent?: {
-    name: string;
-    phone?: string | null;
-    address?: string | null;
-  } | null;
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreateStudentParentDto)
+  parent?: CreateStudentParentDto | null;
 
   @ApiPropertyOptional({
     type: String,
-    example: { name: 'Grade-10' },
+    example: 'classId123',
     nullable: true,
   })
   @IsString()
   @IsOptional()
-  class?: {
-    name: string;
-  } | null;
+  classId?: string | null;
 
-  @ApiPropertyOptional({ type: String, example: 'academicYearId' })
+  @ApiPropertyOptional({
+    type: String,
+    example: 'academicYearId',
+    nullable: true,
+  })
   @IsString()
   @IsOptional()
-  academicYearId?: string;
+  academicYearId?: string | null;
 }

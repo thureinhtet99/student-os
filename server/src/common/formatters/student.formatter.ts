@@ -4,6 +4,8 @@ import { StudentWithRelations } from '../types/student.type.js';
 export function formatStudent(
   student: StudentWithRelations,
 ): StudentResponseDto {
+  const firstStudentParent = student.parents?.[0]?.parent;
+
   return {
     id: student.id,
     userId: student.user.id,
@@ -16,11 +18,11 @@ export function formatStudent(
     gender: student.gender,
     dateOfBirth: student.dateOfBirth ? student.dateOfBirth.toISOString() : null,
     parent_student_relationship: student.parents?.[0]?.relationship ?? null,
-    parent: student.parents?.[0]?.parent
+    parent: firstStudentParent
       ? {
-          name: student.parents[0].parent.name,
-          phone: student.parents[0].parent.phone,
-          address: student.parents[0].parent.address,
+          name: firstStudentParent.name,
+          phone: firstStudentParent.phone,
+          address: firstStudentParent.address,
         }
       : null,
     class: student.enrollments?.[0]?.class

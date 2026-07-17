@@ -13,6 +13,6 @@ export type StudentWithRelations = Omit<Student, 'password'> & {
     class: Class;
   })[];
   parents: (ParentStudent & {
-    parent: Parent;
+    parent: Pick<Parent, 'name' | 'phone' | 'address'>;
   })[];
 };

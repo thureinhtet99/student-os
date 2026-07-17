@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import 'dotenv/config';
 import { AppModule } from './app.module.js';
 import { APP_CONSTANT } from './common/constants/app.constant.js';
+import { getAllowedOrigins } from './common/utils/cors.util.js';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-client-exception.filter.js';
 import {
@@ -21,7 +22,7 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? 'http://localhost:3001',
+    origin: getAllowedOrigins(),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],

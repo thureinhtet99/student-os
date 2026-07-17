@@ -40,9 +40,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: 'classId123',
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -59,9 +57,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: 'classId123',
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -78,9 +74,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: 'classId123',
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -97,9 +91,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: 'classId123',
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -116,9 +108,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: 'classId123',
         academicYearId: effectiveAcademicYearId,
       },
     ];
