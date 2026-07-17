@@ -25,6 +25,17 @@ export async function seedStudents(appContext: INestApplicationContext) {
         'No current academic year found. Seed academic years first.',
       );
 
+    const seededClass = await prismaService.class.findFirst({
+      where: { name: 'Grade 1A' },
+      select: { id: true },
+    });
+
+    if (!seededClass) {
+      throw new Error('No seeded class found. Seed classes first.');
+    }
+
+    const seededClassId = seededClass.id;
+
     const studentsToCreate: CreateStudentDto[] = [
       {
         name: 'Michael Brown',
@@ -40,9 +51,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: seededClassId,
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -59,9 +68,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: seededClassId,
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -78,9 +85,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: seededClassId,
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -97,9 +102,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: seededClassId,
         academicYearId: effectiveAcademicYearId,
       },
       {
@@ -116,9 +119,7 @@ export async function seedStudents(appContext: INestApplicationContext) {
           phone: '123123123',
           address: 'Yangon',
         },
-        class: {
-          name: 'class-1',
-        },
+        classId: seededClassId,
         academicYearId: effectiveAcademicYearId,
       },
     ];

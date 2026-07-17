@@ -1,7 +1,13 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { hashPassword } from 'better-auth/crypto';
 import { randomUUID } from 'node:crypto';
 import { Prisma, UserRole } from '../../../prisma/generated/prisma/client.js';
+import { AcademicYearContextService } from '../../common/academic-year-context/academic-year-context.service.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 import { formatTeacher } from '../../common/formatters/teacher.formatter.js';
 import { formatGender } from '../../common/formatters/user.formatter.js';
@@ -14,6 +20,18 @@ import { QueryTeacherDto } from './dto/query-teacher-dto.js';
 import { TeacherResponseDto } from './dto/teacher-response.dto.js';
 import { UpdateTeacherDto } from './dto/update-teacher.dto.js';
 
+type TeacherCreateResult = Prisma.TeacherGetPayload<{
+  include: {
+    user: true;
+    teachingAllocations: {
+      include: {
+        class: true;
+        subject: true;
+      };
+    };
+  };
+}>;
+
 @Injectable()
 export class TeachersService {
   private readonly logger = new Logger(TeachersService.name);
@@ -21,12 +39,24 @@ export class TeachersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinary: CloudinaryService,
+    private readonly academicYearContext: AcademicYearContextService,
   ) {}
 
   async create(
     createTeacherDto: CreateTeacherDto,
   ): Promise<TeacherResponseDto> {
-    const { email, password, name, image, gender } = createTeacherDto;
+    const {
+      email,
+      password,
+      name,
+      image,
+      gender,
+      dateOfBirth,
+      address,
+      classId,
+      phone,
+      subjectId,
+    } = createTeacherDto;
 
     await checkDuplicate(
       this.prisma.user,
@@ -54,60 +84,98 @@ export class TeachersService {
       );
     }
 
+    const imageUrl = resolveImageUrl(image, this.cloudinary);
     const hashedPwd = await hashPassword(password);
     const userId = randomUUID();
-    const imageUrl = resolveImageUrl(image, this.cloudinary);
 
-    const teacher = await this.prisma.$transaction(async (tx) => {
-      const createdUser = await tx.user.create({
-        data: {
-          id: userId,
-          email: email.trim(),
-          name: name.trim(),
-          role: UserRole.TEACHER,
-          image: imageUrl,
-          accounts: {
-            create: {
-              id: randomUUID(),
-              accountId: userId,
-              providerId: 'credential',
-              password: hashedPwd,
+    const wantsAllocation = Boolean(
+      classId || subjectId || createTeacherDto.academicYearId,
+    );
+
+    if (wantsAllocation && (!classId || !subjectId)) {
+      throw new BadRequestException(
+        'classId and subjectId are required when creating a teaching allocation',
+      );
+    }
+
+    const academicYearId = wantsAllocation
+      ? (createTeacherDto.academicYearId ??
+        (await this.academicYearContext.getActiveId()))
+      : undefined;
+
+    const teacher = await this.prisma.$transaction(
+      async (tx): Promise<TeacherCreateResult> => {
+        const createdUser = await tx.user.create({
+          data: {
+            id: userId,
+            email: email.trim(),
+            name: name.trim(),
+            role: UserRole.TEACHER,
+            image: imageUrl,
+            accounts: {
+              create: {
+                id: randomUUID(),
+                accountId: userId,
+                providerId: 'credential',
+                password: hashedPwd,
+              },
             },
           },
-        },
-      });
+        });
 
-      const teacherId = `TCH-${createdUser.id.slice(-12)}`;
+        const teacherId = `TCH-${createdUser.id.slice(-12)}`;
 
-      return tx.teacher.create({
-        data: {
-          employeeCode: teacherId,
-          userId: createdUser.id,
-          gender,
-        },
-        include: {
-          user: true,
-          teachingAllocations: {
-            include: {
-              class: true,
-              subject: true,
+        return tx.teacher.create({
+          data: {
+            employeeCode: teacherId,
+            userId: createdUser.id,
+            phone: phone,
+            address: address,
+            gender,
+            dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+            ...(wantsAllocation &&
+              academicYearId && {
+                teachingAllocations: {
+                  create: {
+                    classId: classId!,
+                    subjectId: subjectId!,
+                    academicYearId,
+                  },
+                },
+              }),
+          },
+          include: {
+            user: true,
+            teachingAllocations: {
+              include: {
+                class: true,
+                subject: true,
+              },
             },
           },
-        },
-      });
-    });
+        });
+      },
+    );
 
-    return formatTeacher(teacher);
+    return formatTeacher(teacher, academicYearId);
   }
 
   async findAll(
     queryTeacherDto: QueryTeacherDto,
   ): Promise<PaginatedResponseDto<TeacherResponseDto>> {
-    const { filter, search, page = 1, limit = 10 } = queryTeacherDto;
+    const { classId, gender, search, page = 1, limit = 10 } = queryTeacherDto;
 
     const where: Prisma.TeacherWhereInput = {};
 
-    if (filter) where.gender = filter;
+    if (classId) {
+      where.teachingAllocations = {
+        some: {
+          classId,
+        },
+      };
+    }
+
+    if (gender) where.gender = gender;
 
     if (search) {
       where.OR = [
@@ -118,6 +186,7 @@ export class TeachersService {
     }
 
     const total = await this.prisma.teacher.count({ where });
+    const academicYearId = await this.academicYearContext.getActiveId();
 
     const teachers = await this.prisma.teacher.findMany({
       where,
@@ -136,7 +205,7 @@ export class TeachersService {
     });
 
     return {
-      data: teachers.map((teacher) => formatTeacher(teacher)),
+      data: teachers.map((teacher) => formatTeacher(teacher, academicYearId)),
       meta: {
         total,
         page,
@@ -162,7 +231,9 @@ export class TeachersService {
 
     if (!teacher) throw new NotFoundException('Teacher is not found');
 
-    return formatTeacher(teacher);
+    const academicYearId = await this.academicYearContext.getActiveId();
+
+    return formatTeacher(teacher, academicYearId);
   }
 
   async update(
@@ -204,7 +275,7 @@ export class TeachersService {
 
     if (
       updateTeacherDto.phone &&
-      existingTeacher.phone !== updateTeacherDto.phone?.trim()
+      existingTeacher.phone !== updateTeacherDto.phone.trim()
     ) {
       await checkDuplicate(
         this.prisma.teacher,
@@ -215,46 +286,127 @@ export class TeachersService {
       );
     }
 
-    const teacher = await this.prisma.teacher.update({
-      where: { id },
-      data: {
-        user: {
-          update: {
-            email: updateTeacherDto.email?.trim(),
-            name: updateTeacherDto.name?.trim(),
-            image:
-              updateTeacherDto.image === undefined
-                ? undefined
-                : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
+    const classId =
+      updateTeacherDto.classId === undefined
+        ? undefined
+        : updateTeacherDto.classId?.trim() || null;
+
+    const subjectId =
+      updateTeacherDto.subjectId === undefined
+        ? undefined
+        : updateTeacherDto.subjectId?.trim() || null;
+
+    const shouldUpdateAllocation =
+      classId !== undefined || subjectId !== undefined;
+
+    const academicYearId =
+      updateTeacherDto.academicYearId ??
+      (shouldUpdateAllocation
+        ? await this.academicYearContext.getActiveId()
+        : undefined);
+
+    const teacher = await this.prisma.$transaction(async (tx) => {
+      await tx.teacher.update({
+        where: { id },
+        data: {
+          user: {
+            update: {
+              email: updateTeacherDto.email?.trim(),
+              name: updateTeacherDto.name?.trim(),
+              image:
+                updateTeacherDto.image === undefined
+                  ? undefined
+                  : resolveImageUrl(updateTeacherDto.image, this.cloudinary),
+            },
+          },
+          phone:
+            updateTeacherDto.phone === undefined
+              ? undefined
+              : updateTeacherDto.phone?.trim() || null,
+          address:
+            updateTeacherDto.address === undefined
+              ? undefined
+              : updateTeacherDto.address?.trim() || null,
+          dateOfBirth:
+            updateTeacherDto.dateOfBirth === undefined
+              ? undefined
+              : updateTeacherDto.dateOfBirth
+                ? new Date(updateTeacherDto.dateOfBirth)
+                : null,
+          gender: updateTeacherDto.gender
+            ? formatGender(updateTeacherDto.gender)
+            : undefined,
+        },
+      });
+
+      if (shouldUpdateAllocation && academicYearId) {
+        const existingAllocation = await tx.teachingAllocation.findFirst({
+          where: { teacherId: id, academicYearId },
+        });
+
+        const resolvedClassId =
+          classId !== undefined
+            ? classId
+            : (existingAllocation?.classId ?? null);
+        const resolvedSubjectId =
+          subjectId !== undefined
+            ? subjectId
+            : (existingAllocation?.subjectId ?? null);
+
+        const isClearing =
+          classId === null ||
+          subjectId === null ||
+          (classId !== undefined && !resolvedClassId) ||
+          (subjectId !== undefined && !resolvedSubjectId);
+
+        if (isClearing) {
+          await tx.teachingAllocation.deleteMany({
+            where: { teacherId: id, academicYearId },
+          });
+        } else if (resolvedClassId && resolvedSubjectId) {
+          if (existingAllocation) {
+            await tx.teachingAllocation.update({
+              where: { id: existingAllocation.id },
+              data: {
+                classId: resolvedClassId,
+                subjectId: resolvedSubjectId,
+              },
+            });
+          } else {
+            await tx.teachingAllocation.create({
+              data: {
+                teacherId: id,
+                classId: resolvedClassId,
+                subjectId: resolvedSubjectId,
+                academicYearId,
+              },
+            });
+          }
+        } else {
+          throw new BadRequestException(
+            'classId and subjectId are required when assigning a teaching allocation',
+          );
+        }
+      }
+
+      return tx.teacher.findUniqueOrThrow({
+        where: { id },
+        include: {
+          user: true,
+          teachingAllocations: {
+            include: {
+              class: true,
+              subject: true,
+            },
           },
         },
-        phone: updateTeacherDto.phone?.trim(),
-        address:
-          updateTeacherDto.address === undefined
-            ? undefined
-            : updateTeacherDto.address?.trim() || null,
-        dateOfBirth:
-          updateTeacherDto.dateOfBirth === undefined
-            ? undefined
-            : updateTeacherDto.dateOfBirth
-              ? new Date(updateTeacherDto.dateOfBirth)
-              : null,
-        gender: updateTeacherDto.gender
-          ? formatGender(updateTeacherDto.gender)
-          : undefined,
-      },
-      include: {
-        user: true,
-        teachingAllocations: {
-          include: {
-            class: true,
-            subject: true,
-          },
-        },
-      },
+      });
     });
 
-    return formatTeacher(teacher);
+    const responseAcademicYearId =
+      academicYearId ?? (await this.academicYearContext.getActiveId());
+
+    return formatTeacher(teacher, responseAcademicYearId);
   }
 
   async remove(id: string): Promise<{ message: string }> {
@@ -274,8 +426,15 @@ export class TeachersService {
       }
     }
 
-    // Delete user which will cascade delete the teacher
-    await this.prisma.user.delete({ where: { id: existingTeacher.userId } });
+    await this.prisma.$transaction([
+      this.prisma.teachingAllocation.deleteMany({
+        where: { teacherId: id },
+      }),
+      this.prisma.account.deleteMany({
+        where: { userId: existingTeacher.userId },
+      }),
+      this.prisma.user.delete({ where: { id: existingTeacher.userId } }),
+    ]);
 
     return { message: 'Teacher deleted successfully' };
   }

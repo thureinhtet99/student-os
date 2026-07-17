@@ -26,7 +26,7 @@ import { TeachingAllocationModule } from './modules/teaching-allocations/teachin
 //  * better-auth's rateLimit: Protects your unauthenticated auth endpoints.
 //  * @nestjs/throttler: Protects your authenticated application endpoints.
 
-// Rate limiter for the better-auth HTTP handler at /api/v1/auth/*.
+// Rate limiter for brute-force-sensitive better-auth routes only.
 // Nest guards and @Throttle() do not run on these routes (better-auth is
 // mounted at the Express middleware layer), so the only correct hook is
 // the `middleware` option on AuthModule.forRoot, which wraps the handler.
@@ -40,6 +40,19 @@ const rateLimiter = rateLimit({
     error: 'Too Many Requests',
   },
 });
+
+const AUTH_BASE_PATH = '/api/v1/auth';
+
+function isBruteForceSensitiveAuthRoute(req: {
+  originalUrl?: string;
+  url?: string;
+}): boolean {
+  const path = (req.originalUrl ?? req.url ?? '').split('?')[0];
+  return (
+    path.startsWith(`${AUTH_BASE_PATH}/sign-in`) ||
+    path.startsWith(`${AUTH_BASE_PATH}/sign-up`)
+  );
+}
 
 @Module({
   imports: [
@@ -74,7 +87,12 @@ const rateLimiter = rateLimit({
         urlencoded: { enabled: true, limit: '2mb', extended: true },
         rawBody: true,
       },
-      middleware: (req, res, next) => rateLimiter(req, res, next),
+      middleware: (req, res, next) => {
+        if (isBruteForceSensitiveAuthRoute(req)) {
+          return rateLimiter(req, res, next);
+        }
+        return next();
+      },
     }),
     LocalAuthModule,
   ],

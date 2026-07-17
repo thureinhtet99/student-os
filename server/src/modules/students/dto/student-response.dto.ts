@@ -71,7 +71,7 @@ export class StudentResponseDto {
   } | null;
 
   @ApiPropertyOptional({
-    type: String,
+    type: Object,
     example: {
       name: 'Grade 10',
     },
@@ -80,6 +80,13 @@ export class StudentResponseDto {
   class?: {
     name: string;
   } | null;
+
+  @ApiPropertyOptional({
+    type: String,
+    example: 'academicYearId123',
+    nullable: true,
+  })
+  academicYearId?: string | null;
 
   @ApiPropertyOptional({
     type: String,

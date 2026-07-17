@@ -236,10 +236,10 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
   employeeCode?: string
+  phone?: string
   AND?: Prisma.TeacherWhereInput | Prisma.TeacherWhereInput[]
   OR?: Prisma.TeacherWhereInput[]
   NOT?: Prisma.TeacherWhereInput | Prisma.TeacherWhereInput[]
-  phone?: Prisma.StringNullableFilter<"Teacher"> | string | null
   address?: Prisma.StringNullableFilter<"Teacher"> | string | null
   gender?: Prisma.EnumUserGenderFilter<"Teacher"> | $Enums.UserGender
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
@@ -247,7 +247,7 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Teacher"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   teachingAllocations?: Prisma.TeachingAllocationListRelationFilter
-}, "id" | "userId" | "employeeCode">
+}, "id" | "userId" | "employeeCode" | "phone">
 
 export type TeacherOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

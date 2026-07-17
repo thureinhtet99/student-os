@@ -1,4 +1,3 @@
-import { Roles } from '@thallesp/nestjs-better-auth';
 import {
   Body,
   Controller,
@@ -9,12 +8,18 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Roles } from '@thallesp/nestjs-better-auth';
+import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import {
   ApiPaginatedResponse,
   PaginatedResponseDto,
 } from '../../common/dto/paginated-response.dto.js';
-import { ADMIN_ROLES } from '../../common/constants/role.constant.js';
 import { CreateTeacherDto } from './dto/create-teacher.dto.js';
 import { QueryTeacherDto } from './dto/query-teacher-dto.js';
 import { TeacherResponseDto } from './dto/teacher-response.dto.js';
@@ -28,7 +33,7 @@ export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
   @ApiOperation({ summary: 'Create a teacher' })
-  @ApiOkResponse({ type: TeacherResponseDto })
+  @ApiCreatedResponse({ type: TeacherResponseDto })
   @Post()
   async create(
     @Body() createTeacherDto: CreateTeacherDto,

@@ -97,10 +97,11 @@ model Teacher {
   userId              String               @unique
   user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   employeeCode        String               @unique
-  phone               String?
+  phone               String?              @unique
   address             String?
   gender              UserGender
   dateOfBirth         DateTime?
+  // joinDate            DateTime?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   teachingAllocations TeachingAllocation[]
@@ -114,7 +115,7 @@ model Student {
   userId        String          @unique
   user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   studentNumber String          @unique
-  phone         String?
+  phone         String?         @unique
   address       String?
   bloodGroup    String?
   gender        UserGender
@@ -131,7 +132,7 @@ model Student {
 model Parent {
   id        String          @id @default(cuid())
   name      String
-  phone     String?
+  phone     String?         @unique
   address   String?
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt

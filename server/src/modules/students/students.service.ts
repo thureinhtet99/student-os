@@ -29,7 +29,7 @@ type StudentCreateResult = Prisma.StudentGetPayload<{
     };
     enrollments: {
       include: {
-        class: { select: { id: true; name: true; deletedAt: true } };
+        class: true;
       };
     };
   };
@@ -59,13 +59,14 @@ export class StudentsService {
       dateOfBirth,
       parent,
       parent_student_relationship,
-      class: studentClass,
+      classId,
+      academicYearId: requestedAcademicYearId,
     } = createStudentDto;
 
     await checkDuplicate(
       this.prisma.user,
       'name',
-      createStudentDto.name,
+      name,
       null,
       'Student with this name already exists',
     );
@@ -73,16 +74,16 @@ export class StudentsService {
     await checkDuplicate(
       this.prisma.user,
       'email',
-      createStudentDto.email,
+      email,
       null,
       'Student with this email already exists',
     );
 
-    if (createStudentDto.phone) {
+    if (phone) {
       await checkDuplicate(
         this.prisma.student,
         'phone',
-        createStudentDto.phone,
+        phone,
         null,
         'Student with this phone number already exists',
       );
@@ -112,30 +113,25 @@ export class StudentsService {
           },
         });
 
-        const studentId = `STU-${createdUser.id.slice(-12)}`;
-
+        const studentNumber = `STU-${createdUser.id.slice(-12)}`;
         const academicYearId =
-          createStudentDto.academicYearId ??
+          requestedAcademicYearId ??
           (await this.academicYearContext.getActiveId());
 
         return tx.student.create({
           data: {
-            studentNumber: studentId,
+            studentNumber,
             userId: createdUser.id,
             phone,
             address,
             gender,
             dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-            ...(studentClass &&
+            ...(classId &&
               academicYearId && {
                 enrollments: {
                   create: {
-                    class: {
-                      create: { name: studentClass.name },
-                    },
-                    academicYear: {
-                      connect: { id: academicYearId },
-                    },
+                    classId,
+                    academicYearId,
                   },
                 },
               }),
@@ -144,13 +140,24 @@ export class StudentsService {
                 create: {
                   relationship:
                     parent_student_relationship ?? ParentRelationship.GUARDIAN,
-                  parent: {
-                    create: {
-                      name: parent.name,
-                      phone: parent.phone,
-                      address: parent.address,
-                    },
-                  },
+                  parent: parent.phone
+                    ? {
+                        connectOrCreate: {
+                          where: { phone: parent.phone },
+                          create: {
+                            name: parent.name,
+                            phone: parent.phone,
+                            address: parent.address ?? null,
+                          },
+                        },
+                      }
+                    : {
+                        create: {
+                          name: parent.name,
+                          phone: null,
+                          address: parent.address ?? null,
+                        },
+                      },
                 },
               },
             }),
@@ -164,7 +171,7 @@ export class StudentsService {
             },
             enrollments: {
               include: {
-                class: { select: { id: true, name: true, deletedAt: true } },
+                class: true,
               },
             },
           },
@@ -174,6 +181,7 @@ export class StudentsService {
 
     return formatStudent(student);
   }
+
   async findAll(
     queryStudentDto: QueryStudentDto,
   ): Promise<PaginatedResponseDto<StudentResponseDto>> {

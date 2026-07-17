@@ -212,7 +212,7 @@ describe('StudentsService', () => {
 
       const result = await service.update('student-1', {
         name: 'New Name',
-      } as any);
+      });
 
       expect(result).toEqual(updatedStudent);
       expect(academicYearContext.getActiveId).not.toHaveBeenCalled();
@@ -256,7 +256,7 @@ describe('StudentsService', () => {
       const result = await service.update('student-1', {
         name: 'New Name',
         classId: 'class-1',
-      } as any);
+      });
 
       expect(result).toEqual(updatedStudent);
       expect(academicYearContext.getActiveId).toHaveBeenCalled();
@@ -313,7 +313,7 @@ describe('StudentsService', () => {
 
       const result = await service.update('student-1', {
         email: 'new@student.com',
-      } as any);
+      });
 
       expect(result).toEqual(updatedStudent);
       expect(prisma.student.update).toHaveBeenCalledWith(

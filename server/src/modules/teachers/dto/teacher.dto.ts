@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { UserGender } from '../../../../prisma/generated/prisma/browser';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { UserGender } from '../../../../prisma/generated/prisma/client.js';
 
 export class TeacherDto {
-  @ApiProperty({ type: String, example: 'ckx123userid' })
+  @ApiProperty({ type: String, example: 'teacherid123' })
   id!: string;
 
   @ApiProperty({ type: String, example: 'userid123' })
@@ -11,18 +11,19 @@ export class TeacherDto {
   @ApiProperty({ type: String, example: 'TCH-12345' })
   employeeCode!: string;
 
-  @ApiProperty({ type: String, example: '123456789' })
-  phone!: string;
+  @ApiPropertyOptional({ type: String, example: '123456789', nullable: true })
+  phone?: string | null;
 
-  @ApiProperty({ type: String, example: 'Yangon' })
-  address!: string;
+  @ApiPropertyOptional({ type: String, example: 'Yangon', nullable: true })
+  address?: string | null;
 
-  @ApiProperty({ type: String, example: 'A' })
-  bloodGroup!: string;
-
-  @ApiProperty({ type: Boolean, example: 'MALE' })
+  @ApiProperty({ enum: UserGender, example: UserGender.MALE })
   gender!: UserGender;
 
-  @ApiProperty({ type: String, example: 'MALE' })
-  dateOfBirth!: string;
+  @ApiPropertyOptional({
+    type: String,
+    example: '2005-08-24T00:00:00.000Z',
+    nullable: true,
+  })
+  dateOfBirth?: string | null;
 }

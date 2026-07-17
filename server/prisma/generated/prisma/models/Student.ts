@@ -247,10 +247,10 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
   studentNumber?: string
+  phone?: string
   AND?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   OR?: Prisma.StudentWhereInput[]
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
-  phone?: Prisma.StringNullableFilter<"Student"> | string | null
   address?: Prisma.StringNullableFilter<"Student"> | string | null
   bloodGroup?: Prisma.StringNullableFilter<"Student"> | string | null
   gender?: Prisma.EnumUserGenderFilter<"Student"> | $Enums.UserGender
@@ -260,7 +260,7 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   enrollments?: Prisma.EnrollmentListRelationFilter
   parents?: Prisma.ParentStudentListRelationFilter
-}, "id" | "userId" | "studentNumber">
+}, "id" | "userId" | "studentNumber" | "phone">
 
 export type StudentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

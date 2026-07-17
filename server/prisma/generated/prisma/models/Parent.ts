@@ -205,16 +205,16 @@ export type ParentOrderByWithRelationInput = {
 
 export type ParentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  phone?: string
   AND?: Prisma.ParentWhereInput | Prisma.ParentWhereInput[]
   OR?: Prisma.ParentWhereInput[]
   NOT?: Prisma.ParentWhereInput | Prisma.ParentWhereInput[]
   name?: Prisma.StringFilter<"Parent"> | string
-  phone?: Prisma.StringNullableFilter<"Parent"> | string | null
   address?: Prisma.StringNullableFilter<"Parent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Parent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Parent"> | Date | string
   students?: Prisma.ParentStudentListRelationFilter
-}, "id">
+}, "id" | "phone">
 
 export type ParentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
